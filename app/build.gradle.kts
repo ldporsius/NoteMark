@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -49,6 +50,18 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.kotlinx.serialization.core)
+    implementation(libs.kotlinx.serialization.json)
+
+    // Core runtime for Jetpack Navigation 3 library — provides navigation components and APIs
+    implementation("androidx.navigation3:navigation3-runtime:1.0.0-alpha02")
+
+    // UI components for Navigation 3 — includes NavDisplay etc.
+    implementation("androidx.navigation3:navigation3-ui:1.0.0-alpha02")
+
+    // ViewModel integration with Navigation 3 — provides lifecycle-aware ViewModels scoped to navigation destinations
+    implementation("androidx.lifecycle:lifecycle-viewmodel-navigation3:1.0.0-alpha01")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
