@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "nl.codingwithlinda.notemark"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "nl.codingwithlinda.notemark"
