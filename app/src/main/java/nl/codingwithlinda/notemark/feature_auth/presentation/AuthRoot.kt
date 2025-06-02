@@ -1,8 +1,9 @@
-package nl.codingwithlinda.notemark.feature_auth
+package nl.codingwithlinda.notemark.feature_auth.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.NavBackStack
@@ -11,6 +12,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import nl.codingwithlinda.notemark.core.navigation.AuthDestination
+import nl.codingwithlinda.notemark.feature_auth.presentation.components.LoginHeader
 
 @Composable
 fun AuthRoot(
@@ -24,17 +26,17 @@ fun AuthRoot(
         val backstackAuth:NavBackStack = rememberNavBackStack<AuthDestination>(
             AuthDestination.LoginDestination
         )
+        val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
+
+        println("AUTH ROOT WINDOW SIZE CLASS: $windowSizeClass")
+
         NavDisplay(
             backStack = backstackAuth,
             entryProvider = entryProvider {
                 entry(AuthDestination.LoginDestination){
+
                     Column {
-                        Text(text = "This is the Login screen")
-                        Button(
-                            onClick = onLoginSuccess
-                        ) {
-                            Text("Login successfully")
-                        }
+                        LoginHeader(modifier = Modifier)
                         Button(
                             onClick = {
                                 backstackAuth.add(AuthDestination.RegisterDestination)

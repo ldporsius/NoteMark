@@ -15,7 +15,7 @@ import androidx.navigation3.ui.NavDisplay
 import nl.codingwithlinda.notemark.core.navigation.AuthRootDestination
 import nl.codingwithlinda.notemark.core.navigation.HomeDestination
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
-import nl.codingwithlinda.notemark.feature_auth.AuthRoot
+import nl.codingwithlinda.notemark.feature_auth.presentation.AuthRoot
 import nl.codingwithlinda.notemark.feature_home.HomeScreen
 
 class MainActivity : ComponentActivity() {

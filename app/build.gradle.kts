@@ -61,6 +61,7 @@ dependencies {
 
     // ViewModel integration with Navigation 3 — provides lifecycle-aware ViewModels scoped to navigation destinations
     implementation("androidx.lifecycle:lifecycle-viewmodel-navigation3:1.0.0-alpha01")
+    implementation(libs.androidx.adaptive.android)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
