@@ -7,4 +7,12 @@ import kotlinx.serialization.Serializable
 data object HomeDestination: NavKey
 
 @Serializable
-data object LoginDestination: NavKey
+data object AuthRootDestination: NavKey
+
+sealed class AuthDestination: NavKey {
+    @Serializable
+    data object LoginDestination : AuthDestination()
+
+    @Serializable
+    data object RegisterDestination : AuthDestination()
+}
