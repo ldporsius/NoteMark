@@ -62,14 +62,14 @@ fun ScreenTwoComposables(
             val comp2Ref = createRefFor(comp2Id)
 
             constrain(comp1Ref) {
-                start.linkTo(parent.start, margin = 16.dp)
-                end.linkTo(parent.end, margin = 16.dp)
+                start.linkTo(parent.start, margin = 0.dp)
+                end.linkTo(parent.end, margin = 0.dp)
                 top.linkTo(parent.top, margin = 16.dp)
                 width = Dimension.fillToConstraints
             }
             constrain(comp2Ref) {
-                start.linkTo(parent.start, margin = 16.dp)
-                end.linkTo(parent.end, margin = 16.dp)
+                start.linkTo(parent.start, margin = 0.dp)
+                end.linkTo(parent.end, margin = 0.dp)
                 top.linkTo(comp1Ref.bottom, margin = 16.dp)
                 bottom.linkTo(parent.bottom, margin = 16.dp)
                 width = Dimension.fillToConstraints
@@ -86,14 +86,11 @@ fun ScreenTwoComposables(
         Box(
             modifier = Modifier
                 .layoutId(comp1Id)
-
-
         ){
             comp1()
         }
         Box(modifier = Modifier
             .layoutId(comp2Id)
-
         ){
            comp2()
 
