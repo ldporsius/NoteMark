@@ -1,21 +1,16 @@
 package nl.codingwithlinda.notemark.feature_auth.presentation
 
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.animateBounds
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.text.BasicText
-import androidx.compose.foundation.text.TextAutoSize
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.adaptive.*
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.layout.LookaheadScope
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavBackStack
@@ -23,24 +18,30 @@ import androidx.navigation3.runtime.entry
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
+import androidx.window.core.layout.WindowWidthSizeClass
 import nl.codingwithlinda.notemark.core.navigation.AuthDestination
+import nl.codingwithlinda.notemark.design_system.form_factors.ScreenTwoComposables
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
-import nl.codingwithlinda.notemark.feature_auth.presentation.components.LoginHeader
+import nl.codingwithlinda.notemark.feature_auth.login.presentation.components.LoginForm
+import nl.codingwithlinda.notemark.feature_auth.login.presentation.components.LoginHeader
+import nl.codingwithlinda.notemark.feature_auth.login.state.LoginUiState
 
 @Composable
 fun AuthRoot(
     onLoginSuccess: () -> Unit,
     modifier: Modifier = Modifier) {
-    Column(
+    Surface (
         modifier = modifier
+            .padding(top=16.dp),
+        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
     ) {
-        Text("This is the auth root", modifier = modifier)
 
         val backstackAuth:NavBackStack = rememberNavBackStack<AuthDestination>(
             AuthDestination.LoginDestination
         )
         val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
 
+        val headerTextAlign = if (windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.MEDIUM) TextAlign.Center else TextAlign.Start
         println("AUTH ROOT WINDOW SIZE CLASS: $windowSizeClass")
 
         NavDisplay(
@@ -48,12 +49,24 @@ fun AuthRoot(
             entryProvider = entryProvider {
                 entry(AuthDestination.LoginDestination){
 
-                    Surface {
+                        ScreenTwoComposables(
+                            comp1 = {
+                                LoginHeader(
+                                    textAlign = headerTextAlign
+                                )
+                            },
+                            comp2 = {
+                               LoginForm(
+                                   uiState = LoginUiState(),
+                                   onAction = {},
+                                   modifier = Modifier,
+                               )
+                            },
+                            modifier = Modifier
+                                .fillMaxSize()
 
-
+                        )
                     }
-
-                }
 
                 entry(AuthDestination.RegisterDestination){
                     Column {

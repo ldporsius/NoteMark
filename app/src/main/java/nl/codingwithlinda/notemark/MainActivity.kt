@@ -15,6 +15,7 @@ import androidx.navigation3.ui.NavDisplay
 import nl.codingwithlinda.notemark.core.navigation.AuthRootDestination
 import nl.codingwithlinda.notemark.core.navigation.HomeDestination
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
+import nl.codingwithlinda.notemark.design_system.ui.theme.primary
 import nl.codingwithlinda.notemark.feature_auth.presentation.AuthRoot
 import nl.codingwithlinda.notemark.feature_home.HomeScreen
 
@@ -24,7 +25,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             NoteMarkTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    containerColor = primary
+                ) { innerPadding ->
                     val ip = innerPadding
                     val backstack = rememberNavBackStack(
                         HomeDestination

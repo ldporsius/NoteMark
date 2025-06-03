@@ -1,9 +1,7 @@
-package nl.codingwithlinda.notemark.feature_auth.presentation.components
+package nl.codingwithlinda.notemark.feature_auth.login.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -15,18 +13,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.AlignmentLine
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Placeable
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
-import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
-import nl.codingwithlinda.notemark.core.navigation.AuthDestination
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
 
 @Composable
-fun LoginScreen(
+fun LoginScreenCL(
     navToRegister: () -> Unit,
     modifier: Modifier = Modifier) {
     Layout(
@@ -40,6 +36,7 @@ fun LoginScreen(
                 contentAlignment = Alignment.Center
             ) {
                 LoginHeader(
+                    textAlign = TextAlign.Center,
                     modifier = Modifier
 
                 )
@@ -131,7 +128,7 @@ fun LoginScreen(
 @Composable
 private fun LoginScreenPreview() {
     NoteMarkTheme {
-        LoginScreen(
+        LoginScreenCL(
             modifier = Modifier.wrapContentSize(),
             navToRegister = {}
         )
