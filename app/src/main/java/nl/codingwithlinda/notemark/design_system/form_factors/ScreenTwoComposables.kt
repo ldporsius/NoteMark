@@ -27,11 +27,9 @@ fun ScreenTwoComposables(
     comp2: @Composable () -> Unit,
     modifier: Modifier = Modifier) {
 
-
     val windowSizeInfo = currentWindowAdaptiveInfo().windowSizeClass
     val widthSize = windowSizeInfo.windowWidthSizeClass
     val isWideScreen = widthSize == EXPANDED
-    val isMediumScreen = widthSize == MEDIUM
 
     val comp1Id = "comp1"
     val comp2Id = "comp2"

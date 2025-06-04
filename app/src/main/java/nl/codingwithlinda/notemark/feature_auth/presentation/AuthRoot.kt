@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
@@ -22,6 +24,9 @@ import androidx.window.core.layout.WindowWidthSizeClass
 import nl.codingwithlinda.notemark.core.navigation.AuthDestination
 import nl.codingwithlinda.notemark.design_system.form_factors.ScreenTwoComposables
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
+import nl.codingwithlinda.notemark.design_system.ui.theme.background_landing
+import nl.codingwithlinda.notemark.design_system.ui.theme.primary
+import nl.codingwithlinda.notemark.design_system.ui.theme.surface
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.components.LoginForm
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.components.LoginHeader
 import nl.codingwithlinda.notemark.feature_auth.login.state.LoginUiState
@@ -30,24 +35,32 @@ import nl.codingwithlinda.notemark.feature_auth.login.state.LoginUiState
 fun AuthRoot(
     onLoginSuccess: () -> Unit,
     modifier: Modifier = Modifier) {
-    Surface (
-        modifier = modifier
-            .padding(top=16.dp),
-        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
-    ) {
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        containerColor = primary
+    ) { innerPadding ->
 
-        val backstackAuth:NavBackStack = rememberNavBackStack<AuthDestination>(
-            AuthDestination.LoginDestination
-        )
-        val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
+        Surface(
+            color = surface,
+            modifier = modifier
+                .padding(innerPadding)
+                .padding(top = 16.dp),
+            shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+        ) {
 
-        val headerTextAlign = if (windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.MEDIUM) TextAlign.Center else TextAlign.Start
-        println("AUTH ROOT WINDOW SIZE CLASS: $windowSizeClass")
+            val backstackAuth: NavBackStack = rememberNavBackStack<AuthDestination>(
+                AuthDestination.LoginDestination
+            )
+            val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
 
-        NavDisplay(
-            backStack = backstackAuth,
-            entryProvider = entryProvider {
-                entry(AuthDestination.LoginDestination){
+            val headerTextAlign =
+                if (windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.MEDIUM) TextAlign.Center else TextAlign.Start
+            println("AUTH ROOT WINDOW SIZE CLASS: $windowSizeClass")
+
+            NavDisplay(
+                backStack = backstackAuth,
+                entryProvider = entryProvider {
+                    entry(AuthDestination.LoginDestination) {
 
                         ScreenTwoComposables(
                             comp1 = {
@@ -56,32 +69,33 @@ fun AuthRoot(
                                 )
                             },
                             comp2 = {
-                               LoginForm(
-                                   uiState = LoginUiState(),
-                                   onAction = {},
-                                   modifier = Modifier,
-                               )
+                                LoginForm(
+                                    uiState = LoginUiState(),
+                                    onAction = {},
+                                    modifier = Modifier,
+                                )
                             },
                             modifier = Modifier
-                                .fillMaxSize()
+                                .fillMaxSize().padding(16.dp)
 
                         )
                     }
 
-                entry(AuthDestination.RegisterDestination){
-                    Column {
-                        Text(text = "Here is the register screen")
-                        Button(
-                            onClick = {
-                                backstackAuth.removeLastOrNull()
+                    entry(AuthDestination.RegisterDestination) {
+                        Column {
+                            Text(text = "Here is the register screen")
+                            Button(
+                                onClick = {
+                                    backstackAuth.removeLastOrNull()
+                                }
+                            ) {
+                                Text("Back")
                             }
-                        ) {
-                            Text("Back")
                         }
                     }
                 }
-            }
-        )
+            )
+        }
     }
 }
 
