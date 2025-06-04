@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import nl.codingwithlinda.notemark.design_system.components.CustomTextField
 import nl.codingwithlinda.notemark.design_system.ui.theme.CustomTextFieldColors
+import nl.codingwithlinda.notemark.design_system.ui.theme.LocalButtonShape
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
 import nl.codingwithlinda.notemark.feature_auth.login.state.LoginAction
 import nl.codingwithlinda.notemark.feature_auth.login.state.LoginUiState
@@ -53,7 +54,8 @@ fun LoginForm(
             onClick = {
                 onAction(LoginAction.Submit)
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            shape = LocalButtonShape.current
         ) {
             Text("Login")
         }
