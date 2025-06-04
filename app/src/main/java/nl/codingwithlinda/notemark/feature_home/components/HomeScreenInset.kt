@@ -2,7 +2,6 @@ package nl.codingwithlinda.notemark.feature_home.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.LocalTextStyle
@@ -57,7 +56,7 @@ fun HomeScreenInset(
             CustomColoredButton(
                 color = Color.White,
                 text = "Log In",
-                onClick = { onAction(HomeAction.LoginAction) },
+                onClick = { onAction(HomeAction.HomeLoginAction) },
                 modifier = Modifier.fillMaxWidth()
             )
 

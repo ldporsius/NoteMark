@@ -19,7 +19,7 @@ import androidx.window.core.layout.WindowWidthSizeClass.Companion.MEDIUM
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.components.LoginForm
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.components.LoginHeader
-import nl.codingwithlinda.notemark.feature_auth.login.state.LoginUiState
+import nl.codingwithlinda.notemark.feature_auth.login.presentation.state.LoginUiState
 
 @Composable
 fun ScreenTwoComposables(
@@ -103,7 +103,7 @@ private fun LoginScreenBoxConstraintsPreview() {
         ScreenTwoComposables(
             comp1 = {
                 LoginHeader(
-                    textAlign = TextAlign.Center
+
                 )
             },
             comp2 = {

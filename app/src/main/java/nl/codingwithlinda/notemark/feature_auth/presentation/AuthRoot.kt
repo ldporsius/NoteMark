@@ -29,9 +29,10 @@ import nl.codingwithlinda.notemark.design_system.ui.theme.background_landing
 import nl.codingwithlinda.notemark.design_system.ui.theme.primary
 import nl.codingwithlinda.notemark.design_system.ui.theme.surface
 import nl.codingwithlinda.notemark.design_system.ui.theme.surfaceLowest
+import nl.codingwithlinda.notemark.feature_auth.login.presentation.LoginRoot
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.components.LoginForm
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.components.LoginHeader
-import nl.codingwithlinda.notemark.feature_auth.login.state.LoginUiState
+import nl.codingwithlinda.notemark.feature_auth.login.presentation.state.LoginUiState
 
 @Composable
 fun AuthRoot(
@@ -53,36 +54,12 @@ fun AuthRoot(
             val backstackAuth: NavBackStack = rememberNavBackStack<AuthDestination>(
                 AuthDestination.LoginDestination
             )
-            val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
-
-            val headerTextAlign =
-                if (windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.MEDIUM) TextAlign.Center else TextAlign.Start
-            println("AUTH ROOT WINDOW SIZE CLASS: $windowSizeClass")
 
             NavDisplay(
                 backStack = backstackAuth,
                 entryProvider = entryProvider {
                     entry(AuthDestination.LoginDestination) {
-
-                        ScreenTwoComposables(
-                            comp1 = {
-                                LoginHeader(
-                                    textAlign = headerTextAlign
-                                )
-                            },
-                            comp2 = {
-                                LoginForm(
-                                    uiState = LoginUiState(),
-                                    onAction = {},
-                                    modifier = Modifier,
-                                )
-                            },
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(color = surfaceLowest)
-                                .padding(16.dp)
-
-                        )
+                       LoginRoot()
                     }
 
                     entry(AuthDestination.RegisterDestination) {

@@ -1,4 +1,4 @@
-package nl.codingwithlinda.notemark.feature_auth.login
+package nl.codingwithlinda.notemark.feature_auth.login.domain
 
 object LoginValidator {
 

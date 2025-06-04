@@ -38,7 +38,7 @@ fun HomeScreen(
                                 HomeAction.GetStartedAction -> {/*TODO nav to register*/
                                 }
 
-                                HomeAction.LoginAction -> onLoginClick()
+                                HomeAction.HomeLoginAction -> onLoginClick()
                             }
                         },
                         modifier = Modifier
