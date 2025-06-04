@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.unit.dp
+import nl.codingwithlinda.notemark.design_system.ui.theme.LocalButtonShape
 import nl.codingwithlinda.notemark.design_system.ui.theme.primary
 
 @Composable
@@ -23,7 +24,7 @@ fun CustomColoredButton(
 
     Button(
         modifier = modifier,
-        shape = MaterialTheme.shapes.medium
+        shape = LocalButtonShape.current
         ,
         border = BorderStroke(1.dp, contentColor),
         onClick = onClick,

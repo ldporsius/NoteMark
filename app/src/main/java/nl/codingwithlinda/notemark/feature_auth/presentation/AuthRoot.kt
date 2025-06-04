@@ -1,5 +1,6 @@
 package nl.codingwithlinda.notemark.feature_auth.presentation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -27,6 +28,7 @@ import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
 import nl.codingwithlinda.notemark.design_system.ui.theme.background_landing
 import nl.codingwithlinda.notemark.design_system.ui.theme.primary
 import nl.codingwithlinda.notemark.design_system.ui.theme.surface
+import nl.codingwithlinda.notemark.design_system.ui.theme.surfaceLowest
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.components.LoginForm
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.components.LoginHeader
 import nl.codingwithlinda.notemark.feature_auth.login.state.LoginUiState
@@ -76,7 +78,9 @@ fun AuthRoot(
                                 )
                             },
                             modifier = Modifier
-                                .fillMaxSize().padding(16.dp)
+                                .fillMaxSize()
+                                .background(color = surfaceLowest)
+                                .padding(16.dp)
 
                         )
                     }

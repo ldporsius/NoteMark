@@ -35,7 +35,7 @@ fun HomeScreen(
                     HomeScreenInset(
                         onAction = {
                             when (it) {
-                                HomeAction.GetStartedAction -> {/*TODO*/
+                                HomeAction.GetStartedAction -> {/*TODO nav to register*/
                                 }
 
                                 HomeAction.LoginAction -> onLoginClick()
