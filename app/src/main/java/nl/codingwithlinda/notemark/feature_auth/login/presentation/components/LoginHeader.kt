@@ -26,12 +26,12 @@ fun LoginHeader(
     ) {
         Text("Log In",
             modifier = Modifier.fillMaxWidth(),
-            style = MaterialTheme.typography.headlineLarge,
+            style = MaterialTheme.typography.titleLarge,
             textAlign = textAlign
         )
         Text("Capture your thoughts and ideas.",
             modifier = Modifier.fillMaxWidth(),
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodyLarge,
             textAlign = textAlign
         )
 

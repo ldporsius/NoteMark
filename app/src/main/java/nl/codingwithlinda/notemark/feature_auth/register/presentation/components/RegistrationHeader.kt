@@ -12,7 +12,7 @@ fun RegistrationHeader(modifier: Modifier = Modifier) {
         modifier = modifier
     ) {
         Text("Create account",
-            style = MaterialTheme.typography.headlineLarge)
+            style = MaterialTheme.typography.titleLarge)
         Text("Capture your thoughts and ideas.",
             style = MaterialTheme.typography.bodyLarge)
     }
