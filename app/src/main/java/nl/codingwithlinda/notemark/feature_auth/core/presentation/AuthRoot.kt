@@ -20,7 +20,7 @@ import nl.codingwithlinda.notemark.design_system.ui.theme.primary
 import nl.codingwithlinda.notemark.design_system.ui.theme.surface
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.LoginRoot
 import nl.codingwithlinda.notemark.feature_auth.register.presentation.RegisterRoot
-import nl.codingwithlinda.notemark.feature_home.LandingScreen
+import nl.codingwithlinda.notemark.feature_auth.landing.LandingScreen
 
 @Composable
 fun AuthRoot(

@@ -1,4 +1,4 @@
-package nl.codingwithlinda.notemark.feature_home
+package nl.codingwithlinda.notemark.feature_auth.landing
 
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,8 +12,8 @@ import nl.codingwithlinda.notemark.R
 import nl.codingwithlinda.notemark.design_system.form_factors.ScreenBackgroundInset
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
 import nl.codingwithlinda.notemark.design_system.ui.theme.background_landing
-import nl.codingwithlinda.notemark.feature_home.components.HomeScreenInset
-import nl.codingwithlinda.notemark.feature_home.state.HomeAction
+import nl.codingwithlinda.notemark.feature_auth.landing.components.LandingScreenInset
+import nl.codingwithlinda.notemark.feature_auth.landing.state.HomeAction
 
 @Composable
 fun LandingScreen(
@@ -36,7 +36,7 @@ fun LandingScreen(
                 backgroundImageRes = R.drawable.landing_page,
                 windowSize = currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass,
                 content = {
-                    HomeScreenInset(
+                    LandingScreenInset(
                         onAction = {
                             when (it) {
                                 HomeAction.GetStartedAction -> onGetStartedClick()

@@ -1,4 +1,4 @@
-package nl.codingwithlinda.notemark.feature_home.components
+package nl.codingwithlinda.notemark.feature_auth.landing.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,10 +17,10 @@ import androidx.compose.ui.unit.dp
 import nl.codingwithlinda.notemark.design_system.components.CustomColoredButton
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
 import nl.codingwithlinda.notemark.design_system.ui.theme.onSurface
-import nl.codingwithlinda.notemark.feature_home.state.HomeAction
+import nl.codingwithlinda.notemark.feature_auth.landing.state.HomeAction
 
 @Composable
-fun HomeScreenInset(
+fun LandingScreenInset(
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier) {
 

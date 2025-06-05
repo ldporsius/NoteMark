@@ -1,4 +1,4 @@
-package nl.codingwithlinda.notemark.feature_home.state
+package nl.codingwithlinda.notemark.feature_auth.landing.state
 
 sealed interface HomeAction {
     data object GetStartedAction: HomeAction
