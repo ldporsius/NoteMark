@@ -13,4 +13,11 @@ object LoginValidator {
         return null
 
     }
+
+    fun validateLoginPassword(password: String): PasswordError? {
+        if (password.isBlank()) {
+            return PasswordError.PasswordBlankError
+        }
+        return null
+    }
 }

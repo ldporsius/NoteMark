@@ -2,10 +2,13 @@ package nl.codingwithlinda.notemark.core.domain.auth
 
 import nl.codingwithlinda.notemark.core.data.auth.LoginRequestDto
 import nl.codingwithlinda.notemark.core.data.auth.LoginResponseDto
+import nl.codingwithlinda.notemark.core.data.auth.RefreshTokenRequestDto
 import nl.codingwithlinda.notemark.core.util.Result
 
-interface SessionManager {
+interface AuthApiClient {
+    fun validateCredentials(userEmail: String, password: String): Boolean
     suspend fun login(request: LoginRequestDto): Result<LoginResponseDto, AuthError>
-    suspend fun logout(): Boolean
-    suspend fun isSessionValid(): Boolean
+    suspend fun refreshToken(request: RefreshTokenRequestDto): Result<LoginResponseDto, AuthError>
+
+
 }

@@ -1,51 +1,101 @@
 package nl.codingwithlinda.notemark.core.data.auth
 
-import androidx.datastore.core.DataStore
-import nl.codingwithlinda.notemark.core.data.local_cache.auth.LoginSession
+import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.flow.firstOrNull
+import nl.codingwithlinda.notemark.core.domain.auth.AuthApiClient
 import nl.codingwithlinda.notemark.core.domain.auth.AuthError
-import nl.codingwithlinda.notemark.core.domain.auth.AuthRequest
-import nl.codingwithlinda.notemark.core.domain.auth.AuthResponse
 import nl.codingwithlinda.notemark.core.domain.auth.SessionManager
+import nl.codingwithlinda.notemark.core.domain.auth.SessionStorage
 import nl.codingwithlinda.notemark.core.util.Result
+import kotlin.coroutines.coroutineContext
 
 class KtorSessionManager(
-    private val loginDataStore: DataStore<LoginSession>
+    private val authApiClient: AuthApiClient,
+    private val loginDataStore: SessionStorage
 ): SessionManager {
 
-    val baseUrl = "https://notemark.pl-coding.com"
-    val loginEndpoint = "/api/auth/login"
-    val refreshEndpoint = "/api/auth/refresh"
+    override suspend fun login(request: LoginRequestDto): Result<LoginResponseDto, AuthError> {
+        try {
+           authApiClient.login(request).also {res ->
+                when(res){
+                    is Result.Error -> {
+                        println("${res.error}")
+                    }
+                    is Result.Success ->{
+                        saveSession(res.data)}
+                }
+                return res
+            }
+        }catch (e: Exception){
+            println("We are in the catch block")
+            coroutineContext.ensureActive()
+            println("KTOR SESSION MANAGER ERROR MESSAGE: ${e.message}")
+        }
 
-    override fun login(request: AuthRequest): Result<AuthResponse, AuthError> {
+        return Result.Error(AuthError.UnknownError)
+    }
 
+
+    override suspend fun logout(): Boolean {
+        try {
+            deleteSession()
+            return true
+        }catch (e: Exception){
+            println("We are in the catch block")
+            coroutineContext.ensureActive()
+            println("KTOR SESSION MANAGER ERROR MESSAGE: ${e.message}")
+            return false
+        }
+    }
+
+    override suspend fun isSessionValid(): Boolean {
         //make request. if error code -> lookup error in enum class Autherror
         //if Autherror is InvalidCredentialsError -> refresh
         //if refresh return error -> session is expired
         // return session expired error
-        return Result.Success(
-            data = AuthResponse(
-                accessToken = "test",
-                refreshToken = "test"
-            )
-        )
+        refresh().also {
+            if(it is Result.Error){
+                println("We are in the isSessionValid error block. Error is ${it.error}, code is ${it.error.code}")
+                return false
+            }
+        }
+        return true
     }
 
-    private fun refresh():Result<AuthResponse, AuthError>{
-        return Result.Success(
-            data = AuthResponse(
-                accessToken = "test",
-                refreshToken = "test"
-            )
-        )
+    private suspend fun refresh():Result<LoginResponseDto, AuthError>{
+        val oldRefreshToken = loginDataStore.data.firstOrNull()?.refreshToken ?: return Result.Error(AuthError.SessionExpiredError)
+        try {
+
+            authApiClient.refreshToken(
+                RefreshTokenRequestDto(oldRefreshToken)
+            ).also {
+                if (it is Result.Success) {
+                    println("We are in the refresh success block")
+                    saveSession(it.data)
+                    println("Session saved successfully")
+                }
+                if (it is Result.Error) {
+
+                    println("We are in the refresh error block. Error is ${it.error}, code is ${it.error.code}")
+                    //if we get a 401 the session is expired. logout and return error
+                    if (it.error == AuthError.InvalidCredentialsError) {
+                        logout()
+                    }
+                }
+                return it
+            }
+        }catch (e: Exception){
+            coroutineContext.ensureActive()
+            return Result.Error(AuthError.UnknownError)
+        }
     }
 
-    private suspend fun saveSession(response: AuthResponse){
+    private suspend fun saveSession(response: LoginResponseDto){
         loginDataStore.updateData {
             it.copy(
                 accessToken = response.accessToken,
                 refreshToken = response.refreshToken
             )
-
         }
     }
 
