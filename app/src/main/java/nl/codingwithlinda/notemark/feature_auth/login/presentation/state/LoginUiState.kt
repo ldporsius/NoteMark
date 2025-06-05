@@ -8,4 +8,10 @@ data class LoginUiState(
     val password: String = "",
     val passwordVisible: Boolean = false,
     val passwordError: UiText? = null,
-)
+){
+    fun isLoginEnabled(): Boolean {
+        val isInput = email.isNotBlank() && password.isNotBlank()
+        val isNotError = emailError == null && passwordError == null
+        return isInput && isNotError
+    }
+}

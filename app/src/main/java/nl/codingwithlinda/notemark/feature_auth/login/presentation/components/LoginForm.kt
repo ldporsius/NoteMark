@@ -102,7 +102,8 @@ fun LoginForm(
                 onAction(LoginAction.Submit)
             },
             modifier = Modifier.fillMaxWidth(),
-            shape = LocalButtonShape.current
+            shape = LocalButtonShape.current,
+            enabled = uiState.isLoginEnabled()
         ) {
             Text("Login")
         }
