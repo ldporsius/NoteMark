@@ -49,10 +49,14 @@ fun AuthRoot(
                     entry(AuthDestination.WelcomeDestination) {
                         LandingScreen(
                             onGetStartedClick = {
-                                backstackAuth.add(AuthDestination.RegisterDestination)
+                                println("LANDING SCREEN IS NAVIGATING TO REGISTER")
+                                printBackStack(backstackAuth)
+                                backstackAuth.add( AuthDestination.RegisterDestination)
                             },
                             onLoginClick = {
-                                backstackAuth.add(AuthDestination.LoginDestination)
+                                println("LANDING SCREEN IS NAVIGATING TO LOGIN")
+                                printBackStack(backstackAuth)
+                                backstackAuth.add( AuthDestination.LoginDestination)
                             },
                             modifier = Modifier
                         )
@@ -61,7 +65,10 @@ fun AuthRoot(
                     entry(AuthDestination.LoginDestination) {
                        LoginRoot(
                            navToRegister = {
-                               backstackAuth.remove(AuthDestination.LoginDestination)
+                               println("LOGIN ROOT IS NAVIGATING TO REGISTER")
+                               printBackStack(backstackAuth)
+                               backstackAuth.clear()
+                               backstackAuth.add(AuthDestination.WelcomeDestination)
                                backstackAuth.add(AuthDestination.RegisterDestination)
                            }
                        )
@@ -70,7 +77,10 @@ fun AuthRoot(
                     entry(AuthDestination.RegisterDestination) {
                         RegisterRoot(
                             navToLogin = {
-                                backstackAuth.remove(AuthDestination.RegisterDestination)
+                                println("REGISTER ROOT IS NAVIGATING TO LOGIN")
+                                printBackStack(backstackAuth)
+                                backstackAuth.clear()
+                                backstackAuth.add(AuthDestination.WelcomeDestination)
                                 backstackAuth.add(AuthDestination.LoginDestination)
                             }
                         )
@@ -78,6 +88,13 @@ fun AuthRoot(
                 }
             )
         }
+    }
+}
+
+fun printBackStack(backStack: NavBackStack) {
+    println("************** printing backstack ***************")
+    backStack.onEachIndexed { index, navKey ->
+        println("BACKSTACK ENTRY: $index -> $navKey")
     }
 }
 

@@ -15,9 +15,6 @@ fun LoginHeader(
     modifier: Modifier = Modifier) {
 
     val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
-
-    println("LOGIN ROOT WINDOW SIZE CLASS: $windowSizeClass")
-
     val textAlign =
         if (windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.MEDIUM) TextAlign.Center else TextAlign.Start
 

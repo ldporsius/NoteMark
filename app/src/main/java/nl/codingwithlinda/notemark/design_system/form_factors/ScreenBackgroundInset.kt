@@ -107,7 +107,7 @@ fun ScreenBackgroundInset(
                                 .padding(vertical = 48.dp, horizontal = 24.dp)
                                 .onSizeChanged {
                                     insetHeight = it.height.dp
-                                    println("SCREEN BACKGROUND INSET: insetHeight: $insetHeight")
+
                                 }
                         )
                     }
@@ -128,7 +128,6 @@ fun ScreenBackgroundInset(
                                 .padding(vertical = 48.dp, horizontal = 24.dp)
                                 .onSizeChanged {
                                     insetHeight = it.height.dp
-                                    println("SCREEN BACKGROUND INSET: insetHeight: $insetHeight")
                                 }
                         )
                     }
