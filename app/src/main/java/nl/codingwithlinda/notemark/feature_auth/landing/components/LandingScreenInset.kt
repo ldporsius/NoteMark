@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import nl.codingwithlinda.notemark.design_system.components.CustomColoredButton
+import nl.codingwithlinda.notemark.design_system.ui.theme.LocalButtonShape
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
 import nl.codingwithlinda.notemark.design_system.ui.theme.onSurface
 import nl.codingwithlinda.notemark.feature_auth.landing.state.HomeAction
@@ -45,11 +46,11 @@ fun LandingScreenInset(
                     text = "Capture your thoughts and ideas.",
                     style = MaterialTheme.typography.bodyLarge
                 )
-
             }
             Button(
                 onClick = { onAction(HomeAction.GetStartedAction) },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                shape = LocalButtonShape.current
             ) {
                 Text("Get started")
             }
