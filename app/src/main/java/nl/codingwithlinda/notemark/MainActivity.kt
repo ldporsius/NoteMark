@@ -4,10 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation3.runtime.NavEntry
@@ -16,7 +18,7 @@ import androidx.navigation3.ui.NavDisplay
 import nl.codingwithlinda.notemark.core.navigation.AuthRootDestination
 import nl.codingwithlinda.notemark.core.navigation.HomeDestination
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
-import nl.codingwithlinda.notemark.feature_auth.presentation.AuthRoot
+import nl.codingwithlinda.notemark.feature_auth.core.presentation.AuthRoot
 import nl.codingwithlinda.notemark.feature_home.HomeScreen
 
 class MainActivity : ComponentActivity() {
@@ -30,18 +32,16 @@ class MainActivity : ComponentActivity() {
             NoteMarkTheme {
 
                     val backstack = rememberNavBackStack(
-                        HomeDestination
+                        AuthRootDestination
                     )
                     NavDisplay(backstack){route ->
                         when(route) {
                             is HomeDestination -> {
                                 NavEntry(route) {
-                                    HomeScreen(
-                                        onLoginClick = {
-                                            backstack.add(AuthRootDestination)
-                                        },
-                                        modifier = Modifier
-                                    )
+                                   Box(Modifier.fillMaxSize(),
+                                       contentAlignment = Alignment.Center){
+                                       Text(text = "This is the home screen")
+                                   }
                                 }
                             }
                             is AuthRootDestination -> {

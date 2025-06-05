@@ -8,15 +8,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import nl.codingwithlinda.notemark.design_system.form_factors.ScreenTwoComposables
 import nl.codingwithlinda.notemark.design_system.ui.theme.surfaceLowest
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.components.LoginForm
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.components.LoginHeader
 
 @Composable
-fun LoginRoot() {
+fun LoginRoot(
+    navToRegister: () -> Unit
+) {
 
-    val loginViewModel = viewModel<LoginViewModel>()
+    val loginViewModel = viewModel<LoginViewModel>(
+        factory = viewModelFactory {
+            initializer {
+                LoginViewModel(
+                    navToRegister = navToRegister
+                )
+            }
+        }
+    )
     ScreenTwoComposables(
         comp1 = {
             LoginHeader()

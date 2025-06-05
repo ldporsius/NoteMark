@@ -1,5 +1,6 @@
 package nl.codingwithlinda.notemark.feature_home
 
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -17,6 +18,7 @@ import nl.codingwithlinda.notemark.feature_home.state.HomeAction
 
 @Composable
 fun HomeScreen(
+    onGetStartedClick: () -> Unit,
     onLoginClick: () -> Unit,
     modifier: Modifier = Modifier) {
 
@@ -26,7 +28,10 @@ fun HomeScreen(
     ) { innerPadding ->
 
         Surface(
-            modifier = modifier.fillMaxSize().padding(innerPadding)
+            modifier = modifier
+                .consumeWindowInsets(innerPadding)
+                .fillMaxSize()
+
         ) {
             ScreenBackgroundInset(
                 backgroundImageRes = R.drawable.landing_page,
@@ -35,8 +40,7 @@ fun HomeScreen(
                     HomeScreenInset(
                         onAction = {
                             when (it) {
-                                HomeAction.GetStartedAction -> {/*TODO nav to register*/
-                                }
+                                HomeAction.GetStartedAction -> onGetStartedClick()
 
                                 HomeAction.HomeLoginAction -> onLoginClick()
                             }
@@ -56,6 +60,7 @@ fun HomeScreen(
 private fun HomeScreenPreview() {
     NoteMarkTheme {
         HomeScreen(
+            onGetStartedClick = {},
             onLoginClick = {}
         )
     }

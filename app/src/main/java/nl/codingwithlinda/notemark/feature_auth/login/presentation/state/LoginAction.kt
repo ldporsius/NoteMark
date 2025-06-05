@@ -5,5 +5,6 @@ sealed interface LoginAction {
     data class PasswordChanged(val password: String) : LoginAction
     data object TogglePasswordVisibility : LoginAction
     data object Submit : LoginAction
+    data object Cancel : LoginAction
 
 }

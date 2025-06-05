@@ -10,7 +10,9 @@ import nl.codingwithlinda.notemark.feature_auth.login.presentation.error_ui.toUi
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.state.LoginAction
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.state.LoginUiState
 
-class LoginViewModel: ViewModel() {
+class LoginViewModel(
+    private val navToRegister: () -> Unit
+): ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
@@ -35,9 +37,7 @@ class LoginViewModel: ViewModel() {
                     )
                 }
             }
-            LoginAction.Submit -> {
-                //todo validate email and password
-            }
+
             LoginAction.TogglePasswordVisibility -> {
                 _uiState.update {
                     it.copy(
@@ -45,6 +45,15 @@ class LoginViewModel: ViewModel() {
                     )
                 }
             }
+
+            LoginAction.Submit -> {
+            //todo validate email and password
+            }
+
+            LoginAction.Cancel -> {
+                navToRegister()
+            }
+
         }
     }
 }

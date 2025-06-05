@@ -11,6 +11,9 @@ data object AuthRootDestination: NavKey
 
 sealed class AuthDestination: NavKey {
     @Serializable
+    data object WelcomeDestination : AuthDestination()
+
+    @Serializable
     data object LoginDestination : AuthDestination()
 
     @Serializable
