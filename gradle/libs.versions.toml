@@ -12,6 +12,7 @@ kotlinxSerializationCore = "1.8.1"
 kotlinxSerializationJson = "1.8.1"
 adaptiveAndroid = "1.1.0"
 constraintlayout = "2.2.1"
+ktor = "3.0.0"
 
 
 [libraries]
@@ -33,6 +34,7 @@ kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 androidx-adaptive-android = { group = "androidx.compose.material3.adaptive", name = "adaptive-android", version.ref = "adaptiveAndroid" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

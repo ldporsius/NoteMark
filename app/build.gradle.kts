@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -17,6 +19,11 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val localProperties = Properties()
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) localPropertiesFile.inputStream().use { localProperties.load(it) }
+        buildConfigField("String", "AUTH_API_EMAIL", "\"${localProperties.getProperty("AUTH_API_EMAIL")}\"")
     }
 
     buildTypes {
@@ -37,6 +44,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -72,6 +80,9 @@ dependencies {
 
     //datastore
     implementation("androidx.datastore:datastore:1.1.7")
+
+    //ktor
+    implementation(libs.ktor.client.auth)
 
 
     testImplementation(libs.junit)

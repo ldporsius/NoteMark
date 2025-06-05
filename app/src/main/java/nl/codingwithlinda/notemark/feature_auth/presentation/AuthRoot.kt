@@ -33,6 +33,7 @@ import nl.codingwithlinda.notemark.feature_auth.login.presentation.LoginRoot
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.components.LoginForm
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.components.LoginHeader
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.state.LoginUiState
+import nl.codingwithlinda.notemark.feature_auth.register.presentation.RegisterRoot
 
 @Composable
 fun AuthRoot(
@@ -63,16 +64,7 @@ fun AuthRoot(
                     }
 
                     entry(AuthDestination.RegisterDestination) {
-                        Column {
-                            Text(text = "Here is the register screen")
-                            Button(
-                                onClick = {
-                                    backstackAuth.removeLastOrNull()
-                                }
-                            ) {
-                                Text("Back")
-                            }
-                        }
+                        RegisterRoot()
                     }
                 }
             )

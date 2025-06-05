@@ -10,6 +10,7 @@ import nl.codingwithlinda.notemark.core.data.auth.SessionStorageImpl
 import nl.codingwithlinda.notemark.core.data.local_cache.auth.LoginSession
 import nl.codingwithlinda.notemark.core.data.local_cache.auth.LoginSessionSerializer
 import nl.codingwithlinda.notemark.core.domain.auth.SessionManager
+import nl.codingwithlinda.notemark.BuildConfig
 
 val Context.dataStoreLoginSession: DataStore<LoginSession> by dataStore("login_session.json", LoginSessionSerializer)
 
@@ -18,7 +19,8 @@ class NoteMarkApplication: Application() {
     lateinit var loginSessionDataStore: DataStore<LoginSession>
     lateinit var sessionManager: SessionManager
     private val sessionStorage = SessionStorageImpl(loginSessionDataStore)
-    private val authApiClient = KtorApiClient()
+    private val auth_api_key = BuildConfig.AUTH_API_EMAIL
+    private val authApiClient = KtorApiClient(authorizerHeader = auth_api_key)
     override fun onCreate() {
         super.onCreate()
 
