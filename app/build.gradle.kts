@@ -70,6 +70,9 @@ dependencies {
     //splash
     implementation("androidx.core:core-splashscreen:1.0.1")
 
+    //datastore
+    implementation("androidx.datastore:datastore:1.1.7")
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
