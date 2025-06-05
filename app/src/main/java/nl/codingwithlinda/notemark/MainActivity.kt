@@ -6,8 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,7 +17,6 @@ import nl.codingwithlinda.notemark.core.navigation.AuthRootDestination
 import nl.codingwithlinda.notemark.core.navigation.HomeDestination
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
 import nl.codingwithlinda.notemark.feature_auth.core.presentation.AuthRoot
-import nl.codingwithlinda.notemark.feature_home.HomeScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

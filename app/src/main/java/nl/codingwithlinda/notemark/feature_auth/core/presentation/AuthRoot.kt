@@ -15,13 +15,12 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import nl.codingwithlinda.notemark.core.navigation.AuthDestination
-import nl.codingwithlinda.notemark.core.navigation.AuthRootDestination
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
 import nl.codingwithlinda.notemark.design_system.ui.theme.primary
 import nl.codingwithlinda.notemark.design_system.ui.theme.surface
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.LoginRoot
 import nl.codingwithlinda.notemark.feature_auth.register.presentation.RegisterRoot
-import nl.codingwithlinda.notemark.feature_home.HomeScreen
+import nl.codingwithlinda.notemark.feature_home.LandingScreen
 
 @Composable
 fun AuthRoot(
@@ -48,7 +47,7 @@ fun AuthRoot(
                 backStack = backstackAuth,
                 entryProvider = entryProvider {
                     entry(AuthDestination.WelcomeDestination) {
-                        HomeScreen(
+                        LandingScreen(
                             onGetStartedClick = {
                                 backstackAuth.add(AuthDestination.RegisterDestination)
                             },

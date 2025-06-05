@@ -1,15 +1,17 @@
 package nl.codingwithlinda.notemark.feature_auth.register.presentation
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import nl.codingwithlinda.notemark.design_system.form_factors.ScreenTwoComposables
+import nl.codingwithlinda.notemark.design_system.ui.theme.surfaceLowest
 import nl.codingwithlinda.notemark.feature_auth.register.presentation.components.RegistrationForm
 import nl.codingwithlinda.notemark.feature_auth.register.presentation.components.RegistrationHeader
 import nl.codingwithlinda.notemark.feature_auth.register.presentation.state.RegistrationAction
@@ -19,10 +21,15 @@ import nl.codingwithlinda.notemark.feature_auth.register.presentation.state.Regi
 fun RegisterRoot(
     navToLogin: () -> Unit,
 ) {
-    Scaffold { innerPadding ->
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        containerColor = surfaceLowest
+    ) { innerPadding ->
         Surface(
-            modifier = Modifier.padding(innerPadding)
-
+            color = surfaceLowest,
+            modifier = Modifier
+                .consumeWindowInsets(innerPadding)
+                .padding(16.dp)
         ) {
             ScreenTwoComposables(
                 comp1 = {
@@ -35,7 +42,11 @@ fun RegisterRoot(
                             if (it is RegistrationAction.Cancel) {
                                 navToLogin()
                             }
-                        }
+                        },
+                        modifier = Modifier
+                            .verticalScroll(rememberScrollState())
+                            .fillMaxSize()
+                            .padding(16.dp)
                     )
                 },
                 modifier = Modifier.fillMaxSize()

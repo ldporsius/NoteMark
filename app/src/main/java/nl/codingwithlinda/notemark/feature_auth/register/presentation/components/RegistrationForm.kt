@@ -31,7 +31,8 @@ fun RegistrationForm(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Username")
+        Text("Username",
+            modifier = Modifier.align(Alignment.Start))
         OutlinedTextField(
             value = "",
             onValueChange = {},

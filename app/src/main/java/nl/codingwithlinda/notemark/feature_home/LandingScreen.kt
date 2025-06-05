@@ -2,7 +2,6 @@ package nl.codingwithlinda.notemark.feature_home
 
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
@@ -17,7 +16,7 @@ import nl.codingwithlinda.notemark.feature_home.components.HomeScreenInset
 import nl.codingwithlinda.notemark.feature_home.state.HomeAction
 
 @Composable
-fun HomeScreen(
+fun LandingScreen(
     onGetStartedClick: () -> Unit,
     onLoginClick: () -> Unit,
     modifier: Modifier = Modifier) {
@@ -59,7 +58,7 @@ fun HomeScreen(
 @Composable
 private fun HomeScreenPreview() {
     NoteMarkTheme {
-        HomeScreen(
+        LandingScreen(
             onGetStartedClick = {},
             onLoginClick = {}
         )
