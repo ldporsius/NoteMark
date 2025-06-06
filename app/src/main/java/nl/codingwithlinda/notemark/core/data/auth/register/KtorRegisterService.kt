@@ -1,9 +1,12 @@
 package nl.codingwithlinda.notemark.core.data.auth.register
 
 import io.ktor.client.*
+import io.ktor.client.call.body
 import io.ktor.client.plugins.ResponseException
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsText
+import io.ktor.client.utils.EmptyContent.contentType
 import io.ktor.client.utils.buildHeaders
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
@@ -19,7 +22,7 @@ class KtorRegisterService(
         try {
             println("Inside KtorRegisterService. Posting request to ${HttpRoutes.REGISTER_URL}")
             println("Inside KtorRegisterService. X-User-Email: $authorizer")
-            httpClient.post(HttpRoutes.REGISTER_URL){
+            val response = httpClient.post(HttpRoutes.REGISTER_URL){
                 buildHeaders {
                     append("X-User-Email", authorizer)
                     append("Content-Type", "application/json")
@@ -28,8 +31,13 @@ class KtorRegisterService(
                 setBody(request)
             }
 
+            println("Inside KtorRegisterService. Response: ${response.bodyAsText()}")
+
+            println("Inside KtorRegisterService. Response: code = ${response.status.value}, ${response.status.description}")
+
         }
         catch (e: ResponseException){
+            println("Inside KtorRegisterService error catch. error: ${e.response.status.description}")
             val code = e.response.status.value
             AuthError.entries.find {
                 it.code == code

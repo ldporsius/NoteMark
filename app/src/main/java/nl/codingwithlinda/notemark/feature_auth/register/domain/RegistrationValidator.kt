@@ -2,11 +2,14 @@ package nl.codingwithlinda.notemark.feature_auth.register.domain
 
 object RegistrationValidator {
 
+    private const val MIN_USERNAME_LENGTH = 3
+    private const val MIN_PASSWORD_LENGTH = 8
+
     fun validateUsername(username: String): RegistrationUserNameError? {
         if (username.isBlank()) {
             return RegistrationUserNameError.EmptyUsername
         }
-        if (username.length < 3) {
+        if (username.length < MIN_USERNAME_LENGTH) {
             return RegistrationUserNameError.UsernameShort
         }
         return null
@@ -21,12 +24,17 @@ object RegistrationValidator {
         return null
     }
     fun validatePassword(password: String): RegistrationPasswordError? {
-        // Password must contain at least 1 letter and (1 special character or 1 number).
-        val passwordRegex = Regex("^(?=.*[A-Za-z])(?=.*(?:\\d|[@$!%*#?&]))[A-Za-z\\d@$!%*#?&]+$")
+
+        // Password must contain at least one digit or special character - Claude AI 2025-06
+        val hasDigitOrSpecialChar = Regex("""[\d@$!%*#?&]""")
+
         if (password.isBlank()) {
             return RegistrationPasswordError.EmptyPassword
         }
-        if (!password.matches(passwordRegex)) {
+        if (password.length < MIN_PASSWORD_LENGTH) {
+            return RegistrationPasswordError.PasswordShort
+        }
+        if (!hasDigitOrSpecialChar.containsMatchIn(password)) {
             return RegistrationPasswordError.PasswordInvalid
         }
         return null
@@ -37,7 +45,5 @@ object RegistrationValidator {
             return RegistrationPasswordError.PasswordsNotMatching
         }
         return null
-
     }
-
 }

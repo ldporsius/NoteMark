@@ -15,6 +15,7 @@ import nl.codingwithlinda.notemark.BuildConfig
 object DefaultHttpClient {
 
     val httpClient = HttpClient(CIO) {
+        expectSuccess = true
         install(Logging) {
             level = LogLevel.ALL
         }
