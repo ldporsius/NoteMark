@@ -15,6 +15,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import nl.codingwithlinda.notemark.BuildConfig
+import nl.codingwithlinda.notemark.core.data.auth.register.RegisterService
 import nl.codingwithlinda.notemark.design_system.form_factors.ScreenTwoComposables
 import nl.codingwithlinda.notemark.design_system.ui.theme.surfaceLowest
 import nl.codingwithlinda.notemark.feature_auth.register.presentation.components.RegistrationForm
@@ -29,6 +31,9 @@ fun RegisterRoot(
         factory = viewModelFactory {
             initializer {
                 RegistrationViewModel(
+                    registerService = RegisterService.create(
+                        authorizer = BuildConfig.AUTH_API_EMAIL
+                    ),
                     onCancel = navToLogin
                 )
             }

@@ -8,12 +8,15 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import nl.codingwithlinda.notemark.core.data.auth.register.RegisterRequestDto
+import nl.codingwithlinda.notemark.core.data.auth.register.RegisterService
 import nl.codingwithlinda.notemark.feature_auth.register.domain.RegistrationValidator
 import nl.codingwithlinda.notemark.feature_auth.register.presentation.error_mapping.toUiText
 import nl.codingwithlinda.notemark.feature_auth.register.presentation.state.RegistrationAction
 import nl.codingwithlinda.notemark.feature_auth.register.presentation.state.RegistrationUiState
 
 class RegistrationViewModel(
+    private val registerService: RegisterService,
     private val onCancel: () -> Unit,
 ): ViewModel() {
     private val validator =
@@ -73,7 +76,13 @@ class RegistrationViewModel(
                     }
             }
             RegistrationAction.Submit -> {
-                //to do register user
+                registerService.register(
+                    RegisterRequestDto(
+                        username = _uiState.value.username,
+                        email = _uiState.value.email,
+                        password = _uiState.value.password,
+                    )
+                )
             }
             RegistrationAction.TogglePasswordVisibility -> {
                 _uiState.value = _uiState.value.copy(
