@@ -25,6 +25,7 @@ import nl.codingwithlinda.notemark.feature_auth.register.presentation.components
 @Composable
 fun RegisterRoot(
     navToLogin: () -> Unit,
+    navToHome: () -> Unit
 ) {
 
     val viewModel = viewModel< RegistrationViewModel>(
@@ -34,6 +35,9 @@ fun RegisterRoot(
                     registerService = RegisterService.create(
                         authorizer = BuildConfig.AUTH_API_EMAIL
                     ),
+                    onSuccess = {
+                        navToHome()
+                    },
                     onCancel = navToLogin
                 )
             }

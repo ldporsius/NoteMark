@@ -2,14 +2,19 @@ package nl.codingwithlinda.notemark.feature_auth.register.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nl.codingwithlinda.notemark.core.data.auth.register.RegisterRequestDto
 import nl.codingwithlinda.notemark.core.data.auth.register.RegisterService
+import nl.codingwithlinda.notemark.core.util.Result
+import nl.codingwithlinda.notemark.core.util.UiText
+import nl.codingwithlinda.notemark.feature_auth.core.presentation.error_mapping.toUiText
 import nl.codingwithlinda.notemark.feature_auth.register.domain.RegistrationValidator
 import nl.codingwithlinda.notemark.feature_auth.register.presentation.error_mapping.toUiText
 import nl.codingwithlinda.notemark.feature_auth.register.presentation.state.RegistrationAction
@@ -17,10 +22,14 @@ import nl.codingwithlinda.notemark.feature_auth.register.presentation.state.Regi
 
 class RegistrationViewModel(
     private val registerService: RegisterService,
+    private val onSuccess: () -> Unit,
     private val onCancel: () -> Unit,
 ): ViewModel() {
     private val validator =
         RegistrationValidator
+
+    private val _errorChannel = Channel<UiText>()
+    val errorChannel = _errorChannel.receiveAsFlow()
 
     private val _uiState = MutableStateFlow(RegistrationUiState())
 
@@ -82,7 +91,16 @@ class RegistrationViewModel(
                         email = _uiState.value.email,
                         password = _uiState.value.password,
                     )
-                )
+                ).also {res ->
+                    when(res){
+                        is Result.Error -> {
+                            _errorChannel.send(res.error.toUiText())
+                        }
+                        is Result.Success -> {
+                            onSuccess()
+                        }
+                    }
+                }
             }
             RegistrationAction.TogglePasswordVisibility -> {
                 _uiState.value = _uiState.value.copy(
@@ -95,9 +113,9 @@ class RegistrationViewModel(
                 )
             }
         }
-        println("REGISTRATION VM HANDLED ACTION")
+
         validateAllInputs()
-        println("REGISTRATION VM VALIDATED INPUTS")
+
     }
 
     private fun validateAllInputs() {

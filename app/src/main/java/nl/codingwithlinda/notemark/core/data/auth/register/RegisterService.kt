@@ -7,11 +7,13 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import kotlinx.serialization.json.internal.writeJson
 import io.ktor.serialization.kotlinx.json.*
+import nl.codingwithlinda.notemark.core.domain.auth.AuthError
+import nl.codingwithlinda.notemark.core.util.Result
 
 
 interface RegisterService{
 
-    suspend fun register(request: RegisterRequestDto)
+    suspend fun register(request: RegisterRequestDto): Result<Unit, AuthError>
 
     companion object {
         fun create(

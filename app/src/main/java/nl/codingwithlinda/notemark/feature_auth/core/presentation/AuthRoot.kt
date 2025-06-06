@@ -24,7 +24,7 @@ import nl.codingwithlinda.notemark.feature_auth.landing.LandingScreen
 
 @Composable
 fun AuthRoot(
-    onLoginSuccess: () -> Unit,
+    navigateBack: () -> Unit,
     modifier: Modifier = Modifier) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -76,6 +76,10 @@ fun AuthRoot(
 
                     entry(AuthDestination.RegisterDestination) {
                         RegisterRoot(
+                            navToHome = {
+                                backstackAuth.clear()
+                                navigateBack()
+                            },
                             navToLogin = {
                                 println("REGISTER ROOT IS NAVIGATING TO LOGIN")
                                 printBackStack(backstackAuth)
@@ -103,7 +107,7 @@ fun printBackStack(backStack: NavBackStack) {
 private fun AuthRootPreview() {
     NoteMarkTheme {
         AuthRoot(
-            onLoginSuccess = {}
+            navigateBack = {}
         )
 
     }

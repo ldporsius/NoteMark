@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
 
                                 NavEntry(route) {
                                    AuthRoot(
-                                       onLoginSuccess = {
+                                       navigateBack = {
                                            backstack.retainAll(
                                                listOf(HomeDestination)
                                            )
