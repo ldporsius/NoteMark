@@ -14,6 +14,7 @@ import androidx.navigation3.runtime.entry
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
+import nl.codingwithlinda.notemark.core.app.NoteMarkApplication
 import nl.codingwithlinda.notemark.core.navigation.AuthDestination
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
 import nl.codingwithlinda.notemark.design_system.ui.theme.primary
@@ -25,6 +26,7 @@ import nl.codingwithlinda.notemark.feature_auth.landing.LandingScreen
 @Composable
 fun AuthRoot(
     navigateBack: () -> Unit,
+    navigateHome: () -> Unit,
     modifier: Modifier = Modifier) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -64,12 +66,19 @@ fun AuthRoot(
 
                     entry(AuthDestination.LoginDestination) {
                        LoginRoot(
+                           loginService = NoteMarkApplication.loginService,
                            navToRegister = {
                                println("LOGIN ROOT IS NAVIGATING TO REGISTER")
-                               printBackStack(backstackAuth)
+                               //printBackStack(backstackAuth)
                                backstackAuth.clear()
                                backstackAuth.add(AuthDestination.WelcomeDestination)
                                backstackAuth.add(AuthDestination.RegisterDestination)
+                           },
+                           onLoginSuccess = {
+                               println("LOGIN ROOT IS NAVIGATING TO HOME")
+                               backstackAuth.retainAll(listOf(AuthDestination.WelcomeDestination))
+                               printBackStack(backstackAuth)
+                               navigateBack()
                            }
                        )
                     }
@@ -77,14 +86,12 @@ fun AuthRoot(
                     entry(AuthDestination.RegisterDestination) {
                         RegisterRoot(
                             navToHome = {
-                                backstackAuth.clear()
-                                navigateBack()
+                                navigateHome()
                             },
                             navToLogin = {
                                 println("REGISTER ROOT IS NAVIGATING TO LOGIN")
                                 printBackStack(backstackAuth)
-                                backstackAuth.clear()
-                                backstackAuth.add(AuthDestination.WelcomeDestination)
+                                backstackAuth.retainAll(listOf(AuthDestination.WelcomeDestination))
                                 backstackAuth.add(AuthDestination.LoginDestination)
                             }
                         )
@@ -107,6 +114,7 @@ fun printBackStack(backStack: NavBackStack) {
 private fun AuthRootPreview() {
     NoteMarkTheme {
         AuthRoot(
+            navigateHome = {},
             navigateBack = {}
         )
 

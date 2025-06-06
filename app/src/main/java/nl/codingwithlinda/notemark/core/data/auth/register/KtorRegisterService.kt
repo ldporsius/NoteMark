@@ -1,16 +1,13 @@
 package nl.codingwithlinda.notemark.core.data.auth.register
 
 import io.ktor.client.*
-import io.ktor.client.plugins.ClientRequestException
-import io.ktor.client.plugins.RedirectResponseException
 import io.ktor.client.plugins.ResponseException
-import io.ktor.client.plugins.ServerResponseException
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.utils.buildHeaders
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import nl.codingwithlinda.notemark.core.data.auth.HttpRoutes
+import nl.codingwithlinda.notemark.core.data.auth.common.HttpRoutes
 import nl.codingwithlinda.notemark.core.domain.auth.AuthError
 import nl.codingwithlinda.notemark.core.util.Result
 

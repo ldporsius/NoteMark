@@ -21,18 +21,14 @@ object RegistrationValidator {
         return null
     }
     fun validatePassword(password: String): RegistrationPasswordError? {
-        //password must contain at least 1 letter and 1 number e.g. Aa123456
-        //val passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}\$".toRegex()
+        // Password must contain at least 1 letter and (1 special character or 1 number).
+        val passwordRegex = Regex("^(?=.*[A-Za-z])(?=.*(?:\\d|[@$!%*#?&]))[A-Za-z\\d@$!%*#?&]+$")
         if (password.isBlank()) {
             return RegistrationPasswordError.EmptyPassword
         }
-
-        if (password.length < 3) {
-            return RegistrationPasswordError.PasswordShort
+        if (!password.matches(passwordRegex)) {
+            return RegistrationPasswordError.PasswordInvalid
         }
-        //if (!password.matches(passwordRegex)) {
-        //    return RegistrationPasswordError.PasswordInvalid
-        //}
         return null
     }
 

@@ -2,6 +2,8 @@ package nl.codingwithlinda.notemark.core.data.auth
 
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.firstOrNull
+import nl.codingwithlinda.notemark.core.data.auth.login.LoginRequestDto
+import nl.codingwithlinda.notemark.core.data.auth.login.LoginResponseDto
 import nl.codingwithlinda.notemark.core.domain.auth.AuthApiClient
 import nl.codingwithlinda.notemark.core.domain.auth.AuthError
 import nl.codingwithlinda.notemark.core.domain.auth.SessionManager

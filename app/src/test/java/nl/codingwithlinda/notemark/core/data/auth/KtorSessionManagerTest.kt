@@ -3,6 +3,7 @@ package nl.codingwithlinda.notemark.core.data.auth
 import junit.framework.Assert.assertTrue
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import nl.codingwithlinda.notemark.core.data.auth.login.LoginRequestDto
 import nl.codingwithlinda.notemark.core.domain.auth.AuthError
 import nl.codingwithlinda.notemark.core.util.Result
 import nl.codingwithlinda.notemark.test_data_generators.FakeAuthClient

@@ -1,7 +1,7 @@
 package nl.codingwithlinda.notemark.core.domain.auth
 
-import nl.codingwithlinda.notemark.core.data.auth.LoginRequestDto
-import nl.codingwithlinda.notemark.core.data.auth.LoginResponseDto
+import nl.codingwithlinda.notemark.core.data.auth.login.LoginRequestDto
+import nl.codingwithlinda.notemark.core.data.auth.login.LoginResponseDto
 import nl.codingwithlinda.notemark.core.util.Result
 
 interface SessionManager {

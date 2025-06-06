@@ -135,6 +135,7 @@ class RegistrationViewModel(
                 )
             }
         }
+
         validator.validatePassword(currentState.password).also {error->
             _uiState.update {
                 it.copy(

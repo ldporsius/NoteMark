@@ -47,8 +47,14 @@ class MainActivity : ComponentActivity() {
                                    AuthRoot(
                                        navigateBack = {
                                            backstack.retainAll(
-                                               listOf(HomeDestination)
+                                               listOf(AuthRootDestination)
                                            )
+                                       },
+                                       navigateHome = {
+                                           backstack.retainAll(
+                                               listOf(AuthRootDestination)
+                                           )
+                                           backstack.add(HomeDestination)
                                        },
                                        modifier = Modifier
                                    )

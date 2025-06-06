@@ -30,8 +30,8 @@ fun RegistrationEmailError.toUiText(): UiText{
 fun RegistrationPasswordError.toUiText(): UiText{
     return when(this){
         RegistrationPasswordError.EmptyPassword -> UiText.DynamicText("Password cannot be empty")
-        RegistrationPasswordError.PasswordShort -> UiText.DynamicText("Password must be at least 3 characters long")
-        RegistrationPasswordError.PasswordInvalid -> UiText.DynamicText("Password must contain at least 1 letter and 1 number")
+        RegistrationPasswordError.PasswordShort -> UiText.DynamicText("Password must be at least 8 characters long")
+        RegistrationPasswordError.PasswordInvalid -> UiText.DynamicText("Password must contain at least 1 special character or 1 number")
         RegistrationPasswordError.PasswordsNotMatching -> UiText.DynamicText("Passwords do not match")
     }
 }

@@ -6,6 +6,8 @@ import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.request.header
 import io.ktor.client.request.post
+import nl.codingwithlinda.notemark.core.data.auth.login.LoginRequestDto
+import nl.codingwithlinda.notemark.core.data.auth.login.LoginResponseDto
 import nl.codingwithlinda.notemark.core.domain.auth.AuthApiClient
 import nl.codingwithlinda.notemark.core.domain.auth.AuthError
 import nl.codingwithlinda.notemark.core.util.Result
