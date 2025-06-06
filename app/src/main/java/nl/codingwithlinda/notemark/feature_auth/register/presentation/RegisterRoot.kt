@@ -54,9 +54,9 @@ fun RegisterRoot(
                         uiState = viewModel.uiState.collectAsStateWithLifecycle().value,
                         onAction = viewModel::handleAction,
                         modifier = Modifier
-                            .imePadding()
-                            .verticalScroll(rememberScrollState())
                             .fillMaxSize()
+                            .verticalScroll(rememberScrollState())
+                            .imePadding()
                             .padding(16.dp)
                     )
                 },
