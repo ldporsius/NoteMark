@@ -34,8 +34,16 @@ fun RegistrationForm(
         Text("Username",
             modifier = Modifier.align(Alignment.Start))
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = uiState.username,
+            onValueChange = {
+                onAction(RegistrationAction.UserNameAction(it))
+            },
+            isError = uiState.usernameError != null,
+            supportingText = {
+                uiState.usernameError?.let {
+                    Text(it.asString())
+                }
+            },
             label = {  },
             singleLine = true,
             colors = CustomTextFieldColors(),
@@ -116,7 +124,7 @@ fun RegistrationForm(
             trailingIcon = {
                 IconButton(
                     onClick = {
-                        onAction(RegistrationAction.TogglePasswordVisibility)
+                        onAction(RegistrationAction.TogglePasswordRepeatVisibility)
                     }
                 ) {
                     if (uiState.passwordRepeatVisible) {

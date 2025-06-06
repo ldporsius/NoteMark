@@ -6,6 +6,7 @@ sealed interface RegistrationAction {
     data class PasswordAction(val password: String): RegistrationAction
     data class PasswordRepeatAction(val passwordRepeat: String): RegistrationAction
     object TogglePasswordVisibility: RegistrationAction
+    object TogglePasswordRepeatVisibility: RegistrationAction
     object Submit: RegistrationAction
     object Cancel: RegistrationAction
 

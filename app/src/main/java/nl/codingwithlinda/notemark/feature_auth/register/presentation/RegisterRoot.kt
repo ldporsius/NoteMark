@@ -2,6 +2,7 @@ package nl.codingwithlinda.notemark.feature_auth.register.presentation
 
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -10,17 +11,30 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import nl.codingwithlinda.notemark.design_system.form_factors.ScreenTwoComposables
 import nl.codingwithlinda.notemark.design_system.ui.theme.surfaceLowest
 import nl.codingwithlinda.notemark.feature_auth.register.presentation.components.RegistrationForm
 import nl.codingwithlinda.notemark.feature_auth.register.presentation.components.RegistrationHeader
-import nl.codingwithlinda.notemark.feature_auth.register.presentation.state.RegistrationAction
-import nl.codingwithlinda.notemark.feature_auth.register.presentation.state.RegistrationUiState
 
 @Composable
 fun RegisterRoot(
     navToLogin: () -> Unit,
 ) {
+
+    val viewModel = viewModel< RegistrationViewModel>(
+        factory = viewModelFactory {
+            initializer {
+                RegistrationViewModel(
+                    onCancel = navToLogin
+                )
+            }
+        }
+    )
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = surfaceLowest
@@ -37,13 +51,10 @@ fun RegisterRoot(
                 },
                 comp2 = {
                     RegistrationForm(
-                        uiState = RegistrationUiState(),
-                        onAction = {
-                            if (it is RegistrationAction.Cancel) {
-                                navToLogin()
-                            }
-                        },
+                        uiState = viewModel.uiState.collectAsStateWithLifecycle().value,
+                        onAction = viewModel::handleAction,
                         modifier = Modifier
+                            .imePadding()
                             .verticalScroll(rememberScrollState())
                             .fillMaxSize()
                             .padding(16.dp)
