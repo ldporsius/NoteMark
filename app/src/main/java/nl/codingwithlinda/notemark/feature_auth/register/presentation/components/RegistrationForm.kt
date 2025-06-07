@@ -1,7 +1,9 @@
 package nl.codingwithlinda.notemark.feature_auth.register.presentation.components
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -9,16 +11,25 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusTarget
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.focus.onFocusEvent
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import nl.codingwithlinda.notemark.R
-import nl.codingwithlinda.notemark.design_system.ui.theme.customTextFieldColors
 import nl.codingwithlinda.notemark.design_system.ui.theme.LocalButtonShape
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
+import nl.codingwithlinda.notemark.design_system.ui.theme.customTextFieldColors
 import nl.codingwithlinda.notemark.feature_auth.register.presentation.state.RegistrationAction
 import nl.codingwithlinda.notemark.feature_auth.register.presentation.state.RegistrationUiState
 
@@ -27,25 +38,55 @@ fun RegistrationForm(
     uiState: RegistrationUiState,
     onAction: (RegistrationAction) -> Unit,
     modifier: Modifier = Modifier) {
+
+    val focusManager = LocalFocusManager.current
+    var focusRequester = remember { FocusRequester() }
+    val interactionSource = remember { MutableInteractionSource() }
+
+    var currentFocus by remember { mutableStateOf("") }
+
+    val userNameSupportingText = remember(currentFocus, uiState.usernameError) {
+        val text = uiState.userNameSupportingText(currentFocus == "username")
+        text?.let {
+            println("USERNAME SUPPORTING TEXT from UIState: ${it}")
+        }
+        text
+    }
+
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text("Username",
             modifier = Modifier.align(Alignment.Start))
+
         OutlinedTextField(
             value = uiState.username,
             onValueChange = {
                 onAction(RegistrationAction.UserNameAction(it))
             },
             isError = uiState.usernameError != null,
-            supportingText = {
-                uiState.userNameSupportingText().asString()
+            supportingText =  {
+                userNameSupportingText?.let {
+                    Text(it.asString())
+                }
             },
             label = {  },
             singleLine = true,
             colors = customTextFieldColors(),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .focusTarget()
+                .onFocusChanged {
+                    println("USERNAME FOCUS CHANGED: ${it}, focused = ${it.isFocused}, captured = ${it.isCaptured}")
+                    if (it.isFocused) {
+                        currentFocus = "username"
+                    }
+                    else{
+                        currentFocus = ""
+                    }
+
+                }
         )
 
         Text("Email",

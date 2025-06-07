@@ -18,10 +18,12 @@ data class RegistrationUiState(
     val passwordRepeatVisible: Boolean = false,
     val isRegistrationEnabled: Boolean = false
 ){
-    fun userNameSupportingText(): UiText {
-        if (usernameError == null){
-            return UiText.StringResourceText(R.string.username_hint, listOf( MIN_USERNAME_LENGTH, MAX_USERNAME_LENGTH))
-        }
-        return usernameError
+
+    fun userNameSupportingText(hasFocus: Boolean): UiText? {
+        if(usernameError != null) return usernameError
+
+        if (!hasFocus) return null
+        return UiText.StringResourceText(R.string.username_hint, listOf( MIN_USERNAME_LENGTH, MAX_USERNAME_LENGTH))
+
     }
 }
