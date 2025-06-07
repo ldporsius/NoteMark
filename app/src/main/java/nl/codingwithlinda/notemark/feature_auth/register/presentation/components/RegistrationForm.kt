@@ -1,12 +1,7 @@
 package nl.codingwithlinda.notemark.feature_auth.register.presentation.components
 
-import androidx.compose.foundation.focusable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsFocusedAsState
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -25,14 +20,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.focusTarget
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.focus.onFocusEvent
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -64,7 +53,7 @@ fun RegistrationForm(
     fun focusModifier(
         onFocusedChanged: (focused: Boolean) -> Unit,
     ) = Modifier
-        //.focusTarget()
+
         .onFocusChanged {
             onFocusedChanged(it.isFocused)
         }
@@ -261,57 +250,39 @@ fun RegistrationForm(
             modifier = Modifier.fillMaxWidth()
         )
 
-       /* var focusColor by remember { mutableStateOf(primary) }
-        Box(modifier = Modifier
-            .focusRequester(focusRequester)
-            .onFocusChanged {
-                focusColor = if (it.isFocused) {
-                    primary
-                } else {
-                    Color.Transparent
+        when (uiState.isLoading) {
+            true -> CircularProgressIndicator()
+            false -> {
+                Button(
+                    onClick = {
+                        if (uiState.isRegistrationEnabled) {
+                            onAction(RegistrationAction.Submit)
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    shape = LocalButtonShape.current,
+                    enabled = uiState.isRegistrationEnabled,
+                    colors = ButtonColors(
+                        containerColor = primary,
+                        contentColor = onPrimary,
+                        disabledContainerColor = primary.copy(.5f),
+                        disabledContentColor = onPrimary.copy(.5f)
+                    )
+                ) {
+
+                    Text("Create account")
+                }
+
+                TextButton(
+                    onClick = {
+                        onAction(RegistrationAction.Cancel)
+                    }
+                ) {
+                    Text("Already have an account?")
                 }
             }
-            .focusable(true,)
-        ){
-            Text("hack focus", color = focusColor)
-        }*/
-
-        Button(
-            onClick = {
-                if (uiState.isRegistrationEnabled) {
-                    onAction(RegistrationAction.Submit)
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-
-
-            ,
-            shape = LocalButtonShape.current,
-            enabled = uiState.isRegistrationEnabled,
-            colors = ButtonColors(
-                containerColor = primary,
-                contentColor = onPrimary,
-                disabledContainerColor = primary.copy(.5f),
-                disabledContentColor = onPrimary.copy(.5f)
-            )
-        ) {
-            if (uiState.isLoading) {
-                CircularProgressIndicator()
-            }
-            else {
-                Text("Create account")
-            }
         }
-
-        TextButton(
-            onClick = {
-                onAction(RegistrationAction.Cancel)
-            }
-        ) {
-            Text("Already have an account?")
-        }
-
 
     }
 }

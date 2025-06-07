@@ -12,7 +12,7 @@ fun AuthError.toUiText() : UiText{
         AuthError.RefreshTokenExpiredError -> UiText.DynamicText("Refresh token expired")
         AuthError.InternalServerError -> UiText.DynamicText("Internal server error")
         AuthError.MethodNotAllowedError -> UiText.DynamicText("Method not allowed")
-        AuthError.ConflictError -> UiText.DynamicText("Conflict")
+        AuthError.ConflictError -> UiText.DynamicText("A user with this email already exists")
         AuthError.ToManyRequestsError -> UiText.DynamicText("Too many requests")
     }
 }

@@ -14,6 +14,8 @@ import nl.codingwithlinda.notemark.core.data.auth.register.RegisterRequestDto
 import nl.codingwithlinda.notemark.core.data.auth.register.RegisterService
 import nl.codingwithlinda.notemark.core.util.Result
 import nl.codingwithlinda.notemark.core.util.UiText
+import nl.codingwithlinda.notemark.design_system.util.SnackBarController
+import nl.codingwithlinda.notemark.design_system.util.SnackbarEvent
 import nl.codingwithlinda.notemark.feature_auth.core.presentation.error_mapping.toUiText
 import nl.codingwithlinda.notemark.feature_auth.register.domain.RegistrationValidator
 import nl.codingwithlinda.notemark.feature_auth.register.presentation.error_mapping.toUiText
@@ -99,13 +101,18 @@ class RegistrationViewModel(
                 ).also {res ->
                     _uiState.update {
                         it.copy(
-                            isLoading = true
+                            isLoading = false
                         )
                     }
 
                     when(res){
                         is Result.Error -> {
-                            _errorChannel.send(res.error.toUiText())
+                            println("Registration has error: ${res.error}")
+                            SnackBarController.sendEvent(
+                                SnackbarEvent(
+                                    message = res.error.toUiText(),
+                                )
+                            )
                         }
                         is Result.Success -> {
                             onSuccess()
