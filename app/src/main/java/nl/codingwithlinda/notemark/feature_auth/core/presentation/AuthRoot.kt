@@ -78,7 +78,7 @@ fun AuthRoot(
                                println("LOGIN ROOT IS NAVIGATING TO HOME")
                                backstackAuth.retainAll(listOf(AuthDestination.WelcomeDestination))
                                printBackStack(backstackAuth)
-                               navigateBack()
+                               navigateHome()
                            }
                        )
                     }

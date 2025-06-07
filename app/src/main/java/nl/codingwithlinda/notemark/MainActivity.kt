@@ -17,6 +17,7 @@ import nl.codingwithlinda.notemark.core.navigation.AuthRootDestination
 import nl.codingwithlinda.notemark.core.navigation.HomeDestination
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
 import nl.codingwithlinda.notemark.feature_auth.core.presentation.AuthRoot
+import nl.codingwithlinda.notemark.feature_home.presentation.HomeRoot
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,10 +36,7 @@ class MainActivity : ComponentActivity() {
                         when(route) {
                             is HomeDestination -> {
                                 NavEntry(route) {
-                                   Box(Modifier.fillMaxSize(),
-                                       contentAlignment = Alignment.Center){
-                                       Text(text = "This is the home screen")
-                                   }
+                                  HomeRoot()
                                 }
                             }
                             is AuthRootDestination -> {
