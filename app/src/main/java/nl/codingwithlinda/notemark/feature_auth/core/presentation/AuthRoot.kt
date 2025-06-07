@@ -89,10 +89,12 @@ fun AuthRoot(
                                 navigateHome()
                             },
                             navToLogin = {
-                                println("REGISTER ROOT IS NAVIGATING TO LOGIN")
+                                println("REGISTER ROOT Backstack before NAVIGATING TO LOGIN")
                                 printBackStack(backstackAuth)
                                 backstackAuth.retainAll(listOf(AuthDestination.WelcomeDestination))
                                 backstackAuth.add(AuthDestination.LoginDestination)
+                                println("REGISTER ROOT Backstack after NAVIGATING TO LOGIN")
+                                printBackStack(backstackAuth)
                             }
                         )
                     }
