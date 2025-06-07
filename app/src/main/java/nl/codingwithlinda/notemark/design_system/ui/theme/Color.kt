@@ -8,8 +8,10 @@ import androidx.compose.ui.graphics.Color
 val surface = Color(0xFFEFEFF2)
 val surfaceLowest = Color(0xFFffffff)
 val onSurface = Color(0xFF1b1b1b)
+val onSurfaceLight = onSurface.copy(.5f)
 val onSurfaceVariant = Color(0xFF535364)
 val error = Color(0xFFE1294B)
+
 
 //brand
 val primary = Color(0xFF5977F7)

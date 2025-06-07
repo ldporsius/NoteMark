@@ -2,7 +2,8 @@ package nl.codingwithlinda.notemark.feature_auth.register.domain
 
 object RegistrationValidator {
 
-    private const val MIN_USERNAME_LENGTH = 3
+    const val MIN_USERNAME_LENGTH = 3
+    const val MAX_USERNAME_LENGTH = 20
     private const val MIN_PASSWORD_LENGTH = 8
 
     fun validateUsername(username: String): RegistrationUserNameError? {
@@ -11,6 +12,9 @@ object RegistrationValidator {
         }
         if (username.length < MIN_USERNAME_LENGTH) {
             return RegistrationUserNameError.UsernameShort
+        }
+        if (username.length > MAX_USERNAME_LENGTH) {
+            return RegistrationUserNameError.UsernameLong
         }
         return null
     }

@@ -4,7 +4,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import nl.codingwithlinda.notemark.design_system.ui.theme.CustomTextFieldColors
+import nl.codingwithlinda.notemark.design_system.ui.theme.customTextFieldColors
 
 @Composable
 fun CustomTextField(
@@ -18,7 +18,7 @@ fun CustomTextField(
 
     val hasError = errorMessage != null
 
-    val colors = CustomTextFieldColors()
+    val colors = customTextFieldColors()
 
     TextField(
         value = value,

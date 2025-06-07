@@ -16,7 +16,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import nl.codingwithlinda.notemark.R
-import nl.codingwithlinda.notemark.design_system.ui.theme.CustomTextFieldColors
+import nl.codingwithlinda.notemark.design_system.ui.theme.customTextFieldColors
 import nl.codingwithlinda.notemark.design_system.ui.theme.LocalButtonShape
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
 import nl.codingwithlinda.notemark.feature_auth.register.presentation.state.RegistrationAction
@@ -40,13 +40,11 @@ fun RegistrationForm(
             },
             isError = uiState.usernameError != null,
             supportingText = {
-                uiState.usernameError?.let {
-                    Text(it.asString())
-                }
+                uiState.userNameSupportingText().asString()
             },
             label = {  },
             singleLine = true,
-            colors = CustomTextFieldColors(),
+            colors = customTextFieldColors(),
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -66,7 +64,8 @@ fun RegistrationForm(
                     Text(it.asString())
                 }
             },
-            colors = CustomTextFieldColors(),
+            singleLine = true,
+            colors = customTextFieldColors(),
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -104,7 +103,8 @@ fun RegistrationForm(
                     PasswordVisualTransformation()
                 }
             ,
-            colors = CustomTextFieldColors(),
+            singleLine = true,
+            colors = customTextFieldColors(),
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -142,7 +142,8 @@ fun RegistrationForm(
                     PasswordVisualTransformation()
                 }
             ,
-            colors = CustomTextFieldColors(),
+            singleLine = true,
+            colors = customTextFieldColors(),
             modifier = Modifier.fillMaxWidth()
         )
 

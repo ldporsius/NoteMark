@@ -7,6 +7,7 @@ interface RegistrationError: Error
 sealed interface RegistrationUserNameError: RegistrationError {
     data object EmptyUsername : RegistrationUserNameError
     data object UsernameShort : RegistrationUserNameError
+    data object UsernameLong : RegistrationUserNameError
 }
 sealed interface RegistrationEmailError: RegistrationError {
     data object EmptyEmail : RegistrationEmailError

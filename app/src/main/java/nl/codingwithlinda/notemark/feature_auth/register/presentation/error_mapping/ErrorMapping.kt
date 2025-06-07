@@ -19,7 +19,7 @@ fun RegistrationUserNameError.toUiText(): UiText{
     return when(this){
         RegistrationUserNameError.EmptyUsername -> UiText.DynamicText("Username cannot be empty")
         RegistrationUserNameError.UsernameShort -> UiText.DynamicText("Username must be at least 3 characters long")
-    }
+        RegistrationUserNameError.UsernameLong -> UiText.DynamicText("Username must be at most 20 characters long")}
 }
 fun RegistrationEmailError.toUiText(): UiText{
     return when(this){
