@@ -2,9 +2,14 @@ package nl.codingwithlinda.notemark.feature_auth.login.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -34,6 +39,8 @@ fun LoginRoot(
             }
         }
     )
+
+
     ScreenTwoComposables(
         comp1 = {
             LoginHeader()
@@ -42,10 +49,14 @@ fun LoginRoot(
             LoginForm(
                 uiState = loginViewModel.uiState.collectAsStateWithLifecycle().value,
                 onAction = loginViewModel::handleAction,
-                modifier = Modifier,
+                modifier = Modifier
+                    .imePadding()
+                    .verticalScroll(rememberScrollState())
+                ,
             )
         },
         modifier = Modifier
+
             .fillMaxSize()
             .background(color = surfaceLowest)
             .padding(16.dp)
