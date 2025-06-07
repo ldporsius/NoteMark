@@ -85,6 +85,11 @@ class RegistrationViewModel(
                     }
             }
             RegistrationAction.Submit -> {
+                _uiState.update {
+                    it.copy(
+                        isLoading = true
+                    )
+                }
                 registerService.register(
                     RegisterRequestDto(
                         username = _uiState.value.username,
@@ -92,6 +97,12 @@ class RegistrationViewModel(
                         password = _uiState.value.password,
                     )
                 ).also {res ->
+                    _uiState.update {
+                        it.copy(
+                            isLoading = true
+                        )
+                    }
+
                     when(res){
                         is Result.Error -> {
                             _errorChannel.send(res.error.toUiText())

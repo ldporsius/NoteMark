@@ -1,11 +1,17 @@
 package nl.codingwithlinda.notemark.feature_auth.register.presentation.components
 
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -18,12 +24,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.focusTarget
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.focus.onFocusEvent
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,6 +43,8 @@ import nl.codingwithlinda.notemark.core.util.UiText
 import nl.codingwithlinda.notemark.design_system.ui.theme.LocalButtonShape
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
 import nl.codingwithlinda.notemark.design_system.ui.theme.customTextFieldColors
+import nl.codingwithlinda.notemark.design_system.ui.theme.onPrimary
+import nl.codingwithlinda.notemark.design_system.ui.theme.primary
 import nl.codingwithlinda.notemark.feature_auth.register.presentation.state.RegistrationAction
 import nl.codingwithlinda.notemark.feature_auth.register.presentation.state.RegistrationUiState
 import nl.codingwithlinda.notemark.feature_auth.register.presentation.state.RegistrationUiState.Companion.FocusTag
@@ -43,21 +56,19 @@ fun RegistrationForm(
     modifier: Modifier = Modifier) {
 
     val focusManager = LocalFocusManager.current
-    var focusRequester = remember { FocusRequester() }
-    val interactionSource = remember { MutableInteractionSource() }
+    //val focusRequester = remember { FocusRequester() }
 
-    val focusedItem by interactionSource.collectIsFocusedAsState()
     var currentFocus: FocusTag? by remember { mutableStateOf(null) }
 
     @Composable
     fun focusModifier(
         onFocusedChanged: (focused: Boolean) -> Unit,
     ) = Modifier
-        .focusTarget()
+        //.focusTarget()
         .onFocusChanged {
-            println("USERNAME FOCUS CHANGED: ${it}, focused = ${it.isFocused}, captured = ${it.isCaptured}")
             onFocusedChanged(it.isFocused)
         }
+
 
     fun shouldShowError(myFocusTag: FocusTag, myError: UiText?): Boolean{
         val hasFocus = currentFocus == myFocusTag
@@ -86,6 +97,14 @@ fun RegistrationForm(
             label = {  },
             singleLine = true,
             colors = customTextFieldColors(),
+            keyboardActions = KeyboardActions(
+                onNext = {
+                    focusManager.moveFocus(FocusDirection.Down)
+                }
+            ),
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Next
+            ),
             modifier = Modifier
                 .fillMaxWidth()
                 .then(focusModifier {
@@ -115,6 +134,14 @@ fun RegistrationForm(
                 }
             },
             singleLine = true,
+            keyboardActions = KeyboardActions(
+                onNext = {
+                    focusManager.moveFocus(FocusDirection.Down)
+                }
+            ),
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Next
+            ),
             colors = customTextFieldColors(),
             modifier = Modifier
                 .fillMaxWidth()
@@ -164,6 +191,14 @@ fun RegistrationForm(
                 }
             ,
             singleLine = true,
+            keyboardActions = KeyboardActions(
+                onNext = {
+                    focusManager.moveFocus(FocusDirection.Down)
+                }
+            ),
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Next
+            ),
             colors = customTextFieldColors(),
             modifier = Modifier
                 .fillMaxWidth()
@@ -214,19 +249,59 @@ fun RegistrationForm(
                 }
             ,
             singleLine = true,
+            keyboardActions = KeyboardActions(
+                onDone  = {
+                    focusManager.clearFocus()
+                }
+            ),
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Done
+            ),
             colors = customTextFieldColors(),
             modifier = Modifier.fillMaxWidth()
         )
 
+       /* var focusColor by remember { mutableStateOf(primary) }
+        Box(modifier = Modifier
+            .focusRequester(focusRequester)
+            .onFocusChanged {
+                focusColor = if (it.isFocused) {
+                    primary
+                } else {
+                    Color.Transparent
+                }
+            }
+            .focusable(true,)
+        ){
+            Text("hack focus", color = focusColor)
+        }*/
+
         Button(
             onClick = {
-                onAction(RegistrationAction.Submit)
+                if (uiState.isRegistrationEnabled) {
+                    onAction(RegistrationAction.Submit)
+                }
             },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+
+
+            ,
             shape = LocalButtonShape.current,
-            enabled = uiState.isRegistrationEnabled
+            enabled = uiState.isRegistrationEnabled,
+            colors = ButtonColors(
+                containerColor = primary,
+                contentColor = onPrimary,
+                disabledContainerColor = primary.copy(.5f),
+                disabledContentColor = onPrimary.copy(.5f)
+            )
         ) {
-            Text("Create account")
+            if (uiState.isLoading) {
+                CircularProgressIndicator()
+            }
+            else {
+                Text("Create account")
+            }
         }
 
         TextButton(

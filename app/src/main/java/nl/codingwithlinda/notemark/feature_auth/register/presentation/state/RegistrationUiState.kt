@@ -17,12 +17,12 @@ data class RegistrationUiState(
     val passwordRepeat: String = "",
     val passwordRepeatError: UiText? = null,
     val passwordRepeatVisible: Boolean = false,
-    val isRegistrationEnabled: Boolean = false
+    val isRegistrationEnabled: Boolean = false,
+    val isLoading: Boolean = false
 ){
 
     fun userNameSupportingText(hasFocus: Boolean): UiText? {
         if(usernameError != null && !hasFocus) return usernameError
-
         if (!hasFocus) return null
         return UiText.StringResourceText(R.string.username_hint, listOf( MIN_USERNAME_LENGTH, MAX_USERNAME_LENGTH))
     }
@@ -35,6 +35,7 @@ data class RegistrationUiState(
         if (!hasFocus) return null
         return UiText.StringResourceText(R.string.password_hint, listOf(MIN_PASSWORD_LENGTH))
     }
+
     companion object{
         enum class FocusTag{
             USERNAME,
