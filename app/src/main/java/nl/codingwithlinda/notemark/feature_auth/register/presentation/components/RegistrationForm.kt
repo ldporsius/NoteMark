@@ -1,6 +1,7 @@
 package nl.codingwithlinda.notemark.feature_auth.register.presentation.components
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.BasicTextField
@@ -27,11 +28,13 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import nl.codingwithlinda.notemark.R
+import nl.codingwithlinda.notemark.core.util.UiText
 import nl.codingwithlinda.notemark.design_system.ui.theme.LocalButtonShape
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
 import nl.codingwithlinda.notemark.design_system.ui.theme.customTextFieldColors
 import nl.codingwithlinda.notemark.feature_auth.register.presentation.state.RegistrationAction
 import nl.codingwithlinda.notemark.feature_auth.register.presentation.state.RegistrationUiState
+import nl.codingwithlinda.notemark.feature_auth.register.presentation.state.RegistrationUiState.Companion.FocusTag
 
 @Composable
 fun RegistrationForm(
@@ -43,14 +46,22 @@ fun RegistrationForm(
     var focusRequester = remember { FocusRequester() }
     val interactionSource = remember { MutableInteractionSource() }
 
-    var currentFocus by remember { mutableStateOf("") }
+    val focusedItem by interactionSource.collectIsFocusedAsState()
+    var currentFocus: FocusTag? by remember { mutableStateOf(null) }
 
-    val userNameSupportingText = remember(currentFocus, uiState.usernameError) {
-        val text = uiState.userNameSupportingText(currentFocus == "username")
-        text?.let {
-            println("USERNAME SUPPORTING TEXT from UIState: ${it}")
+    @Composable
+    fun focusModifier(
+        onFocusedChanged: (focused: Boolean) -> Unit,
+    ) = Modifier
+        .focusTarget()
+        .onFocusChanged {
+            println("USERNAME FOCUS CHANGED: ${it}, focused = ${it.isFocused}, captured = ${it.isCaptured}")
+            onFocusedChanged(it.isFocused)
         }
-        text
+
+    fun shouldShowError(myFocusTag: FocusTag, myError: UiText?): Boolean{
+        val hasFocus = currentFocus == myFocusTag
+        return myError != null && !hasFocus
     }
 
     Column(
@@ -65,9 +76,10 @@ fun RegistrationForm(
             onValueChange = {
                 onAction(RegistrationAction.UserNameAction(it))
             },
-            isError = uiState.usernameError != null,
+            isError = shouldShowError(FocusTag.USERNAME, uiState.usernameError),
             supportingText =  {
-                userNameSupportingText?.let {
+                val text = uiState.userNameSupportingText(currentFocus == FocusTag.USERNAME)
+                text?.let {
                     Text(it.asString())
                 }
             },
@@ -76,17 +88,14 @@ fun RegistrationForm(
             colors = customTextFieldColors(),
             modifier = Modifier
                 .fillMaxWidth()
-                .focusTarget()
-                .onFocusChanged {
-                    println("USERNAME FOCUS CHANGED: ${it}, focused = ${it.isFocused}, captured = ${it.isCaptured}")
-                    if (it.isFocused) {
-                        currentFocus = "username"
+                .then(focusModifier {
+                    if (it) {
+                        currentFocus = FocusTag.USERNAME
                     }
-                    else{
-                        currentFocus = ""
+                    else {
+                        currentFocus = null
                     }
-
-                }
+                })
         )
 
         Text("Email",
@@ -99,15 +108,25 @@ fun RegistrationForm(
             placeholder = {
                 Text("john.doe@example.com")
             },
-            isError = uiState.emailError != null,
+            isError = shouldShowError(FocusTag.EMAIL, uiState.emailError),
             supportingText = {
-                uiState.emailError?.let {
+                uiState.emailSupportingText(currentFocus == FocusTag.EMAIL)?.let {
                     Text(it.asString())
                 }
             },
             singleLine = true,
             colors = customTextFieldColors(),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .then(focusModifier {
+                    if (it) {
+                        currentFocus = FocusTag.EMAIL
+                    }
+                    else {
+                        currentFocus = null
+                    }
+                }
+                )
         )
 
         Text("Password",
@@ -117,9 +136,9 @@ fun RegistrationForm(
             onValueChange = {
                 onAction(RegistrationAction.PasswordAction(it))
             },
-            isError = uiState.passwordError!= null,
+            isError = shouldShowError(FocusTag.PASSWORD, uiState.passwordError),
             supportingText = {
-                uiState.passwordError?.let {
+                uiState.passwordSupportingText(currentFocus == FocusTag.PASSWORD)?.let {
                     Text(it.asString())
                 }
             },
@@ -146,7 +165,18 @@ fun RegistrationForm(
             ,
             singleLine = true,
             colors = customTextFieldColors(),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .then(focusModifier {
+                    if (it) {
+                        currentFocus = FocusTag.PASSWORD
+                    }
+                    else {
+                        currentFocus = null
+                    }
+                }
+                )
+
         )
 
         Text("Repeat Password",

@@ -1,5 +1,6 @@
 package nl.codingwithlinda.notemark.feature_auth.register.presentation.error_mapping
 
+import nl.codingwithlinda.notemark.R
 import nl.codingwithlinda.notemark.core.util.UiText
 import nl.codingwithlinda.notemark.feature_auth.register.domain.RegistrationEmailError
 import nl.codingwithlinda.notemark.feature_auth.register.domain.RegistrationError
@@ -24,7 +25,7 @@ fun RegistrationUserNameError.toUiText(): UiText{
 fun RegistrationEmailError.toUiText(): UiText{
     return when(this){
         RegistrationEmailError.EmptyEmail -> UiText.DynamicText("Email cannot be empty")
-        RegistrationEmailError.InvalidEmail -> UiText.DynamicText("Invalid email")
+        RegistrationEmailError.InvalidEmail -> UiText.StringResourceText(R.string.email_hint)
     }
 }
 fun RegistrationPasswordError.toUiText(): UiText{

@@ -4,11 +4,11 @@ object RegistrationValidator {
 
     const val MIN_USERNAME_LENGTH = 3
     const val MAX_USERNAME_LENGTH = 20
-    private const val MIN_PASSWORD_LENGTH = 8
+    const val MIN_PASSWORD_LENGTH = 8
 
     fun validateUsername(username: String): RegistrationUserNameError? {
         if (username.isBlank()) {
-            return RegistrationUserNameError.EmptyUsername
+            return null
         }
         if (username.length < MIN_USERNAME_LENGTH) {
             return RegistrationUserNameError.UsernameShort
@@ -20,7 +20,7 @@ object RegistrationValidator {
     }
     fun validateEmail(email: String): RegistrationEmailError? {
         if (email.isBlank()) {
-            return RegistrationEmailError.EmptyEmail
+            return null
         }
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             return RegistrationEmailError.InvalidEmail
@@ -33,7 +33,7 @@ object RegistrationValidator {
         val hasDigitOrSpecialChar = Regex("""[\d@$!%*#?&]""")
 
         if (password.isBlank()) {
-            return RegistrationPasswordError.EmptyPassword
+            return null
         }
         if (password.length < MIN_PASSWORD_LENGTH) {
             return RegistrationPasswordError.PasswordShort

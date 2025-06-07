@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">NoteMark</string>
     <string name="username_hint">Use between %1d and %2d characters for your username</string>
+    <string name="password_hint">Use %1d+ characters with a number or symbol for better security.</string>
+    <string name="email_hint">Invalid email provided</string>
 </resources>
