@@ -53,7 +53,6 @@ fun RegistrationForm(
     fun focusModifier(
         onFocusedChanged: (focused: Boolean) -> Unit,
     ) = Modifier
-
         .onFocusChanged {
             onFocusedChanged(it.isFocused)
         }

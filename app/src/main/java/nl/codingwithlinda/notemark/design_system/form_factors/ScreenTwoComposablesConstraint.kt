@@ -4,36 +4,31 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.layoutId
-import androidx.window.core.layout.WindowWidthSizeClass.Companion.EXPANDED
-import androidx.window.core.layout.WindowWidthSizeClass.Companion.MEDIUM
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.components.LoginForm
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.components.LoginHeader
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.state.LoginUiState
 
 @Composable
-fun ScreenTwoComposables(
+fun ScreenTwoComposablesConstraint(
     comp1: @Composable () -> Unit,
     comp2: @Composable () -> Unit,
     modifier: Modifier = Modifier) {
 
-    val windowSizeInfo = currentWindowAdaptiveInfo().windowSizeClass
-    val widthSize = windowSizeInfo.windowWidthSizeClass
-    val isWideScreen = widthSize == EXPANDED
-
+    val canShowVertical = ScreenSizeHelper.collectScreenInfo().let {
+        ScreenSizeHelper.canDisplayVertical(it)
+    }
     val comp1Id = "comp1"
     val comp2Id = "comp2"
-     val constraintSet = if (isWideScreen) {
+     val constraintSet = if (!canShowVertical) {
         // Constraints for a wider screen (e.g., side-by-side)
         ConstraintSet {
             val comp1Ref = createRefFor(comp1Id)
@@ -100,7 +95,7 @@ fun ScreenTwoComposables(
 @Composable
 private fun LoginScreenBoxConstraintsPreview() {
     NoteMarkTheme {
-        ScreenTwoComposables(
+        ScreenTwoComposablesConstraint(
             comp1 = {
                 LoginHeader(
 

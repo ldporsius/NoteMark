@@ -27,6 +27,7 @@ import nl.codingwithlinda.notemark.core.util.ObserveAsEvents
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
 import nl.codingwithlinda.notemark.design_system.ui.theme.primary
 import nl.codingwithlinda.notemark.design_system.ui.theme.surface
+import nl.codingwithlinda.notemark.design_system.ui.theme.surfaceLowest
 import nl.codingwithlinda.notemark.design_system.util.SnackBarController
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.LoginRoot
 import nl.codingwithlinda.notemark.feature_auth.register.presentation.RegisterRoot
@@ -65,7 +66,7 @@ fun AuthRoot(
     ) { innerPadding ->
 
         Surface(
-            color = surface,
+            color = surfaceLowest,
             modifier = modifier
                 .padding(innerPadding)
                 .padding(top = 16.dp),

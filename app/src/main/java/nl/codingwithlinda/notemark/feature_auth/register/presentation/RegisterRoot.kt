@@ -15,7 +15,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import nl.codingwithlinda.notemark.BuildConfig
 import nl.codingwithlinda.notemark.core.data.auth.register.RegisterService
-import nl.codingwithlinda.notemark.design_system.form_factors.ScreenTwoComposables
+import nl.codingwithlinda.notemark.design_system.form_factors.ScreenTwoComposablesConstraint
 import nl.codingwithlinda.notemark.design_system.ui.theme.surfaceLowest
 import nl.codingwithlinda.notemark.feature_auth.register.presentation.components.RegistrationForm
 import nl.codingwithlinda.notemark.feature_auth.register.presentation.components.RegistrationHeader
@@ -45,9 +45,10 @@ fun RegisterRoot(
     Surface(
         color = surfaceLowest,
         modifier = Modifier
+            .fillMaxSize()
             .padding(16.dp)
     ) {
-        ScreenTwoComposables(
+        ScreenTwoComposablesConstraint(
             comp1 = {
                 RegistrationHeader()
             },
