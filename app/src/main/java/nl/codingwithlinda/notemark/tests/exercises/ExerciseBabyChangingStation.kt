@@ -13,12 +13,30 @@ class BoyDiaper: Diaper {
 class GirlDiaper: Diaper {
     override val fitFor = listOf(Child.GIRL)
 }
-class UnisexDiper: Diaper {
+class UnisexDiaper: Diaper {
     override val fitFor = listOf(Child.BOY, Child.GIRL)
 }
 
 interface BabyChangingStation{
-    fun changeDiper(child: Child): Boolean
+    fun changeDiaper(child: Child): Boolean
+}
+
+class CharityBabyChangingStation: BabyChangingStation{
+    val diaperSupply: MutableList<Diaper> = mutableListOf()
+    private fun getAnyDiaper(): Diaper {
+        val firstAvailableDiaper = diaperSupply.firstOrNull() ?: throw RuntimeException("Out of supply")
+        diaperSupply.remove(firstAvailableDiaper)
+        return firstAvailableDiaper
+    }
+
+    override fun changeDiaper(child: Child): Boolean {
+        try {
+            getAnyDiaper()
+            return true
+        }catch (e: Exception){
+            return false
+        }
+    }
 }
 
 class HiltonBabyChangingStation: BabyChangingStation {
@@ -30,7 +48,7 @@ class HiltonBabyChangingStation: BabyChangingStation {
         }
     }
     fun addUnisexDiaper(){
-        diaperSupply.add(UnisexDiper())
+        diaperSupply.add(UnisexDiaper())
     }
     inline fun <reified D: Diaper>getSpecificDiaper(): Diaper {
         val diaper = diaperSupply.firstOrNull() {
@@ -46,8 +64,7 @@ class HiltonBabyChangingStation: BabyChangingStation {
     init {
         addSupplies()
     }
-    override fun changeDiper(child: Child): Boolean {
-
+    override fun changeDiaper(child: Child): Boolean {
         fun getDiaper(get: () -> Diaper){
             try {
                 val diaper = get.invoke()
@@ -68,20 +85,18 @@ class HiltonBabyChangingStation: BabyChangingStation {
             println("No more diapers: ${e.message}")
             println("HILTON TRIES TO PROVIDES UNISEX DIAPER")
             getDiaper {
-                getSpecificDiaper<UnisexDiper>()
+                getSpecificDiaper<UnisexDiaper>()
             }
 
         }
-
         return false
     }
-
 }
 class AirportBabyChangingStation: BabyChangingStation {
     val diaperSupply: MutableList<Diaper> = mutableListOf()
     fun addSupplies() {
         repeat(10) {
-            diaperSupply.add(UnisexDiper())
+            diaperSupply.add(UnisexDiaper())
         }
     }
     fun supplyBoyDiapers(){
@@ -89,18 +104,14 @@ class AirportBabyChangingStation: BabyChangingStation {
             diaperSupply.add(BoyDiaper())
         }
     }
-    private fun getAnyDiaper(): Diaper {
-        val firstAvailableDiaper = diaperSupply.firstOrNull() ?: throw RuntimeException("Out of supply")
-        diaperSupply.remove(firstAvailableDiaper)
-        return firstAvailableDiaper
-    }
-    private fun getUnisexDiaper(): UnisexDiper {
+
+    private fun getUnisexDiaper(): UnisexDiaper {
         val diaper = diaperSupply.firstOrNull {
-            it is UnisexDiper
+            it is UnisexDiaper
         }?: throw RuntimeException("No unisex diapers")
         diaper.let {
             diaperSupply.remove(it)
-            return it as UnisexDiper
+            return it as UnisexDiaper
         }
     }
     private fun <D: Diaper>getSpecificDiaper(child: Child): D {
@@ -111,6 +122,7 @@ class AirportBabyChangingStation: BabyChangingStation {
             }
         }
         firstAvailableDiaper ?: throw RuntimeException("No diaper for this specific child: $child")
+        //the lines below are never reached
         diaperSupply.remove(firstAvailableDiaper)
         return firstAvailableDiaper as D
     }
@@ -119,8 +131,7 @@ class AirportBabyChangingStation: BabyChangingStation {
     }
 
     var childInQueue = 0
-    override fun changeDiper(child: Child): Boolean {
-
+    override fun changeDiaper(child: Child): Boolean {
         fun getDiaper(get: () -> Diaper, onFailure: (() -> Diaper)? = null): Boolean {
             try {
                 val diaper = get()
@@ -131,13 +142,11 @@ class AirportBabyChangingStation: BabyChangingStation {
                 println("${e.message}")
                 onFailure?.run {
                     return getDiaper(onFailure , null)
-
                 }
 
                 println("Diaper was not changed. Sorry.")
                 return false
             }
-
         }
 
         when (child) {
@@ -145,9 +154,7 @@ class AirportBabyChangingStation: BabyChangingStation {
                 println("Changing diaper for $child at the Airport baby changing station")
                 return getDiaper(
                     get = { getSpecificDiaper<BoyDiaper>(child) },
-                    onFailure = {
-                        getUnisexDiaper()
-                    }
+                    onFailure = { getUnisexDiaper() }
                 )
             }
             Child.GIRL -> {
