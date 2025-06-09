@@ -18,6 +18,7 @@ import nl.codingwithlinda.notemark.core.navigation.HomeDestination
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
 import nl.codingwithlinda.notemark.feature_auth.core.presentation.AuthRoot
 import nl.codingwithlinda.notemark.feature_home.presentation.HomeRoot
+import nl.codingwithlinda.notemark.navigation.NavigationRoot
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,46 +29,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             NoteMarkTheme {
-
-                    val backstack = rememberNavBackStack(
-                        AuthRootDestination
-                    )
-                    NavDisplay(backstack){route ->
-                        when(route) {
-                            is HomeDestination -> {
-                                NavEntry(route) {
-                                  HomeRoot()
-                                }
-                            }
-                            is AuthRootDestination -> {
-
-                                NavEntry(route) {
-                                   AuthRoot(
-                                       navigateBack = {
-                                           backstack.retainAll(
-                                               listOf(AuthRootDestination)
-                                           )
-                                       },
-                                       navigateHome = {
-                                           backstack.retainAll(
-                                               listOf(AuthRootDestination)
-                                           )
-                                           backstack.add(HomeDestination)
-                                       },
-                                       modifier = Modifier
-                                   )
-                                }
-                            }
-
-                            else -> {
-                                NavEntry(route) {
-                                    Text(text = "Unknown route")
-                                }
-                            }
-                        }
-                    }
-
-
+                 NavigationRoot()
             }
         }
     }
