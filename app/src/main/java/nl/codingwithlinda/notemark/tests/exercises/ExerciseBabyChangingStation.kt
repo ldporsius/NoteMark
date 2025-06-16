@@ -130,7 +130,7 @@ class AirportBabyChangingStation: BabyChangingStation {
         addSupplies()
     }
 
-    var childInQueue = 0
+    private var childInQueue = 0
     override fun changeDiaper(child: Child): Boolean {
         fun getDiaper(get: () -> Diaper, onFailure: (() -> Diaper)? = null): Boolean {
             try {
