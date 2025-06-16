@@ -22,13 +22,16 @@ class NoteAccess(
        return noteDao.getNoteById(filter)
     }
 
-
     override suspend fun update(entity: NoteEntity) {
-
+        scope.launch {
+            noteDao.upsertNote(entity)
+        }
     }
 
     override suspend fun delete(entity: NoteEntity) {
-
+        scope.launch {
+            noteDao.deleteNoteById(entity.id)
+        }
     }
 
     override val readAllFlow: Flow<List<NoteEntity>>
