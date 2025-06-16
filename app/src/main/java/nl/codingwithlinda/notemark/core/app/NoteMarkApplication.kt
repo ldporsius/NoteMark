@@ -17,6 +17,7 @@ import nl.codingwithlinda.notemark.core.data.local_cache.auth.LoginSessionSerial
 import nl.codingwithlinda.notemark.core.domain.auth.SessionManager
 import nl.codingwithlinda.notemark.BuildConfig
 import nl.codingwithlinda.notemark.core.data.auth.login.LoginService
+import nl.codingwithlinda.persistence_room.database.DataAccess
 import nl.codingwithlinda.persistence_room.public_access.LocalNoteAccess
 
 val Context.dataStoreLoginSession: DataStore<LoginSession> by dataStore("login_session.json", LoginSessionSerializer)
@@ -31,13 +32,14 @@ class NoteMarkApplication: Application() {
     private val authApiClient = KtorApiClient(authorizerHeader = auth_api_key)
     private val applicationScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
 
+    private val db = DataAccess(this).db
     companion object {
         val loginService = LoginService.create()
     }
     override fun onCreate() {
         super.onCreate()
         localNoteAccess = LocalNoteAccess(
-            application = this,
+            noteDatabase = db,
             applicationScope = applicationScope
         )
         loginSessionDataStore = this.dataStoreLoginSession

@@ -9,7 +9,7 @@ class DataAccess(
     val db = Room.databaseBuilder(
         application,
         NoteDatabase::class.java,
-        "note_db"
+        NoteDatabase.DB_NAME
     ).build()
 
 }

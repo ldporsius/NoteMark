@@ -11,4 +11,8 @@ import nl.codingwithlinda.persistence_room.model.NoteEntity
 )
 abstract class NoteDatabase: RoomDatabase() {
     abstract val noteDao: NoteDao
+
+    companion object{
+        val DB_NAME = "note_db"
+    }
 }
