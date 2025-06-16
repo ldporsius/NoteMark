@@ -40,7 +40,6 @@ class NoteMarkApplication: Application() {
         super.onCreate()
         localNoteAccess = LocalNoteAccess(
             noteDatabase = db,
-            applicationScope = applicationScope
         )
         loginSessionDataStore = this.dataStoreLoginSession
         sessionManager = KtorSessionManager(

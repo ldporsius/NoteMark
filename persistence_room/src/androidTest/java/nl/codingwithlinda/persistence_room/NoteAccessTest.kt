@@ -19,7 +19,6 @@ class NoteAccessTest {
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val localNoteAccess = LocalNoteAccess(
         noteDatabase = db,
-        applicationScope = scope
     )
     private val note = nl.codingwithlinda.core.domain.model.Note(
         id = "test",

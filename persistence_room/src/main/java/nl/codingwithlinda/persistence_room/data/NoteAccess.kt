@@ -1,21 +1,16 @@
 package nl.codingwithlinda.persistence_room.data
 
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 import nl.codingwithlinda.core.domain.persistence.LocalAccess
 import nl.codingwithlinda.persistence_room.dao.NoteDao
 import nl.codingwithlinda.persistence_room.model.NoteEntity
 
 class NoteAccess(
     private val noteDao: NoteDao,
-    private val scope: CoroutineScope
 ): LocalAccess<NoteEntity, String> {
 
     override suspend fun create(entity: NoteEntity) {
-        scope.launch {
             noteDao.insertNote(entity)
-        }.join()
     }
 
     override suspend fun readByKey(filter: String): NoteEntity? {
@@ -23,19 +18,14 @@ class NoteAccess(
     }
 
     override suspend fun update(entity: NoteEntity) {
-        scope.launch {
             noteDao.upsertNote(entity)
-        }.join()
     }
 
     override suspend fun delete(entity: NoteEntity) {
-        scope.launch {
             noteDao.deleteNoteById(entity.id)
-        }.join()
     }
 
     override val readAllFlow: Flow<List<NoteEntity>>
         get() = noteDao.getAllNotes()
-
 
 }

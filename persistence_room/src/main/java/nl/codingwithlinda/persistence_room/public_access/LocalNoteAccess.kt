@@ -1,6 +1,5 @@
 package nl.codingwithlinda.persistence_room.public_access
 
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import nl.codingwithlinda.core.domain.model.Note
@@ -12,13 +11,10 @@ import nl.codingwithlinda.persistence_room.database.NoteDatabase
 
 class LocalNoteAccess(
     noteDatabase: NoteDatabase,
-    applicationScope: CoroutineScope
 ): LocalAccess<Note, String> {
-
 
     private val noteAccess = NoteAccess(
         noteDao = noteDatabase.noteDao,
-        scope = applicationScope
     )
 
     override suspend fun create(entity: Note) {
