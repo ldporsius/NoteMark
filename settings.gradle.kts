@@ -21,3 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "NoteMark"
 include(":app")
+include(":persistence_room")
+include(":core")
