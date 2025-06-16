@@ -15,7 +15,7 @@ interface NoteDao {
     suspend fun insertNote(note: NoteEntity)
 
     @Query("SELECT * FROM NoteEntity")
-    suspend fun getAllNotes(): Flow<List<NoteEntity>>
+    fun getAllNotes(): Flow<List<NoteEntity>>
 
     @Query("SELECT * FROM NoteEntity WHERE id = :id")
     suspend fun getNoteById(id: String): NoteEntity?
@@ -23,7 +23,7 @@ interface NoteDao {
     @Query("DELETE FROM NoteEntity WHERE id = :id")
     suspend fun deleteNoteById(id: String)
 
-    @Upsert()
+    @Upsert
     suspend fun upsertNote(note: NoteEntity)
 
 }
