@@ -15,7 +15,7 @@ class NoteAccess(
     override suspend fun create(entity: NoteEntity) {
         scope.launch {
             noteDao.insertNote(entity)
-        }
+        }.join()
     }
 
     override suspend fun readByKey(filter: String): NoteEntity? {
@@ -25,13 +25,13 @@ class NoteAccess(
     override suspend fun update(entity: NoteEntity) {
         scope.launch {
             noteDao.upsertNote(entity)
-        }
+        }.join()
     }
 
     override suspend fun delete(entity: NoteEntity) {
         scope.launch {
             noteDao.deleteNoteById(entity.id)
-        }
+        }.join()
     }
 
     override val readAllFlow: Flow<List<NoteEntity>>
