@@ -2,8 +2,10 @@ package nl.codingwithlinda.notemark.feature_home.data.remote
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.plugins.resources.put
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
+import io.ktor.client.utils.EmptyContent.contentType
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import nl.codingwithlinda.core.domain.model.Note
@@ -20,13 +22,8 @@ class NotesService(
     private val client: HttpClient = DefaultHttpClient.httpClient
 ) {
 
-
-    @OptIn(ExperimentalTime::class)
     suspend fun createNote(note: Note): Result<CreateNoteResponseDto, RemoteError>{
         try {
-            val lastEditedTimeStamp = System.currentTimeMillis()
-            val instant = Instant.fromEpochMilliseconds(lastEditedTimeStamp)
-            val iso8601 = instant.toString()
             val response = client.post(HttpRoutes.CREATE_NOTE_URL) {
                 contentType(ContentType.Application.Json)
                 setBody(CreateNoteRequestDto(
@@ -34,7 +31,26 @@ class NotesService(
                     title = note.title,
                     content = note.content,
                     createdAt = note.dateCreated,
-                    lastEditedAt = iso8601
+                    lastEditedAt = note.dateLastUpdated
+                ))
+            }
+            val dto = response.body<CreateNoteResponseDto>()
+            return Result.Success(dto)
+        }catch (e: Exception){
+            return Result.Error(RemoteError.UnknownError)
+        }
+    }
+
+    suspend fun updateNote(note: Note): Result<CreateNoteResponseDto, RemoteError>{
+        try {
+            val response = client.put(HttpRoutes.CREATE_NOTE_URL) {
+                contentType(ContentType.Application.Json)
+                setBody(CreateNoteRequestDto(
+                    id = note.id,
+                    title = note.title,
+                    content = note.content,
+                    createdAt = note.dateCreated,
+                    lastEditedAt = note.dateLastUpdated
                 ))
             }
             val dto = response.body<CreateNoteResponseDto>()

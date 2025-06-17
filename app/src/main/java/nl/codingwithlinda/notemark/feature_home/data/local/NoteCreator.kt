@@ -1,5 +1,6 @@
 package nl.codingwithlinda.notemark.feature_home.data.local
 
+import kotlinx.serialization.json.JsonNull.content
 import nl.codingwithlinda.core.domain.model.Note
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
@@ -9,12 +10,15 @@ import kotlin.uuid.Uuid
 @OptIn(ExperimentalUuidApi::class, ExperimentalTime::class)
 object NoteCreator {
 
-    fun iso8601(now: Long): String {
+    fun iso8601ToInstant(iso8601: String): Instant {
+        return Instant.parse(iso8601)
+    }
+    fun iso8601FromMillis(now: Long): String {
         return Instant.fromEpochMilliseconds(now).toString()
     }
     fun newNote(title: String, content: String): Note{
         val now = System.currentTimeMillis()
-        val dateCreated = iso8601(now)
+        val dateCreated = iso8601FromMillis(now)
         val id = Uuid.random().toHexString()
 
         return Note(
@@ -23,6 +27,15 @@ object NoteCreator {
             content = content,
             dateCreated = dateCreated,
             dateLastUpdated = dateCreated
+        )
+    }
+
+    fun updateNote(note: Note): Note{
+        val now = System.currentTimeMillis()
+        val dateUpdated = iso8601FromMillis(now)
+
+        return note.copy(
+            dateLastUpdated = dateUpdated
         )
     }
 }
