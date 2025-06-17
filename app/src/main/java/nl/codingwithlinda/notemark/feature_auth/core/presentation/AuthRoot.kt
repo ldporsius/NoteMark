@@ -35,7 +35,6 @@ import nl.codingwithlinda.notemark.feature_auth.landing.LandingScreen
 
 @Composable
 fun AuthRoot(
-    navigateBack: () -> Unit,
     navigateHome: () -> Unit,
     modifier: Modifier = Modifier) {
 
@@ -98,7 +97,6 @@ fun AuthRoot(
 
                     entry(AuthDestination.LoginDestination) {
                        LoginRoot(
-                           loginService = NoteMarkApplication.loginService,
                            navToRegister = {
                                println("LOGIN ROOT IS NAVIGATING TO REGISTER")
                                //printBackStack(backstackAuth)
@@ -149,7 +147,6 @@ private fun AuthRootPreview() {
     NoteMarkTheme {
         AuthRoot(
             navigateHome = {},
-            navigateBack = {}
         )
 
     }

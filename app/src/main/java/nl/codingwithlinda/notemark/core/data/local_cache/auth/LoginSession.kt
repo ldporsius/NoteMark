@@ -7,4 +7,5 @@ data class LoginSession(
     val userId: String = "",
     val accessToken: String = "",
     val refreshToken: String = "",
+    val dateCreated: Long = System.currentTimeMillis()
 )

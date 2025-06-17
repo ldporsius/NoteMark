@@ -4,29 +4,30 @@ import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.firstOrNull
 import nl.codingwithlinda.notemark.core.data.auth.login.LoginRequestDto
 import nl.codingwithlinda.notemark.core.data.auth.login.LoginResponseDto
-import nl.codingwithlinda.notemark.core.domain.auth.AuthApiClient
-import nl.codingwithlinda.notemark.core.domain.auth.AuthError
+import nl.codingwithlinda.notemark.core.data.auth.login.LoginService
 import nl.codingwithlinda.notemark.core.domain.auth.SessionManager
 import nl.codingwithlinda.notemark.core.domain.auth.SessionStorage
+import nl.codingwithlinda.notemark.core.domain.error.AuthError
 import nl.codingwithlinda.notemark.core.util.Result
 import kotlin.coroutines.coroutineContext
 
 class KtorSessionManager(
-    private val authApiClient: AuthApiClient,
+    private val loginService: LoginService,
     private val loginDataStore: SessionStorage
 ): SessionManager {
 
+    private val SESSION_EXPIRATION_TIME = 15 * 60 * 1000 //15 MIN.
     override suspend fun login(request: LoginRequestDto): Result<LoginResponseDto, AuthError> {
         try {
-           authApiClient.login(request).also {res ->
-                when(res){
-                    is Result.Error -> {
-                        println("${res.error}")
-                    }
-                    is Result.Success ->{
-                        saveSession(res.data)}
+            val loginRes = loginService.login(request.email, request.password)
+            when(loginRes){
+                is Result.Error -> {
+                    return Result.Error(loginRes.error)
                 }
-                return res
+                is Result.Success -> {
+                    saveSession(loginRes.data)
+                    return Result.Success(loginRes.data)
+                }
             }
         }catch (e: Exception){
             println("We are in the catch block")
@@ -55,37 +56,17 @@ class KtorSessionManager(
         //if Autherror is InvalidCredentialsError -> refresh
         //if refresh return error -> session is expired
         // return session expired error
-        refresh().also {
-            if(it is Result.Error){
-                println("We are in the isSessionValid error block. Error is ${it.error}, code is ${it.error.code}")
-                return false
-            }
-        }
-        return true
+        val now = System.currentTimeMillis()
+        val session = loginDataStore.data.firstOrNull() ?: return false
+        val isExpired = (now - session.dateCreated) > SESSION_EXPIRATION_TIME
+        return !isExpired
     }
 
     private suspend fun refresh():Result<LoginResponseDto, AuthError>{
-        val oldRefreshToken = loginDataStore.data.firstOrNull()?.refreshToken ?: return Result.Error(AuthError.SessionExpiredError)
+        val oldRefreshToken = loginDataStore.data.firstOrNull()?.refreshToken ?: return Result.Error(
+            AuthError.SessionExpiredError)
         try {
-
-            authApiClient.refreshToken(
-                RefreshTokenRequestDto(oldRefreshToken)
-            ).also {
-                if (it is Result.Success) {
-                    println("We are in the refresh success block")
-                    saveSession(it.data)
-                    println("Session saved successfully")
-                }
-                if (it is Result.Error) {
-
-                    println("We are in the refresh error block. Error is ${it.error}, code is ${it.error.code}")
-                    //if we get a 401 the session is expired. logout and return error
-                    if (it.error == AuthError.InvalidCredentialsError) {
-                        logout()
-                    }
-                }
-                return it
-            }
+            return Result.Error(AuthError.UnknownError)
         }catch (e: Exception){
             coroutineContext.ensureActive()
             return Result.Error(AuthError.UnknownError)
@@ -95,8 +76,10 @@ class KtorSessionManager(
     private suspend fun saveSession(response: LoginResponseDto){
         loginDataStore.updateData {
             it.copy(
+                userId = response.username,
                 accessToken = response.accessToken,
-                refreshToken = response.refreshToken
+                refreshToken = response.refreshToken,
+                dateCreated = System.currentTimeMillis()
             )
         }
     }

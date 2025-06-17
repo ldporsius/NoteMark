@@ -20,7 +20,7 @@ import nl.codingwithlinda.notemark.feature_home.data.remote.dto.FetchNotesRespon
 import nl.codingwithlinda.notemark.feature_home.data.remote.dto.NoteResponseDto
 
 class NotesService(
-    private val client: HttpClient = DefaultHttpClient.httpClient
+    private val client: HttpClient
 ) {
 
     suspend fun createNote(note: Note): Result<NoteResponseDto, RemoteError>{

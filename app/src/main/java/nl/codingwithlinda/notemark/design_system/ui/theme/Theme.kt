@@ -2,6 +2,7 @@ package nl.codingwithlinda.notemark.design_system.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.TextFieldColors
@@ -40,6 +41,16 @@ fun customTextFieldColors(): TextFieldColors {
         focusedSupportingTextColor = onSurface,
         unfocusedPlaceholderColor = onSurface,
         focusedPlaceholderColor = onSurfaceLight
+    )
+}
+
+@Composable
+fun customCardColors(): CardColors {
+    return CardColors(
+        containerColor = surfaceLowest,
+        contentColor = onSurface,
+        disabledContainerColor = surface,
+        disabledContentColor = onSurface
     )
 }
 

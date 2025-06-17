@@ -5,7 +5,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import nl.codingwithlinda.notemark.core.data.auth.login.LoginRequestDto
 import nl.codingwithlinda.notemark.core.data.auth.session.KtorSessionManager
-import nl.codingwithlinda.notemark.core.domain.auth.AuthError
+import nl.codingwithlinda.notemark.core.domain.error.AuthError
 import nl.codingwithlinda.notemark.core.util.Result
 import nl.codingwithlinda.notemark.test_data_generators.FakeAuthClient
 import nl.codingwithlinda.notemark.test_data_generators.FakeSessionStorage

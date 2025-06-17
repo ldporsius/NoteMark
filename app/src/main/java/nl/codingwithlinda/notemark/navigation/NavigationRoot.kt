@@ -1,6 +1,5 @@
 package nl.codingwithlinda.notemark.navigation
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
@@ -15,7 +14,7 @@ import nl.codingwithlinda.notemark.feature_auth.core.presentation.AuthRoot
 import nl.codingwithlinda.notemark.feature_home.presentation.HomeRoot
 
 @Composable
-fun NavigationRoot(modifier: Modifier = Modifier) {
+fun NavigationRoot() {
     val backstack = rememberNavBackStack(
         AuthRootDestination
     )
@@ -38,11 +37,6 @@ fun NavigationRoot(modifier: Modifier = Modifier) {
 
                 NavEntry(route) {
                     AuthRoot(
-                        navigateBack = {
-                            backstack.retainAll(
-                                listOf(AuthRootDestination)
-                            )
-                        },
                         navigateHome = {
                             backstack.retainAll(
                                 listOf(AuthRootDestination)

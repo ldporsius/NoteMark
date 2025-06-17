@@ -1,4 +1,4 @@
-package nl.codingwithlinda.notemark.design_system.components
+package nl.codingwithlinda.notemark.design_system.form_factors
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

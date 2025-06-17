@@ -14,6 +14,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import nl.codingwithlinda.notemark.BuildConfig
+import nl.codingwithlinda.notemark.core.app.NoteMarkApplication
 import nl.codingwithlinda.notemark.core.data.auth.register.RegisterService
 import nl.codingwithlinda.notemark.design_system.form_factors.ScreenTwoComposablesConstraint
 import nl.codingwithlinda.notemark.design_system.ui.theme.surfaceLowest
@@ -30,9 +31,7 @@ fun RegisterRoot(
         factory = viewModelFactory {
             initializer {
                 RegistrationViewModel(
-                    registerService = RegisterService.create(
-                        authorizer = BuildConfig.AUTH_API_EMAIL
-                    ),
+                    registerService = NoteMarkApplication.registerService,
                     onSuccess = {
                         navToHome()
                     },

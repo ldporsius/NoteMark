@@ -9,7 +9,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import nl.codingwithlinda.notemark.core.data.remote.common.HttpRoutes
-import nl.codingwithlinda.notemark.core.domain.auth.AuthError
+import nl.codingwithlinda.notemark.core.domain.error.AuthError
 import nl.codingwithlinda.notemark.core.util.Result
 
 class KtorLoginService(

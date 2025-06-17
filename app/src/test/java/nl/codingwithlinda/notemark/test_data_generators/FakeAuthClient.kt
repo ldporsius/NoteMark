@@ -5,7 +5,7 @@ import nl.codingwithlinda.notemark.core.data.auth.login.LoginRequestDto
 import nl.codingwithlinda.notemark.core.data.auth.login.LoginResponseDto
 import nl.codingwithlinda.notemark.core.data.auth.session.RefreshTokenRequestDto
 import nl.codingwithlinda.notemark.core.domain.auth.AuthApiClient
-import nl.codingwithlinda.notemark.core.domain.auth.AuthError
+import nl.codingwithlinda.notemark.core.domain.error.AuthError
 import nl.codingwithlinda.notemark.core.util.Result
 
 class FakeAuthClient(

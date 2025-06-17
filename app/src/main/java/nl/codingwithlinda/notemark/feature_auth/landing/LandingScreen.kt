@@ -5,13 +5,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import nl.codingwithlinda.notemark.R
-import nl.codingwithlinda.notemark.design_system.components.LimitedHeightLayout
+import nl.codingwithlinda.notemark.design_system.form_factors.LimitedHeightLayout
 import nl.codingwithlinda.notemark.design_system.form_factors.ScreenBackgroundInset
 import nl.codingwithlinda.notemark.design_system.form_factors.ScreenSizeHelper
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme

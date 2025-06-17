@@ -1,6 +1,6 @@
 package nl.codingwithlinda.notemark.feature_auth.core.presentation.error_mapping
 
-import nl.codingwithlinda.notemark.core.domain.auth.AuthError
+import nl.codingwithlinda.notemark.core.domain.error.AuthError
 import nl.codingwithlinda.notemark.core.util.UiText
 
 fun AuthError.toUiText() : UiText{

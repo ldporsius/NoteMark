@@ -15,10 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import nl.codingwithlinda.notemark.design_system.components.CustomColoredButton
-import nl.codingwithlinda.notemark.design_system.components.LimitedHeightLayout
-import nl.codingwithlinda.notemark.design_system.form_factors.ScreenSizeHelper
 import nl.codingwithlinda.notemark.design_system.ui.theme.LocalButtonShape
-import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
 import nl.codingwithlinda.notemark.design_system.ui.theme.onSurface
 import nl.codingwithlinda.notemark.feature_auth.landing.state.HomeAction
 
