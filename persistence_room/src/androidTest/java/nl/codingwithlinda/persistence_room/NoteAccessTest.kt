@@ -24,7 +24,8 @@ class NoteAccessTest {
         id = "test",
         title = "test",
         content = "test",
-        dateCreated = "test"
+        dateCreated = "test",
+        dateLastUpdated = "test"
     )
 
     @Before

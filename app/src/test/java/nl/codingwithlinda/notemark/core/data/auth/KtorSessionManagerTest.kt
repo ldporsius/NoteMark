@@ -3,7 +3,10 @@ package nl.codingwithlinda.notemark.core.data.auth
 import junit.framework.Assert.assertTrue
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import nl.codingwithlinda.notemark.core.data.auth.login.KtorLoginService
 import nl.codingwithlinda.notemark.core.data.auth.login.LoginRequestDto
+import nl.codingwithlinda.notemark.core.data.auth.login.LoginResponseDto
+import nl.codingwithlinda.notemark.core.data.auth.login.LoginService
 import nl.codingwithlinda.notemark.core.data.auth.session.KtorSessionManager
 import nl.codingwithlinda.notemark.core.domain.error.AuthError
 import nl.codingwithlinda.notemark.core.util.Result
@@ -17,8 +20,21 @@ class KtorSessionManagerTest {
 
     private val authApiClient = FakeAuthClient()
     private val sessionStorage = FakeSessionStorage()
+    private val loginService = object : LoginService{
+        override suspend fun login(
+            email: String,
+            password: String
+        ): Result<LoginResponseDto, AuthError> {
+            return authApiClient.login(
+                LoginRequestDto(
+                    email = email,
+                    password = password
+                )
+            )
+        }
+    }
     private val sessionManager = KtorSessionManager(
-        authApiClient = authApiClient,
+        loginService = loginService,
         loginDataStore = sessionStorage
     )
 
