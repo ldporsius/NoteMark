@@ -1,4 +1,4 @@
-package nl.codingwithlinda.notemark.core.data.auth
+package nl.codingwithlinda.notemark.core.data.auth.session
 
 import androidx.datastore.core.DataStore
 import kotlinx.coroutines.flow.Flow

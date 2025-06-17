@@ -1,4 +1,4 @@
-package nl.codingwithlinda.notemark.core.data.auth
+package nl.codingwithlinda.notemark.core.data.auth.session
 
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.firstOrNull

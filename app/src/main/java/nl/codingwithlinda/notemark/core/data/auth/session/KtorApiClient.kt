@@ -1,4 +1,4 @@
-package nl.codingwithlinda.notemark.core.data.auth
+package nl.codingwithlinda.notemark.core.data.auth.session
 
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.auth.Auth

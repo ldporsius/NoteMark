@@ -8,7 +8,8 @@ fun NoteEntity.toDomain(): Note{
         id = this.id,
         title = this.title,
         content = this.content,
-        dateCreated = this.dateCreated
+        dateCreated = this.dateCreated,
+        dateLastUpdated = this.dateLastUpdated
     )
 }
 
@@ -17,6 +18,7 @@ fun Note.toRoom(): NoteEntity{
         id = this.id,
         title = this.title,
         content = this.content,
-        dateCreated = this.dateCreated
+        dateCreated = this.dateCreated,
+        dateLastUpdated = this.dateLastUpdated
     )
 }

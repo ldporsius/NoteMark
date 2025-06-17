@@ -1,4 +1,4 @@
-package nl.codingwithlinda.notemark.core.data.auth
+package nl.codingwithlinda.notemark.core.data.auth.session
 
 data class RefreshTokenRequestDto(
     val refreshToken: String

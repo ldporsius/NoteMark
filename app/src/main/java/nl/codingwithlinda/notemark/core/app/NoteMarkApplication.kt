@@ -9,9 +9,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import nl.codingwithlinda.core.domain.model.Note
 import nl.codingwithlinda.core.domain.persistence.LocalAccess
-import nl.codingwithlinda.notemark.core.data.auth.KtorApiClient
-import nl.codingwithlinda.notemark.core.data.auth.KtorSessionManager
-import nl.codingwithlinda.notemark.core.data.auth.SessionStorageImpl
+import nl.codingwithlinda.notemark.core.data.auth.session.KtorApiClient
+import nl.codingwithlinda.notemark.core.data.auth.session.KtorSessionManager
+import nl.codingwithlinda.notemark.core.data.auth.session.SessionStorageImpl
 import nl.codingwithlinda.notemark.core.data.local_cache.auth.LoginSession
 import nl.codingwithlinda.notemark.core.data.local_cache.auth.LoginSessionSerializer
 import nl.codingwithlinda.notemark.core.domain.auth.SessionManager

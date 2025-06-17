@@ -16,7 +16,9 @@ constraintlayout = "2.2.1"
 ktor = "3.0.0"
 room = "2.7.1"
 appcompat = "1.7.1"
-
+coroutines-test = "1.8.1"
+assertk = "0.28.1"
+turbine = "1.2.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -42,6 +44,10 @@ androidx-room-runtime = { group = "androidx.room", name = "room-runtime", versio
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+# tests
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines-test" }
+assertk = { module = "com.willowtreeapps.assertk:assertk", version.ref = "assertk" }
 
 
 [plugins]

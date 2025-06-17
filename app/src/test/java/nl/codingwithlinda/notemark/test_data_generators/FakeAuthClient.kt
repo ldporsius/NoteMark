@@ -3,7 +3,7 @@ package nl.codingwithlinda.notemark.test_data_generators
 import kotlinx.coroutines.delay
 import nl.codingwithlinda.notemark.core.data.auth.login.LoginRequestDto
 import nl.codingwithlinda.notemark.core.data.auth.login.LoginResponseDto
-import nl.codingwithlinda.notemark.core.data.auth.RefreshTokenRequestDto
+import nl.codingwithlinda.notemark.core.data.auth.session.RefreshTokenRequestDto
 import nl.codingwithlinda.notemark.core.domain.auth.AuthApiClient
 import nl.codingwithlinda.notemark.core.domain.auth.AuthError
 import nl.codingwithlinda.notemark.core.util.Result
@@ -32,7 +32,8 @@ class FakeAuthClient(
             return Result.Success(
                 LoginResponseDto(
                     accessToken = "access_token",
-                    refreshToken = "refresh_token"
+                    refreshToken = "refresh_token",
+                    username = "username"
                 )
             )
         }
@@ -60,7 +61,8 @@ class FakeAuthClient(
             return Result.Success(
                 LoginResponseDto(
                     accessToken = "access_token",
-                    refreshToken = "refresh_token"
+                    refreshToken = "refresh_token",
+                    username = "username"
                 )
             )
         }
