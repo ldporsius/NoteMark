@@ -7,7 +7,7 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import kotlinx.serialization.json.internal.writeJson
 import io.ktor.serialization.kotlinx.json.*
-import nl.codingwithlinda.notemark.core.data.auth.common.DefaultHttpClient
+import nl.codingwithlinda.notemark.core.data.remote.common.DefaultHttpClient
 import nl.codingwithlinda.notemark.core.domain.auth.AuthError
 import nl.codingwithlinda.notemark.core.util.Result
 

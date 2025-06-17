@@ -10,7 +10,7 @@ import io.ktor.client.utils.EmptyContent.contentType
 import io.ktor.client.utils.buildHeaders
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import nl.codingwithlinda.notemark.core.data.auth.common.HttpRoutes
+import nl.codingwithlinda.notemark.core.data.remote.common.HttpRoutes
 import nl.codingwithlinda.notemark.core.domain.auth.AuthError
 import nl.codingwithlinda.notemark.core.util.Result
 

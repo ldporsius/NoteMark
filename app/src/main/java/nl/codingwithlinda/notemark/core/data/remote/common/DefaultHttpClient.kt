@@ -1,4 +1,4 @@
-package nl.codingwithlinda.notemark.core.data.auth.common
+package nl.codingwithlinda.notemark.core.data.remote.common
 
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO

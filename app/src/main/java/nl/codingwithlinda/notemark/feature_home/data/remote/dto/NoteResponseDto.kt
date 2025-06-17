@@ -5,7 +5,7 @@ package nl.codingwithlinda.notemark.feature_home.data.remote.dto
 "content": "<content>" String),
 "createdAt": "<created at timestamp>" ISO 8601 String),
 "lastEditedAt": "<last edited at timestamp>" ISO 8601 String)*/
-data class CreateNoteResponseDto(
+data class NoteResponseDto(
     val id: String,
     val title: String,
     val content: String,
