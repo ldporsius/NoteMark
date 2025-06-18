@@ -1,6 +1,5 @@
 package nl.codingwithlinda.notemark.navigation
 
-import android.app.Application
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
@@ -41,7 +40,9 @@ fun NavigationRoot(
         when(route) {
             is HomeDestination -> {
                 NavEntry(route) {
-                    HomeRoot()
+                    HomeRoot(
+                        sessionManager = sessionManager
+                    )
                 }
             }
             is AuthRootDestination -> {

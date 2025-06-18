@@ -9,8 +9,8 @@ val LocalButtonShape = compositionLocalOf {
     RoundedCornerShape(12.dp)
 }
 val Shapes = Shapes(
-    extraSmall = RoundedCornerShape(4.dp) ,
-    small = RoundedCornerShape(8.dp),
+    extraSmall = RoundedCornerShape(24.dp) ,
+    small = RoundedCornerShape(16.dp),
     medium = RoundedCornerShape(12.dp),
     large = RoundedCornerShape(0.dp)
 )

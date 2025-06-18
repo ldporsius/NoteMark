@@ -9,14 +9,18 @@ import java.time.ZonedDateTime
 import kotlin.time.ExperimentalTime
 import kotlin.time.toJavaInstant
 
-@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalTime::class)
 fun Note.toUi(): NoteUi {
 
-    val dateInstant  = NoteCreator.iso8601ToInstant(dateCreated).toJavaInstant()
-    val zdt = ZonedDateTime.ofInstant(dateInstant, ZoneId.systemDefault())
-    val dateFormatted = zdt.toLocalDate().let {
-        "${it.dayOfMonth} ${it.month}"
+    val dateFormatted = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val dateInstant = NoteCreator.iso8601ToInstant(dateCreated).toJavaInstant()
+        val zdt = ZonedDateTime.ofInstant(dateInstant, ZoneId.systemDefault())
+         zdt.toLocalDate().let {
+            "${it.dayOfMonth} ${it.month}"
+        }
+    }
+    else{
+        dateCreated //todo parse date
     }
 
     return NoteUi(
