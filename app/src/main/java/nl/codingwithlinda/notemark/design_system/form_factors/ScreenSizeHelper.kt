@@ -77,4 +77,5 @@ object ScreenSizeHelper {
         return screenInfo.width_height.height == ScreenType.COMPACT
     }
 
+
 }

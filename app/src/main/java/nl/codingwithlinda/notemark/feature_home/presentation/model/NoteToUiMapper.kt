@@ -1,5 +1,6 @@
 package nl.codingwithlinda.notemark.feature_home.presentation.model
 
+import androidx.compose.ui.util.fastReduce
 import nl.codingwithlinda.core.domain.model.Note
 import nl.codingwithlinda.notemark.feature_home.data.local.NoteCreator
 
@@ -41,7 +42,16 @@ fun org.threeten.bp.ZonedDateTime.dateWithoutYear(): String {
 
 
 fun NoteUi.limitContent(maxCharacters: Int, ): NoteUi{
+    val wholeWords = this.content.split(" ")
+    var limitedWords = ""
+
+        for (word in wholeWords){
+
+            if (limitedWords.length + word.length > maxCharacters) break
+            limitedWords = limitedWords.plus("$word ")
+        }
+
     return this.copy(
-        content = content.take(maxCharacters)
+        content = limitedWords + "..."
     )
 }
