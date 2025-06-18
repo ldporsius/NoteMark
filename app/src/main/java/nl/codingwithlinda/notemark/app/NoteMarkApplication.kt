@@ -28,7 +28,7 @@ class NoteMarkApplication: Application() {
     private val auth_api_key = BuildConfig.AUTH_API_EMAIL
 
     companion object {
-        lateinit var localNoteAccess: LocalAccess<Note, String>
+        lateinit var localNoteAccess: LocalNoteAccess
         lateinit var registerService: RegisterService
         val applicationScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
     }

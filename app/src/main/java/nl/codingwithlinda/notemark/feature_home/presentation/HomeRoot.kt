@@ -16,6 +16,7 @@ import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import nl.codingwithlinda.notemark.core.domain.auth.SessionManager
 import nl.codingwithlinda.notemark.core.navigation.NoteDestination
 import nl.codingwithlinda.notemark.design_system.ui.theme.surfaceLowest
+import nl.codingwithlinda.notemark.feature_home.presentation.detail.NoteDetailRoot
 import nl.codingwithlinda.notemark.feature_home.presentation.list.NoteListRoot
 
 @Composable
@@ -49,14 +50,7 @@ fun HomeRoot(
                 is NoteDestination.NoteDetailDestination -> {
                     val noteId = route.noteId
                     NavEntry(route) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(surfaceLowest)
-                                .safeDrawingPadding()
-                        ){
-                            Text(text = "Note detail $noteId")
-                        }
+                        NoteDetailRoot(noteId = noteId)
                     }
                 }
                 else -> {

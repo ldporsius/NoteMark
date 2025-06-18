@@ -17,6 +17,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import nl.codingwithlinda.notemark.app.NoteMarkApplication
 import nl.codingwithlinda.notemark.core.domain.auth.SessionManager
 import nl.codingwithlinda.notemark.core.util.ObserveAsEvents
 import nl.codingwithlinda.notemark.design_system.ui.theme.onPrimary
@@ -37,7 +38,8 @@ fun NoteListRoot(
     ObserveAsEvents(sessionManager.loginState) {
         userAvatar = userNameAvatar(it.userId)
     }
-    val repo = NoteRepositoryImpl()
+    val localNoteAccess = NoteMarkApplication.localNoteAccess
+    val repo = NoteRepositoryImpl(localNoteAccess)
     val notesViewModel = viewModel<NoteListViewModel>(
         factory = viewModelFactory {
             initializer {

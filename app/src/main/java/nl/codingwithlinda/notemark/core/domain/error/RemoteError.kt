@@ -4,8 +4,8 @@ import nl.codingwithlinda.notemark.core.util.Error
 
 
 sealed interface DataError: Error {
-    data class RemoteDataError(val error: RemoteError)
-    data class LocalDataError(val error: LocalError)
+    data class RemoteDataError(val error: RemoteError): DataError
+    data class LocalDataError(val error: LocalError): DataError
 }
 enum class RemoteError(val code: Int): Error {
     BadRequestError(code = 400),
@@ -17,5 +17,6 @@ enum class RemoteError(val code: Int): Error {
 
 enum class LocalError(): Error {
     UnknownError,
-    DISK_FULL
+    DISK_FULL,
+    NOT_FOUND,
 }

@@ -8,6 +8,8 @@ interface NoteRepository {
 
     suspend fun getNotes(page: Int, size: Int): Result1<List<Note>, DataError>
 
+    suspend fun getNote(noteId: String): Result1<Note, DataError>
+
     suspend fun createNote(note: Note): Result1<Note, DataError>
 
     suspend fun updateNote(note: Note): Result1<Note, DataError>

@@ -56,3 +56,11 @@ fun NoteUi.limitContent(maxCharacters: Int, ): NoteUi{
         content = "$limitByCharacters..."
     )
 }
+
+fun Note.toEditNoteUi(): EditNoteUi {
+    return EditNoteUi(
+        id = id,
+        title = title,
+        content = content
+    )
+}
