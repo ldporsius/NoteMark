@@ -32,13 +32,13 @@ fun Note.toUi(
 
 fun org.threeten.bp.ZonedDateTime.dateWithYear(): String {
     val formatter = org.threeten.bp.format.DateTimeFormatter.ofLocalizedDate(org.threeten.bp.format.FormatStyle.MEDIUM)
-    return this.format(formatter)
+    return this.format(formatter).filterNot { it == '.' }
 
 }
 
 fun org.threeten.bp.ZonedDateTime.dateWithoutYear(): String {
     val formatter = org.threeten.bp.format.DateTimeFormatter.ofPattern("dd MMM")
-    return this.format(formatter)
+    return this.format(formatter).filterNot { it == '.' }
 }
 
 
