@@ -22,6 +22,7 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import kotlinx.coroutines.launch
 import nl.codingwithlinda.notemark.core.app.NoteMarkApplication
+import nl.codingwithlinda.notemark.core.domain.auth.SessionManager
 import nl.codingwithlinda.notemark.core.navigation.AuthDestination
 import nl.codingwithlinda.notemark.core.util.ObserveAsEvents
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
@@ -35,6 +36,7 @@ import nl.codingwithlinda.notemark.feature_auth.landing.LandingScreen
 
 @Composable
 fun AuthRoot(
+    sessionManager: SessionManager,
     navigateHome: () -> Unit,
     modifier: Modifier = Modifier) {
 
@@ -97,6 +99,7 @@ fun AuthRoot(
 
                     entry(AuthDestination.LoginDestination) {
                        LoginRoot(
+                           sessionManager = sessionManager,
                            navToRegister = {
                                println("LOGIN ROOT IS NAVIGATING TO REGISTER")
                                //printBackStack(backstackAuth)
@@ -141,13 +144,3 @@ fun printBackStack(backStack: NavBackStack) {
     }
 }
 
-@Preview(apiLevel = 35)
-@Composable
-private fun AuthRootPreview() {
-    NoteMarkTheme {
-        AuthRoot(
-            navigateHome = {},
-        )
-
-    }
-}

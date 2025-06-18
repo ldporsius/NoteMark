@@ -24,6 +24,10 @@ fun Note.toUi(): NoteUi {
         title = title,
         content = content
     )
-
 }
 
+fun NoteUi.limitContent(maxCharacters: Int, ): NoteUi{
+    return this.copy(
+        content = content.take(maxCharacters)
+    )
+}

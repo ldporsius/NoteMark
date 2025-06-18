@@ -3,7 +3,6 @@ package nl.codingwithlinda.notemark.feature_home.presentation.list.components
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,6 +13,7 @@ import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
 import nl.codingwithlinda.notemark.design_system.ui.theme.customCardColors
 import nl.codingwithlinda.notemark.design_system.ui.theme.primary
 import nl.codingwithlinda.notemark.feature_home.presentation.model.NoteUi
+import nl.codingwithlinda.notemark.feature_home.presentation.model.limitContent
 
 @Composable
 fun NoteListItem(
@@ -37,7 +37,7 @@ fun NoteListItem(
                 style = MaterialTheme.typography.titleMedium,
             )
             Text(
-                note.content,
+                note.limitContent(150).content,
                 style = MaterialTheme.typography.bodySmall
             )
         }

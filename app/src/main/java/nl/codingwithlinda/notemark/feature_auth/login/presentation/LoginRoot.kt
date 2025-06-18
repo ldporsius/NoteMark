@@ -15,6 +15,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import nl.codingwithlinda.notemark.core.app.NoteMarkApplication
 import nl.codingwithlinda.notemark.core.data.auth.login.LoginService
+import nl.codingwithlinda.notemark.core.domain.auth.SessionManager
 import nl.codingwithlinda.notemark.design_system.form_factors.ScreenTwoComposablesConstraint
 import nl.codingwithlinda.notemark.design_system.ui.theme.surfaceLowest
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.components.LoginForm
@@ -22,6 +23,7 @@ import nl.codingwithlinda.notemark.feature_auth.login.presentation.components.Lo
 
 @Composable
 fun LoginRoot(
+    sessionManager: SessionManager,
     navToRegister: () -> Unit,
     onLoginSuccess: () -> Unit
 ) {
@@ -30,7 +32,7 @@ fun LoginRoot(
         factory = viewModelFactory {
             initializer {
                 LoginViewModel(
-                    sessionManager = NoteMarkApplication.sessionManager,
+                    sessionManager = sessionManager,
                     navToRegister = navToRegister,
                     onLoginSuccess = onLoginSuccess
                 )

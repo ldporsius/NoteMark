@@ -27,30 +27,32 @@ val Context.dataStoreLoginSession: DataStore<LoginSession> by dataStore("login_s
 
 class NoteMarkApplication: Application() {
 
-    lateinit var loginSessionDataStore: DataStore<LoginSession>
-
-    lateinit var localNoteAccess: LocalAccess<Note, String>
+    val loginSessionDataStore = this.dataStoreLoginSession
     private val sessionStorage = SessionStorageImpl(loginSessionDataStore)
-    private val auth_api_key = BuildConfig.AUTH_API_EMAIL
-    private val applicationScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
     private val defaultHttpClient = DefaultHttpClient(sessionStorage)
-    private lateinit var loginService: LoginService
+   /* val loginService = KtorLoginService(defaultHttpClient.httpClient)
+    val sessionManager: SessionManager by lazy {
+        KtorSessionManager(this)
+    }*/
+
+
+    private val auth_api_key = BuildConfig.AUTH_API_EMAIL
 
     private val db = DataAccess(this).db
-    companion object {
 
+
+    companion object {
+        lateinit var localNoteAccess: LocalAccess<Note, String>
         lateinit var registerService: RegisterService
-        lateinit var sessionManager: SessionManager
+        val applicationScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
     }
     override fun onCreate() {
         super.onCreate()
         localNoteAccess = LocalNoteAccess(
             noteDatabase = db,
         )
-        loginSessionDataStore = this.dataStoreLoginSession
 
-        loginService = KtorLoginService(defaultHttpClient.httpClient)
         registerService = KtorRegisterService(defaultHttpClient.httpClient)
-        sessionManager = KtorSessionManager(loginService, sessionStorage)
+
     }
 }

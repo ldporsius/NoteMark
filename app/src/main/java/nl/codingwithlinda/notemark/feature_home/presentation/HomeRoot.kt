@@ -21,7 +21,9 @@ import nl.codingwithlinda.notemark.feature_home.presentation.list.NoteListViewMo
 import nl.codingwithlinda.notemark.feature_home.presentation.list.components.NoteListScreen
 
 @Composable
-fun HomeRoot() {
+fun HomeRoot(
+
+) {
     val repo = NoteRepositoryImpl()
     val notesViewModel = viewModel<NoteListViewModel>(
         factory = viewModelFactory {

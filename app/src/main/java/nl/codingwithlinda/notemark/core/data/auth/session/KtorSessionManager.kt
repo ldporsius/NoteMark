@@ -1,10 +1,16 @@
 package nl.codingwithlinda.notemark.core.data.auth.session
 
+import android.app.Application
 import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
+import nl.codingwithlinda.notemark.core.app.dataStoreLoginSession
+import nl.codingwithlinda.notemark.core.data.auth.login.KtorLoginService
 import nl.codingwithlinda.notemark.core.data.auth.login.LoginRequestDto
 import nl.codingwithlinda.notemark.core.data.auth.login.LoginResponseDto
 import nl.codingwithlinda.notemark.core.data.auth.login.LoginService
+import nl.codingwithlinda.notemark.core.data.local_cache.auth.LoginSession
+import nl.codingwithlinda.notemark.core.data.remote.common.DefaultHttpClient
 import nl.codingwithlinda.notemark.core.domain.auth.SessionManager
 import nl.codingwithlinda.notemark.core.domain.auth.SessionStorage
 import nl.codingwithlinda.notemark.core.domain.error.AuthError
@@ -12,11 +18,16 @@ import nl.codingwithlinda.notemark.core.util.Result
 import kotlin.coroutines.coroutineContext
 
 class KtorSessionManager(
-    private val loginService: LoginService,
-    private val loginDataStore: SessionStorage
+    application: Application
 ): SessionManager {
-
+    private val loginSessionDataStore = application.dataStoreLoginSession
+    private val sessionStorage = SessionStorageImpl(loginSessionDataStore)
+    private val defaultHttpClient = DefaultHttpClient(sessionStorage)
+    private val loginService = KtorLoginService(defaultHttpClient.httpClient)
     private val SESSION_EXPIRATION_TIME = 15 * 60 * 1000 //15 MIN.
+
+    override val loginState: Flow<LoginSession>
+        get() = loginSessionDataStore.data
     override suspend fun login(request: LoginRequestDto): Result<LoginResponseDto, AuthError> {
         try {
             val loginRes = loginService.login(request.email, request.password)
@@ -57,13 +68,13 @@ class KtorSessionManager(
         //if refresh return error -> session is expired
         // return session expired error
         val now = System.currentTimeMillis()
-        val session = loginDataStore.data.firstOrNull() ?: return false
+        val session = loginSessionDataStore.data.firstOrNull() ?: return false
         val isExpired = (now - session.dateCreated) > SESSION_EXPIRATION_TIME
         return !isExpired
     }
 
     private suspend fun refresh():Result<LoginResponseDto, AuthError>{
-        val oldRefreshToken = loginDataStore.data.firstOrNull()?.refreshToken ?: return Result.Error(
+        val oldRefreshToken = loginSessionDataStore.data.firstOrNull()?.refreshToken ?: return Result.Error(
             AuthError.SessionExpiredError)
         try {
             return Result.Error(AuthError.UnknownError)
@@ -74,7 +85,7 @@ class KtorSessionManager(
     }
 
     private suspend fun saveSession(response: LoginResponseDto){
-        loginDataStore.updateData {
+        loginSessionDataStore.updateData {
             it.copy(
                 userId = response.username,
                 accessToken = response.accessToken,
@@ -85,7 +96,7 @@ class KtorSessionManager(
     }
 
     private suspend fun deleteSession(){
-        loginDataStore.updateData {
+        loginSessionDataStore.updateData {
             it.copy(
                 accessToken = "",
                 refreshToken = ""
