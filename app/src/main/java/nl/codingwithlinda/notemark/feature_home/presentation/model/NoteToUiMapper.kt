@@ -23,6 +23,7 @@ fun Note.toUi(
     }
 
     return NoteUi(
+        id = id,
         date = dateFormatted(),
         title = title,
         content = content

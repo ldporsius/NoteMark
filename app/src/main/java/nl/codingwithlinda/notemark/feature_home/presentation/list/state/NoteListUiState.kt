@@ -4,4 +4,6 @@ import nl.codingwithlinda.notemark.feature_home.presentation.model.NoteUi
 
 data class NoteListUiState(
     val notes: List<NoteUi> = emptyList(),
+    val showDeleteConfirmationDialog: Boolean = false,
+    val toDeleteNoteId: String? = null
 )

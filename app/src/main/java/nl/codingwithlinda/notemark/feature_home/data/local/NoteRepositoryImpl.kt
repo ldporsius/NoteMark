@@ -19,6 +19,7 @@ val olderNotes = tempNotes.map {
 
 val dummyUiNotes = List(10){
     NoteUi(
+        id = it.toString(),
         date = "14 jul",
         title = "My first note",
         content = longDummyText
@@ -41,4 +42,9 @@ class NoteRepositoryImpl: NoteRepository {
         //save to db and to remote storage
         return Result.Success(note)
     }
+
+    override suspend fun deleteNote(noteId: String): Result<Unit, DataError> {
+        return Result.Success(Unit)
+    }
+
 }

@@ -12,4 +12,7 @@ interface NoteRepository {
 
     suspend fun updateNote(note: Note): Result1<Note, DataError>
 
+    suspend fun deleteNote(noteId: String): Result1<Unit, DataError>
+
+
 }
