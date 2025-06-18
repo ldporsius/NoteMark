@@ -21,7 +21,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import kotlinx.coroutines.launch
-import nl.codingwithlinda.notemark.core.app.NoteMarkApplication
+import nl.codingwithlinda.notemark.app.NoteMarkApplication
 import nl.codingwithlinda.notemark.core.domain.auth.SessionManager
 import nl.codingwithlinda.notemark.core.navigation.AuthDestination
 import nl.codingwithlinda.notemark.core.util.ObserveAsEvents

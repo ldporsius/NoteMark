@@ -84,6 +84,10 @@ dependencies {
     //datastore
     implementation("androidx.datastore:datastore:1.1.7")
 
+    //date time
+    //backwards compatible date time library that supports older devices than 26
+    implementation("com.jakewharton.threetenabp:threetenabp:1.4.6")
+
     //ktor
     implementation(libs.ktor.client.auth)
     val ktor_version = "3.0.0"

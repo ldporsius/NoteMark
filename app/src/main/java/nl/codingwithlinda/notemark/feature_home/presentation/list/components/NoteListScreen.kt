@@ -2,12 +2,15 @@ package nl.codingwithlinda.notemark.feature_home.presentation.list.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import nl.codingwithlinda.notemark.design_system.ui.theme.backgroundGradientGrey
 import nl.codingwithlinda.notemark.feature_home.presentation.list.state.NoteListUiState
 
@@ -25,6 +28,9 @@ fun NoteListScreen(
 
         LazyVerticalStaggeredGrid(
             columns = StaggeredGridCells.Fixed(2),
+            horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(16.dp),
+            verticalItemSpacing = 16.dp,
+            contentPadding = PaddingValues(bottom = 48.dp)
         ) {
             items(uiState.notes) {
                 NoteListItem(note = it)

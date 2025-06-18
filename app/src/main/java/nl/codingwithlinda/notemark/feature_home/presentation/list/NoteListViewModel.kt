@@ -1,5 +1,6 @@
 package nl.codingwithlinda.notemark.feature_home.presentation.list
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,6 +11,9 @@ import nl.codingwithlinda.notemark.core.util.Result
 import nl.codingwithlinda.notemark.feature_home.domain.NoteRepository
 import nl.codingwithlinda.notemark.feature_home.presentation.list.state.NoteListUiState
 import nl.codingwithlinda.notemark.feature_home.presentation.model.toUi
+import java.time.ZonedDateTime
+import java.util.Date
+
 
 class NoteListViewModel(
     private val noteRepository: NoteRepository
@@ -23,7 +27,8 @@ class NoteListViewModel(
             val notesRes = noteRepository.getNotes(-1, 0)
             when(notesRes){
                 is nl.codingwithlinda.notemark.core.util.Result.Success -> {
-                    val notes = notesRes.data.map { it.toUi() }
+                    val today = org.threeten.bp.ZonedDateTime.now()
+                    val notes = notesRes.data.map { it.toUi(today) }
                     _uiState.update {
                         it.copy(notes = notes)
                     }

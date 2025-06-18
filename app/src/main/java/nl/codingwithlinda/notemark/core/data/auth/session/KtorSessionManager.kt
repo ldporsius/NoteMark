@@ -4,7 +4,7 @@ import android.app.Application
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
-import nl.codingwithlinda.notemark.core.app.dataStoreLoginSession
+import nl.codingwithlinda.notemark.app.dataStoreLoginSession
 import nl.codingwithlinda.notemark.core.data.auth.login.KtorLoginService
 import nl.codingwithlinda.notemark.core.data.auth.login.LoginRequestDto
 import nl.codingwithlinda.notemark.core.data.auth.login.LoginResponseDto
