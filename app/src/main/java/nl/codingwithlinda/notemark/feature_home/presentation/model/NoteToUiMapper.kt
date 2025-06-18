@@ -43,16 +43,16 @@ fun org.threeten.bp.ZonedDateTime.dateWithoutYear(): String {
 
 
 fun NoteUi.limitContent(maxCharacters: Int, ): NoteUi{
+    if (this.content.length <= maxCharacters) return this
     val wholeWords = this.content.split(" ")
     var limitedWords = ""
-
         for (word in wholeWords){
-
-            if (limitedWords.length + word.length > maxCharacters) break
             limitedWords = limitedWords.plus("$word ")
+            if (limitedWords.length + word.length > maxCharacters) break
         }
 
+    val limitByCharacters = limitedWords.take(maxCharacters)
     return this.copy(
-        content = limitedWords + "..."
+        content = "$limitByCharacters..."
     )
 }

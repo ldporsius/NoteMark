@@ -25,11 +25,15 @@ val dummyUiNotes = List(10){
         content = longDummyText
     )
 }
+val dummyNoteNoWhiteSpace = NoteCreator.newNote(
+    title = "No white space",
+    content = longDummyText.filterNot{it.isWhitespace()}
+)
 
 class NoteRepositoryImpl: NoteRepository {
 
     override suspend fun getNotes(page: Int, size: Int): Result<List<Note>, DataError> {
-        return Result.Success(tempNotes + olderNotes)
+        return Result.Success(listOf(dummyNoteNoWhiteSpace) + tempNotes + olderNotes)
     }
 
     override suspend fun createNote(note: Note): Result<Note, DataError> {
