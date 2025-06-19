@@ -29,8 +29,8 @@ class LocalNoteAccess(
         noteAccess.update(entity.toRoom())
     }
 
-    override suspend fun delete(entity: Note) {
-        noteAccess.delete(entity.toRoom())
+    override suspend fun delete(id: String) {
+        noteAccess.delete(id)
     }
 
     override val readAllFlow: Flow<List<Note>>

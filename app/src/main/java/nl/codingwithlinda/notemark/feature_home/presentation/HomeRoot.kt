@@ -1,12 +1,6 @@
 package nl.codingwithlinda.notemark.feature_home.presentation
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.rememberNavBackStack
@@ -15,12 +9,13 @@ import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import nl.codingwithlinda.notemark.core.domain.auth.SessionManager
 import nl.codingwithlinda.notemark.core.navigation.NoteDestination
-import nl.codingwithlinda.notemark.design_system.ui.theme.surfaceLowest
+import nl.codingwithlinda.notemark.feature_home.domain.NoteRepository
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.NoteDetailRoot
 import nl.codingwithlinda.notemark.feature_home.presentation.list.NoteListRoot
 
 @Composable
 fun HomeRoot(
+    noteRepository: NoteRepository,
     sessionManager: SessionManager
 ) {
 
@@ -41,16 +36,24 @@ fun HomeRoot(
                     NavEntry(route) {
                         NoteListRoot(
                             sessionManager = sessionManager,
+                            noteRepository = noteRepository,
                             onEditNote = {
                                 backstack.retainAll(listOf(NoteDestination.NoteListDestination))
                                 backstack.add(NoteDestination.NoteDetailDestination(it))
+                                println("HOME ROOT NAVIGATES TO NOTE DETAIL. BACKSTACK: $backstack")
                             })
                     }
                 }
                 is NoteDestination.NoteDetailDestination -> {
-                    val noteId = route.noteId
+                    val noteDto = route.noteDto
                     NavEntry(route) {
-                        NoteDetailRoot(noteId = noteId)
+                        NoteDetailRoot(
+                            noteRepository = noteRepository,
+                            noteDto = noteDto,
+                            navBack = {
+                                backstack.retainAll(listOf(NoteDestination.NoteListDestination))
+                            }
+                        )
                     }
                 }
                 else -> {

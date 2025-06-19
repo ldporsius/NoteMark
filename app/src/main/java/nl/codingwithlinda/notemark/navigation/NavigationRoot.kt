@@ -13,11 +13,13 @@ import nl.codingwithlinda.notemark.core.navigation.AuthRootDestination
 import nl.codingwithlinda.notemark.core.navigation.HomeDestination
 import nl.codingwithlinda.notemark.core.util.ObserveAsEvents
 import nl.codingwithlinda.notemark.feature_auth.core.presentation.AuthRoot
+import nl.codingwithlinda.notemark.feature_home.domain.NoteRepository
 import nl.codingwithlinda.notemark.feature_home.presentation.HomeRoot
 
 @Composable
 fun NavigationRoot(
-    sessionManager: SessionManager
+    sessionManager: SessionManager,
+    noteRepository: NoteRepository
 ) {
 
     val backstack = rememberNavBackStack(
@@ -41,7 +43,8 @@ fun NavigationRoot(
             is HomeDestination -> {
                 NavEntry(route) {
                     HomeRoot(
-                        sessionManager = sessionManager
+                        sessionManager = sessionManager,
+                        noteRepository = noteRepository
                     )
                 }
             }

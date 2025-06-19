@@ -6,10 +6,14 @@ import androidx.compose.material3.CardColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 
 
@@ -30,6 +34,20 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun customTextFieldColors(): TextFieldColors {
+    return TextFieldDefaults.colors().copy(
+        unfocusedContainerColor = Color.Transparent,
+        focusedContainerColor = surfaceLowest,
+        focusedIndicatorColor = onSurfaceVariant,
+        errorContainerColor = surfaceLowest,
+
+    )
+}
+@Composable
+fun customTextFieldShape(): Shape{
+    return RectangleShape
+}
+@Composable
+fun customOutlinedTextFieldColors(): TextFieldColors {
     return OutlinedTextFieldDefaults.colors(
         unfocusedContainerColor = surface,
         focusedContainerColor = surfaceLowest,

@@ -31,7 +31,7 @@ import nl.codingwithlinda.notemark.R
 import nl.codingwithlinda.notemark.core.util.UiText
 import nl.codingwithlinda.notemark.design_system.ui.theme.LocalButtonShape
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
-import nl.codingwithlinda.notemark.design_system.ui.theme.customTextFieldColors
+import nl.codingwithlinda.notemark.design_system.ui.theme.customOutlinedTextFieldColors
 import nl.codingwithlinda.notemark.design_system.ui.theme.onPrimary
 import nl.codingwithlinda.notemark.design_system.ui.theme.primary
 import nl.codingwithlinda.notemark.feature_auth.register.presentation.state.RegistrationAction
@@ -84,7 +84,7 @@ fun RegistrationForm(
             },
             label = {  },
             singleLine = true,
-            colors = customTextFieldColors(),
+            colors = customOutlinedTextFieldColors(),
             keyboardActions = KeyboardActions(
                 onNext = {
                     focusManager.moveFocus(FocusDirection.Down)
@@ -130,7 +130,7 @@ fun RegistrationForm(
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next
             ),
-            colors = customTextFieldColors(),
+            colors = customOutlinedTextFieldColors(),
             modifier = Modifier
                 .fillMaxWidth()
                 .then(focusModifier {
@@ -187,7 +187,7 @@ fun RegistrationForm(
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next
             ),
-            colors = customTextFieldColors(),
+            colors = customOutlinedTextFieldColors(),
             modifier = Modifier
                 .fillMaxWidth()
                 .then(focusModifier {
@@ -245,7 +245,7 @@ fun RegistrationForm(
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Done
             ),
-            colors = customTextFieldColors(),
+            colors = customOutlinedTextFieldColors(),
             modifier = Modifier.fillMaxWidth()
         )
 

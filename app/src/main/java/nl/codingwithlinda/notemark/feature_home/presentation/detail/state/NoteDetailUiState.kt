@@ -1,7 +1,7 @@
 package nl.codingwithlinda.notemark.feature_home.presentation.detail.state
 
-import nl.codingwithlinda.notemark.feature_home.presentation.model.EditNoteUi
+import nl.codingwithlinda.notemark.core.navigation.dto.EditNoteDto
 
 data class NoteDetailUiState(
-    val editNoteUi: EditNoteUi? = null,
+    val editNoteDto: EditNoteDto? = null,
 )

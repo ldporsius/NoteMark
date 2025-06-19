@@ -11,12 +11,9 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -24,8 +21,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import nl.codingwithlinda.notemark.R
-import nl.codingwithlinda.notemark.core.util.ObserveAsEvents
-import nl.codingwithlinda.notemark.design_system.ui.theme.customTextFieldColors
+import nl.codingwithlinda.notemark.design_system.ui.theme.customOutlinedTextFieldColors
 import nl.codingwithlinda.notemark.design_system.ui.theme.LocalButtonShape
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.state.LoginAction
@@ -67,7 +63,7 @@ fun LoginForm(
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next
             ),
-            colors = customTextFieldColors(),
+            colors = customOutlinedTextFieldColors(),
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -118,7 +114,7 @@ fun LoginForm(
                     focusManager.clearFocus()
                 }
             ),
-            colors = customTextFieldColors(),
+            colors = customOutlinedTextFieldColors(),
             modifier = Modifier.fillMaxWidth()
         )
 

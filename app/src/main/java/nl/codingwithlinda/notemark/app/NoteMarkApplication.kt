@@ -17,6 +17,8 @@ import nl.codingwithlinda.notemark.core.data.auth.session.SessionStorageImpl
 import nl.codingwithlinda.notemark.core.data.local_cache.auth.LoginSession
 import nl.codingwithlinda.notemark.core.data.local_cache.auth.LoginSessionSerializer
 import nl.codingwithlinda.notemark.core.data.remote.common.DefaultHttpClient
+import nl.codingwithlinda.notemark.core.di.AndroidAppModule
+import nl.codingwithlinda.notemark.core.di.AppModule
 import nl.codingwithlinda.persistence_room.database.DataAccess
 import nl.codingwithlinda.persistence_room.public_access.LocalNoteAccess
 
@@ -28,7 +30,7 @@ class NoteMarkApplication: Application() {
     private val auth_api_key = BuildConfig.AUTH_API_EMAIL
 
     companion object {
-        lateinit var localNoteAccess: LocalNoteAccess
+        lateinit var appModule: AppModule
         lateinit var registerService: RegisterService
         val applicationScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
     }
@@ -37,8 +39,10 @@ class NoteMarkApplication: Application() {
 
         AndroidThreeTen.init(this)
 
+        appModule = AndroidAppModule(this)
+
         val db = DataAccess(this).db
-        localNoteAccess = LocalNoteAccess(
+        val localNoteAccess = LocalNoteAccess(
             noteDatabase = db,
         )
         val loginSessionDataStore = this.dataStoreLoginSession

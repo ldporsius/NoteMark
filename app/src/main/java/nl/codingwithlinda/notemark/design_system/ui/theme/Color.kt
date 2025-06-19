@@ -23,6 +23,12 @@ val backgroundGradient = Brush.verticalGradient(
     endY = 1000f
 )
 
+val fabGradient = Brush.verticalGradient(
+    colors = listOf(primary.copy(.5f), primary),
+    startY = 0f,
+    endY = Float.POSITIVE_INFINITY
+)
+
 val backgroundGradientGrey = Brush.verticalGradient(
     colors = listOf(surfaceLowest, surface),
     startY = 0f,

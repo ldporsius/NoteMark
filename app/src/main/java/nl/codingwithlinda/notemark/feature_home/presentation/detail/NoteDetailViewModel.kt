@@ -2,11 +2,17 @@ package nl.codingwithlinda.notemark.feature_home.presentation.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jakewharton.threetenabp.AndroidThreeTen.init
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import nl.codingwithlinda.notemark.core.navigation.dto.EditNoteDto
+import nl.codingwithlinda.notemark.core.presentation.toUiText
+import nl.codingwithlinda.notemark.core.util.Error
 import nl.codingwithlinda.notemark.core.util.Result
+import nl.codingwithlinda.notemark.design_system.util.SnackBarController
+import nl.codingwithlinda.notemark.design_system.util.SnackbarEvent
 import nl.codingwithlinda.notemark.feature_home.domain.NoteRepository
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.state.NoteDetailAction
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.state.NoteDetailUiState
@@ -14,27 +20,26 @@ import nl.codingwithlinda.notemark.feature_home.presentation.model.toEditNoteUi
 
 class NoteDetailViewModel(
     private val noteRepository: NoteRepository,
-    private val noteId: String
+    private val noteDto: EditNoteDto,
+    private val navBack: () -> Unit
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow(NoteDetailUiState())
     val uiState = _uiState.asStateFlow()
 
+    private fun sendError(error: Error) = viewModelScope.launch{
+        SnackBarController.sendEvent(
+            SnackbarEvent(
+                message = error.toUiText(),
+            )
+        )
+    }
     init {
         viewModelScope.launch {
-            val noteResult = noteRepository.getNote(noteId)
-            when(noteResult) {
-                is Result.Error -> {
-                    //handle error
-                }
-                is Result.Success-> {
-                    val note = noteResult.data
-                    _uiState.update {
-                        it.copy(
-                            editNoteUi = note.toEditNoteUi()
-                        )
-                    }
-                }
+            _uiState.update {
+                it.copy(
+                 editNoteDto = noteDto
+                )
             }
         }
     }
@@ -44,16 +49,36 @@ class NoteDetailViewModel(
             NoteDetailAction.CancelAction -> {
                 //if content is edited show dialog to save or dismiss
                 //else navigate back
+                if (uiState.value.editNoteDto == null) navBack()
+                val isTitleChanged = noteDto.title != uiState.value.editNoteDto?.title
+                val isContentChanged = noteDto.content != uiState.value.editNoteDto?.content
+                if (isTitleChanged || isContentChanged) {
+                    //show dialog
+                }else{
+                    navBack()
+                }
             }
             NoteDetailAction.SaveAction -> {
                 //save note
             }
 
             is NoteDetailAction.ContentChanged -> {
-                //update content
+               _uiState.update {
+                   it.copy(
+                       editNoteDto = it.editNoteDto?.copy(
+                           content = action.content
+                       )
+                   )
+               }
             }
             is NoteDetailAction.TitleChanged -> {
-                //update title
+                _uiState.update {
+                    it.copy(
+                        editNoteDto = it.editNoteDto?.copy(
+                            title = action.title
+                        )
+                    )
+                }
             }
         }
 

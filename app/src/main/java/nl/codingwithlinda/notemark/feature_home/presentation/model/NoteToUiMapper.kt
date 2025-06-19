@@ -1,7 +1,7 @@
 package nl.codingwithlinda.notemark.feature_home.presentation.model
 
-import androidx.compose.ui.util.fastReduce
 import nl.codingwithlinda.core.domain.model.Note
+import nl.codingwithlinda.notemark.core.navigation.dto.EditNoteDto
 import nl.codingwithlinda.notemark.feature_home.data.local.NoteCreator
 
 fun Note.toUi(
@@ -57,8 +57,8 @@ fun NoteUi.limitContent(maxCharacters: Int, ): NoteUi{
     )
 }
 
-fun Note.toEditNoteUi(): EditNoteUi {
-    return EditNoteUi(
+fun Note.toEditNoteUi(): EditNoteDto {
+    return EditNoteDto(
         id = id,
         title = title,
         content = content

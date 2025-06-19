@@ -21,8 +21,8 @@ class NoteAccess(
             noteDao.upsertNote(entity)
     }
 
-    override suspend fun delete(entity: NoteEntity) {
-            noteDao.deleteNoteById(entity.id)
+    override suspend fun delete(id: String) {
+         noteDao.deleteNoteById(id)
     }
 
     override val readAllFlow: Flow<List<NoteEntity>>
