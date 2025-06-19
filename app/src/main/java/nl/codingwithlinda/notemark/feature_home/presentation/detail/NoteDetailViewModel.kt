@@ -13,6 +13,7 @@ import nl.codingwithlinda.notemark.core.util.Error
 import nl.codingwithlinda.notemark.core.util.Result
 import nl.codingwithlinda.notemark.design_system.util.SnackBarController
 import nl.codingwithlinda.notemark.design_system.util.SnackbarEvent
+import nl.codingwithlinda.notemark.feature_home.data.local.NoteCreator
 import nl.codingwithlinda.notemark.feature_home.domain.NoteRepository
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.state.NoteDetailAction
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.state.NoteDetailUiState
@@ -46,7 +47,7 @@ class NoteDetailViewModel(
 
     fun onAction(action: NoteDetailAction) {
         when(action) {
-            NoteDetailAction.CancelAction -> {
+            NoteDetailAction.ConfirmCancelDialog -> {
                 //if content is edited show dialog to save or dismiss
                 //else navigate back
                 if (uiState.value.editNoteDto == null) navBack()
@@ -54,12 +55,44 @@ class NoteDetailViewModel(
                 val isContentChanged = noteDto.content != uiState.value.editNoteDto?.content
                 if (isTitleChanged || isContentChanged) {
                     //show dialog
+                    _uiState.update {
+                        it.copy(
+                            showConfirmCancelDialog = true
+                        )
+                    }
                 }else{
                     navBack()
                 }
             }
+            NoteDetailAction.DismissCancelDialog -> {
+                _uiState.update {
+                    it.copy(
+                        showConfirmCancelDialog = false
+                    )
+                }
+            }
+            NoteDetailAction.CancelAction -> {
+               navBack()
+            }
             NoteDetailAction.SaveAction -> {
                 //save note
+                viewModelScope.launch {
+                    uiState.value.editNoteDto?.let { editnote ->
+                        val note = NoteCreator.editNoteDtoToNote(editnote)
+                        val update = NoteCreator.updateNote(note)
+                        val result = noteRepository.createNote(
+                            update
+                        )
+                        when(result) {
+                            is Result.Success -> {
+                                navBack()
+                            }
+                            is Result.Error -> {
+                                sendError(result.error)
+                            }
+                        }
+                    }
+                }
             }
 
             is NoteDetailAction.ContentChanged -> {

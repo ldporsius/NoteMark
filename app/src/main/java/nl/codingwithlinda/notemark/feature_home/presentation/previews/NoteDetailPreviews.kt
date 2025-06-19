@@ -13,7 +13,8 @@ private fun NoteDetailScreenPreview() {
     val editNoteDto = EditNoteDto(
         id = "1",
         title = "My note",
-        content = "This is my note"
+        content = "This is my note",
+        dateCreated = "2023-01-01T00:00:00.000Z"
     )
     NoteMarkTheme {
         NoteDetailScreen(

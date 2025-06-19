@@ -1,6 +1,7 @@
 package nl.codingwithlinda.notemark.feature_home.data.local
 
 import nl.codingwithlinda.core.domain.model.Note
+import nl.codingwithlinda.notemark.core.navigation.dto.EditNoteDto
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import kotlin.uuid.ExperimentalUuidApi
@@ -29,6 +30,15 @@ object NoteCreator {
         )
     }
 
+    fun editNoteDtoToNote(editNoteDto: EditNoteDto): Note {
+        return Note(
+            id = editNoteDto.id,
+            title = editNoteDto.title,
+            content = editNoteDto.content,
+            dateCreated = editNoteDto.dateCreated,
+            dateLastUpdated = editNoteDto.dateCreated
+        )
+    }
     fun updateNote(note: Note): Note{
         val now = System.currentTimeMillis()
         val dateUpdated = iso8601FromMillis(now)

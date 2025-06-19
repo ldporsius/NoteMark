@@ -17,6 +17,7 @@ fun ConfirmDialog(
     onDismiss: () -> Unit,
     onConfirm: () -> Unit,
     confirmText: String,
+    dismissText: String = "Cancel",
     modifier: Modifier = Modifier) {
 
 
@@ -50,7 +51,7 @@ fun ConfirmDialog(
                 }
 
             ) {
-                Text("Cancel")
+                Text(dismissText)
             }
         }
     )

@@ -1,5 +1,7 @@
 package nl.codingwithlinda.notemark.feature_home.data.remote.dto
 
+import kotlinx.serialization.Serializable
+
 /*{
 "notes": [
 {
@@ -19,6 +21,7 @@ package nl.codingwithlinda.notemark.feature_home.data.remote.dto
 ],
 "total": "<total number of notes>" Integer)
 }*/
+@Serializable
 data class FetchNotesResponseDto(
     val notes: List<NoteResponseDto>,
     val total: Int

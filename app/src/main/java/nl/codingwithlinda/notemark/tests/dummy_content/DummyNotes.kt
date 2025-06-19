@@ -28,8 +28,3 @@ val dummyNoteNoWhiteSpace = NoteCreator.newNote(
     content = longDummyText.filterNot{it.isWhitespace()}
 )
 
-val dummyEditNote = EditNoteDto(
-    id = dummyNoteNoWhiteSpace.id,
-    title = dummyNoteNoWhiteSpace.title,
-    content = dummyNoteNoWhiteSpace.content
-)

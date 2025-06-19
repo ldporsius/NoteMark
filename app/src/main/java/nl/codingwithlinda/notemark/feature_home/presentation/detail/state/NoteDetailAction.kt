@@ -6,4 +6,8 @@ sealed interface NoteDetailAction {
     data class TitleChanged(val title: String): NoteDetailAction
     data class ContentChanged(val content: String): NoteDetailAction
 
+    data object ConfirmCancelDialog: NoteDetailAction
+    data object DismissCancelDialog: NoteDetailAction
+
+
 }

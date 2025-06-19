@@ -61,6 +61,7 @@ fun Note.toEditNoteUi(): EditNoteDto {
     return EditNoteDto(
         id = id,
         title = title,
-        content = content
+        content = content,
+        dateCreated = dateCreated
     )
 }

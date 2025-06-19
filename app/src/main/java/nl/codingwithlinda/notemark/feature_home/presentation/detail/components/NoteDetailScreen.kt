@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import nl.codingwithlinda.notemark.design_system.components.ConfirmDialog
 import nl.codingwithlinda.notemark.design_system.ui.theme.customOutlinedTextFieldColors
 import nl.codingwithlinda.notemark.design_system.ui.theme.customTextFieldColors
 import nl.codingwithlinda.notemark.design_system.ui.theme.customTextFieldShape
@@ -70,6 +71,22 @@ fun NoteDetailScreen(
                 },
                 colors = customTextFieldColors(),
                 shape = customTextFieldShape()
+            )
+        }
+        
+        if (uiState.showConfirmCancelDialog) {
+            ConfirmDialog(
+                onConfirm = {
+                    onAction(NoteDetailAction.CancelAction)
+                },
+                onDismiss = {
+                    onAction(NoteDetailAction.DismissCancelDialog)
+                },
+                title = "Discard Changes?",
+                message = "You have unsaved changes.\nIf you discard now, all changes will be lost.",
+                confirmText = "Discard",
+                dismissText = "Keep editing",
+                modifier = Modifier,
             )
         }
 

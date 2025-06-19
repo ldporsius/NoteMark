@@ -25,7 +25,7 @@ fun NoteDetailTopBar(
     ) {
         IconButton(
             onClick = {
-                onAction(NoteDetailAction.CancelAction)
+                onAction(NoteDetailAction.ConfirmCancelDialog)
             }
         ) {
             Icon(imageVector = Icons.Default.Close, contentDescription = null)
