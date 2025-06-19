@@ -11,8 +11,8 @@ import nl.codingwithlinda.core.domain.model.Note
 import nl.codingwithlinda.notemark.core.presentation.toUiText
 import nl.codingwithlinda.notemark.core.util.Error
 import nl.codingwithlinda.notemark.core.util.Result
-import nl.codingwithlinda.notemark.design_system.util.SnackBarController
-import nl.codingwithlinda.notemark.design_system.util.SnackbarEvent
+import nl.codingwithlinda.notemark.core.util.SnackBarController
+import nl.codingwithlinda.notemark.core.util.SnackbarEvent
 import nl.codingwithlinda.notemark.feature_home.data.local.NoteCreator
 import nl.codingwithlinda.notemark.feature_home.domain.NoteRepository
 import nl.codingwithlinda.notemark.feature_home.presentation.list.state.NoteListAction

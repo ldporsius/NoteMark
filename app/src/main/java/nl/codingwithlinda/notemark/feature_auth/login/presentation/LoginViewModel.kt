@@ -10,8 +10,8 @@ import kotlinx.coroutines.launch
 import nl.codingwithlinda.notemark.core.data.auth.login.LoginRequestDto
 import nl.codingwithlinda.notemark.core.domain.auth.SessionManager
 import nl.codingwithlinda.notemark.core.util.Result
-import nl.codingwithlinda.notemark.design_system.util.SnackBarController
-import nl.codingwithlinda.notemark.design_system.util.SnackbarEvent
+import nl.codingwithlinda.notemark.core.util.SnackBarController
+import nl.codingwithlinda.notemark.core.util.SnackbarEvent
 import nl.codingwithlinda.notemark.feature_auth.core.presentation.error_mapping.toUiText
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.state.LoginAction
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.state.LoginUiState

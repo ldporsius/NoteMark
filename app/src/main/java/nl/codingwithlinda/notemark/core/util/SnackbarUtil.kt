@@ -1,8 +1,7 @@
-package nl.codingwithlinda.notemark.design_system.util
+package nl.codingwithlinda.notemark.core.util
 
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
-import nl.codingwithlinda.notemark.core.util.UiText
 
 
 data class SnackbarEvent(

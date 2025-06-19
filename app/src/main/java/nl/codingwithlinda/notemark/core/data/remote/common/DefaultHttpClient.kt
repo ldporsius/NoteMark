@@ -37,7 +37,6 @@ class DefaultHttpClient(
             buildHeaders(){
                 header("Content-Type", "application/json")
                 header("X-User-Email", BuildConfig.AUTH_API_EMAIL)
-
             }
         }
         install(Resources)
@@ -71,6 +70,7 @@ class DefaultHttpClient(
 
 
                     val tokens = response.body<RefreshTokenDto>()
+                    println("DEFAULT HTTP CLIENT GOT NEW REFRESH TOKENS: $tokens")
                     loginDataStore.updateData {
                         it.copy(
                             accessToken = tokens.accessToken,

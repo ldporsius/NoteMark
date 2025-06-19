@@ -2,7 +2,6 @@ package nl.codingwithlinda.notemark.feature_home.presentation.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jakewharton.threetenabp.AndroidThreeTen.init
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -11,13 +10,12 @@ import nl.codingwithlinda.notemark.core.navigation.dto.EditNoteDto
 import nl.codingwithlinda.notemark.core.presentation.toUiText
 import nl.codingwithlinda.notemark.core.util.Error
 import nl.codingwithlinda.notemark.core.util.Result
-import nl.codingwithlinda.notemark.design_system.util.SnackBarController
-import nl.codingwithlinda.notemark.design_system.util.SnackbarEvent
+import nl.codingwithlinda.notemark.core.util.SnackBarController
+import nl.codingwithlinda.notemark.core.util.SnackbarEvent
 import nl.codingwithlinda.notemark.feature_home.data.local.NoteCreator
 import nl.codingwithlinda.notemark.feature_home.domain.NoteRepository
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.state.NoteDetailAction
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.state.NoteDetailUiState
-import nl.codingwithlinda.notemark.feature_home.presentation.model.toEditNoteUi
 
 class NoteDetailViewModel(
     private val noteRepository: NoteRepository,

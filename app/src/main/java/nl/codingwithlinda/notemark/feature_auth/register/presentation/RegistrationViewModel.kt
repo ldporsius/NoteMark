@@ -14,8 +14,8 @@ import nl.codingwithlinda.notemark.core.data.auth.register.RegisterRequestDto
 import nl.codingwithlinda.notemark.core.data.auth.register.RegisterService
 import nl.codingwithlinda.notemark.core.util.Result
 import nl.codingwithlinda.notemark.core.util.UiText
-import nl.codingwithlinda.notemark.design_system.util.SnackBarController
-import nl.codingwithlinda.notemark.design_system.util.SnackbarEvent
+import nl.codingwithlinda.notemark.core.util.SnackBarController
+import nl.codingwithlinda.notemark.core.util.SnackbarEvent
 import nl.codingwithlinda.notemark.feature_auth.core.presentation.error_mapping.toUiText
 import nl.codingwithlinda.notemark.feature_auth.register.domain.RegistrationValidator
 import nl.codingwithlinda.notemark.feature_auth.register.presentation.error_mapping.toUiText
