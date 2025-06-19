@@ -2,6 +2,8 @@ package nl.codingwithlinda.notemark.feature_home.data.local
 
 import nl.codingwithlinda.core.domain.model.Note
 import nl.codingwithlinda.notemark.core.navigation.dto.EditNoteDto
+import nl.codingwithlinda.notemark.feature_home.data.remote.dto.CreateNoteRequestDto
+import nl.codingwithlinda.notemark.feature_home.data.remote.dto.NoteResponseDto
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import kotlin.uuid.ExperimentalUuidApi
@@ -10,6 +12,9 @@ import kotlin.uuid.Uuid
 @OptIn(ExperimentalUuidApi::class, ExperimentalTime::class)
 object NoteCreator {
 
+    fun hexUuidToUuid(hexUuid: String): String{
+        return Uuid.parseHex(hexUuid).toString()
+    }
     fun iso8601ToInstant(iso8601: String): org.threeten.bp.Instant {
         return org.threeten.bp.Instant.parse(iso8601)
     }
@@ -46,5 +51,16 @@ object NoteCreator {
         return note.copy(
             dateLastUpdated = dateUpdated
         )
+    }
+
+    fun createRemoteDto(note: Note): CreateNoteRequestDto {
+        return CreateNoteRequestDto(
+            id = hexUuidToUuid(note.id),
+            title = note.title,
+            content = note.content,
+            createdAt = note.dateCreated,
+            lastEditedAt = note.dateLastUpdated
+        )
+
     }
 }

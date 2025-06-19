@@ -4,7 +4,7 @@ import nl.codingwithlinda.notemark.core.util.Error
 
 
 sealed interface DataError: Error {
-    data class RemoteDataError(val error: RemoteError): DataError
+    data class RemoteDataError(val error: RemoteError, val msg: String? = null): DataError
     data class LocalDataError(val error: LocalError): DataError
 }
 enum class RemoteError(val code: Int): Error {

@@ -58,7 +58,7 @@ class NoteRepositoryImpl(
             return@async remoteResult
         }.await()
         if (remoteDtoResult is Result.Error){
-            return Result.Error(DataError.RemoteDataError(remoteDtoResult.error))
+            return Result.Error(remoteDtoResult.error)
         }
         return Result.Success(note)
     }

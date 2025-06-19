@@ -19,7 +19,13 @@ fun Error.toUiText(): UiText{
 fun DataError.toUiText(): UiText{
    return when(this){
         is DataError.LocalDataError -> this.error.toUiText()
-        is DataError.RemoteDataError -> this.error.toUiText()
+        is DataError.RemoteDataError -> {
+            val args = this.msg?.let{listOf(this.msg)} ?: emptyList()
+            DynamicTextWithArgs(
+                text = this.error.mapToString(),
+                args = args
+            )
+        }
     }
 }
 
@@ -32,6 +38,15 @@ fun LocalError.toUiText(): UiText{
     }
 }
 
+fun RemoteError.mapToString(): String{
+    return when(this){
+        RemoteError.BadRequestError -> "Bad request"
+        RemoteError.InternalServerError -> "Internal server error"
+        RemoteError.MethodNotAllowedError -> "Method not allowed"
+        RemoteError.ToManyRequestsError -> "Too many requests"
+        RemoteError.UnknownError -> "Unknown error"
+    }
+}
 fun RemoteError.toUiText(): UiText {
     return when (this) {
         RemoteError.BadRequestError -> DynamicText("Bad request")

@@ -1,19 +1,25 @@
 package nl.codingwithlinda.notemark.feature_home.data.remote
 
+import android.util.Log.e
 import io.ktor.client.HttpClient
+import io.ktor.client.call.NoTransformationFoundException
 import io.ktor.client.call.body
+import io.ktor.client.plugins.ResponseException
 import io.ktor.client.plugins.resources.get
 import io.ktor.client.plugins.resources.put
 import io.ktor.client.request.post
 import io.ktor.client.request.request
 import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import nl.codingwithlinda.core.domain.model.Note
 import nl.codingwithlinda.notemark.core.data.remote.common.DefaultHttpClient
 import nl.codingwithlinda.notemark.core.data.remote.common.HttpRoutes
+import nl.codingwithlinda.notemark.core.domain.error.DataError
 import nl.codingwithlinda.notemark.core.domain.error.RemoteError
 import nl.codingwithlinda.notemark.core.util.Result
+import nl.codingwithlinda.notemark.feature_home.data.local.NoteCreator
 import nl.codingwithlinda.notemark.feature_home.data.remote.dto.CreateNoteRequestDto
 import nl.codingwithlinda.notemark.feature_home.data.remote.dto.FetchNotesRequestDto
 import nl.codingwithlinda.notemark.feature_home.data.remote.dto.FetchNotesResponseDto
@@ -23,23 +29,37 @@ class NotesService(
     private val client: HttpClient
 ) {
 
-    suspend fun createNote(note: Note): Result<NoteResponseDto, RemoteError>{
+    suspend fun createNote(note: Note): Result<NoteResponseDto, DataError.RemoteDataError>{
         try {
+
             val response = client.post(HttpRoutes.CREATE_NOTE_URL) {
                 contentType(ContentType.Application.Json)
-                setBody(CreateNoteRequestDto(
-                    id = note.id,
-                    title = note.title,
-                    content = note.content,
-                    createdAt = note.dateCreated,
-                    lastEditedAt = note.dateLastUpdated
-                ))
+                setBody(NoteCreator.createRemoteDto(note))
             }
+
             val dto = response.body<NoteResponseDto>()
             return Result.Success(dto)
-        }catch (e: Exception){
+        }
+        catch (e: ResponseException){
+            val code = e.response.status.value
+            val message = e.response.status.description
+            val bodyTxt = e.response.bodyAsText()
+            println("NOTES SERVICE CREATE NOTE:$code $message, $bodyTxt")
+            val error = RemoteError.entries.find {
+                it.code == code
+            }
+            error?.run {
+                return Result.Error(DataError.RemoteDataError(this, bodyTxt))
+            }
+            return Result.Error(DataError.RemoteDataError(RemoteError.UnknownError, e.message))
+        }
+        catch (e: NoTransformationFoundException){
             e.printStackTrace()
-            return Result.Error(RemoteError.UnknownError)
+            return Result.Error(DataError.RemoteDataError(RemoteError.UnknownError, e.message))
+        }
+        catch (e: Exception){
+            e.printStackTrace()
+            return Result.Error(DataError.RemoteDataError(RemoteError.UnknownError, e.message))
         }
     }
 
