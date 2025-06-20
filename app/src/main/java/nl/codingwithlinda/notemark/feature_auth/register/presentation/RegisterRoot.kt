@@ -23,6 +23,7 @@ import nl.codingwithlinda.notemark.feature_auth.register.presentation.components
 
 @Composable
 fun RegisterRoot(
+    registerService: RegisterService,
     navToLogin: () -> Unit,
     navToHome: () -> Unit
 ) {
@@ -31,7 +32,7 @@ fun RegisterRoot(
         factory = viewModelFactory {
             initializer {
                 RegistrationViewModel(
-                    registerService = NoteMarkApplication.registerService,
+                    registerService = registerService,
                     onSuccess = {
                         navToHome()
                     },

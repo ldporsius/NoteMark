@@ -1,18 +1,24 @@
 package nl.codingwithlinda.notemark.feature_home.presentation.detail
 
+import android.util.Log.e
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import nl.codingwithlinda.core.domain.model.Note
+import nl.codingwithlinda.notemark.core.domain.error.DataError
+import nl.codingwithlinda.notemark.core.domain.error.LocalError
 import nl.codingwithlinda.notemark.core.navigation.dto.EditNoteDto
 import nl.codingwithlinda.notemark.core.presentation.toUiText
 import nl.codingwithlinda.notemark.core.util.Error
 import nl.codingwithlinda.notemark.core.util.Result
 import nl.codingwithlinda.notemark.core.util.SnackBarController
 import nl.codingwithlinda.notemark.core.util.SnackbarEvent
+import nl.codingwithlinda.notemark.core.util.UiText
 import nl.codingwithlinda.notemark.feature_home.data.local.NoteCreator
 import nl.codingwithlinda.notemark.feature_home.domain.NoteRepository
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.state.NoteDetailAction
@@ -24,6 +30,7 @@ class NoteDetailViewModel(
     private val navBack: () -> Unit
 ): ViewModel() {
 
+    private var isNewNote = false
     private val _uiState = MutableStateFlow(NoteDetailUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -31,6 +38,13 @@ class NoteDetailViewModel(
         SnackBarController.sendEvent(
             SnackbarEvent(
                 message = error.toUiText(),
+            )
+        )
+    }
+    private fun sendMessage(msg: String) = viewModelScope.launch{
+        SnackBarController.sendEvent(
+            SnackbarEvent(
+                message = UiText.DynamicText(msg),
             )
         )
     }
@@ -42,8 +56,34 @@ class NoteDetailViewModel(
                 )
             }
         }
+        //save note if not exists
+        viewModelScope.launch(Dispatchers.IO) {
+            val existsRes = noteRepository.getNote(noteDto.id)
+            if (existsRes is Result.Error){
+                //note is not found
+                isNewNote = true
+
+                val result = noteRepository.createNote(NoteCreator.editNoteDtoToNote(noteDto))
+                if (result is Result.Error){
+                    sendError(result.error)
+                }
+            }
+        }
     }
 
+    suspend fun deleteEmptyNote(){
+        uiState.value.editNoteDto?.run {
+            if (this.content.isBlank())
+                noteRepository.deleteNote(this.id)
+        }
+    }
+
+    fun deleteAndNavBack(){
+        viewModelScope.launch(NonCancellable){
+            deleteEmptyNote()
+        }
+        navBack()
+    }
     fun onAction(action: NoteDetailAction) {
         when(action) {
             NoteDetailAction.ConfirmCancelDialog -> {
@@ -60,7 +100,8 @@ class NoteDetailViewModel(
                         )
                     }
                 }else{
-                    navBack()
+                    if (isNewNote) deleteAndNavBack()
+                    else navBack()
                 }
             }
             NoteDetailAction.DismissCancelDialog -> {
@@ -71,7 +112,8 @@ class NoteDetailViewModel(
                 }
             }
             NoteDetailAction.CancelAction -> {
-               navBack()
+                if (isNewNote) deleteAndNavBack()
+                else navBack()
             }
             NoteDetailAction.SaveAction -> {
                 //save note
@@ -84,22 +126,25 @@ class NoteDetailViewModel(
                     uiState.value.editNoteDto?.let { editnote ->
                         val note = NoteCreator.editNoteDtoToNote(editnote)
                         val update = NoteCreator.updateNote(note)
-                        val result = noteRepository.createNote(
+                        val result = noteRepository.updateNote(
                             update
                         )
+                        _uiState.update {
+                            it.copy(
+                                isSaving = false
+                            )
+                        }
+
                         when(result) {
                             is Result.Success -> {
+                                sendMessage("Note saved successfully")
                                 navBack()
                             }
                             is Result.Error -> {
                                 sendError(result.error)
                             }
                         }
-                        _uiState.update {
-                            it.copy(
-                                isSaving = false
-                            )
-                        }
+
                     }
                 }
             }

@@ -60,7 +60,7 @@ class NoteAccessTest {
         val result2 = localNoteAccess.readByKey("test")
         assert(result2?.title == "test2")
 
-        localNoteAccess.delete(note)
+        localNoteAccess.delete(note.id)
 
         val result3 = localNoteAccess.readByKey("test")
         assert(result3 == null)

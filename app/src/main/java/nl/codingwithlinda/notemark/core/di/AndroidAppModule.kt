@@ -5,6 +5,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import nl.codingwithlinda.notemark.app.dataStoreLoginSession
+import nl.codingwithlinda.notemark.core.data.auth.register.KtorRegisterService
 import nl.codingwithlinda.notemark.core.data.auth.session.SessionStorageImpl
 import nl.codingwithlinda.notemark.core.data.remote.common.DefaultHttpClient
 import nl.codingwithlinda.notemark.feature_home.data.local.NoteRepositoryImpl
@@ -17,7 +18,7 @@ class AndroidAppModule(
     private val application: Application
 ): AppModule {
 
-    val applicationScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+    private val applicationScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
     val db = DataAccess(application).db
     val localNoteAccess = LocalNoteAccess(
         noteDatabase = db,
@@ -34,4 +35,6 @@ class AndroidAppModule(
             noteAccess = localNoteAccess,
             remoteNoteAccess = remoteNoteAccess
         )
+
+    override val registerService = KtorRegisterService(defaultHttpClient.httpClient)
 }

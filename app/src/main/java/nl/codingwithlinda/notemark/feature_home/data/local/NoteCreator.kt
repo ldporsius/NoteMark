@@ -4,6 +4,7 @@ import nl.codingwithlinda.core.domain.model.Note
 import nl.codingwithlinda.notemark.core.navigation.dto.EditNoteDto
 import nl.codingwithlinda.notemark.feature_home.data.remote.dto.CreateNoteRequestDto
 import nl.codingwithlinda.notemark.feature_home.data.remote.dto.NoteResponseDto
+import nl.codingwithlinda.notemark.feature_home.data.remote.dto.UpdateNoteRequestDto
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import kotlin.uuid.ExperimentalUuidApi
@@ -61,6 +62,15 @@ object NoteCreator {
             createdAt = note.dateCreated,
             lastEditedAt = note.dateLastUpdated
         )
+    }
 
+    fun createRemoteUpdateDto(note: Note): UpdateNoteRequestDto {
+        return UpdateNoteRequestDto(
+            id = hexUuidToUuid(note.id),
+            title = note.title,
+            content = note.content,
+            createdAt = note.dateCreated,
+            lastEditedAt = note.dateLastUpdated
+        )
     }
 }

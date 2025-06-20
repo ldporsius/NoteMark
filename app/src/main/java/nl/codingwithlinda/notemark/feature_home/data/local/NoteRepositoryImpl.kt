@@ -71,10 +71,18 @@ class NoteRepositoryImpl(
         //save to db and to remote storage
         try {
             noteAccess.update(note)
-            return Result.Success(note)
         }catch (e: Exception){
             return Result.Error(DataError.LocalDataError(LocalError.UnknownError))
         }
+
+        applicationScope.launch {
+            val remoteResult = remoteNoteAccess.updateNote(note)
+            if (remoteResult is Result.Error){
+                println("NOTE REPOSITORY UPDATE NOTE ERROR: ${remoteResult.error}")
+            }
+        }.join()
+
+        return Result.Success(note)
     }
 
     override suspend fun deleteNote(noteId: String): Result<Unit, DataError> {
@@ -82,7 +90,16 @@ class NoteRepositoryImpl(
         try {
             noteAccess.delete(noteId)
         }catch (e: Exception){
-            return Result.Error(DataError.LocalDataError(LocalError.NOT_FOUND))
+            return Result.Error(DataError.LocalDataError(LocalError.UnknownError))
+        }
+
+        val remoteId = NoteCreator.hexUuidToUuid(noteId)
+        val remoteDtoResult = applicationScope.async{
+            val remoteResult = remoteNoteAccess.deleteNote(remoteId)
+            return@async remoteResult
+        }.await()
+        if (remoteDtoResult is Result.Error){
+            return Result.Error(remoteDtoResult.error)
         }
         return Result.Success(Unit)
     }

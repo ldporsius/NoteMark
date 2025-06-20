@@ -2,10 +2,12 @@ package nl.codingwithlinda.notemark.feature_home.presentation.detail.components
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.StartOffset
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -24,7 +26,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import nl.codingwithlinda.notemark.R
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.state.NoteDetailAction
 
 @Composable
@@ -51,39 +55,25 @@ fun NoteDetailTopBar(
             targetValue = .5f,
             animationSpec =
                 infiniteRepeatable(
-                    // Infinitely repeating a 1000ms tween animation using default easing curve.
                     animation = tween(1000),
-                    // After each iteration of the animation (i.e. every 1000ms), the animation
-                    // will
-                    // start again from the [initialValue] defined above.
-                    // This is the default [RepeatMode]. See [RepeatMode.Reverse] below for an
-                    // alternative.
-                    repeatMode = RepeatMode.Reverse
+                    repeatMode = RepeatMode.Reverse,
+                    initialStartOffset = StartOffset(50)
                 )
         )
         AnimatedContent(isSaving) {isSaving ->
             if (isSaving) {
-                //an animation with three dots that get larger and smaller in sequence
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    (0..2).onEach {
-                        Spacer(modifier = Modifier
-                            .size(16.dp * scale)
-                            .background(
-                                color = MaterialTheme.colorScheme.primary,
-                                shape = CircleShape
-                            )
+                //an animation with an image that get larger and smaller continuously
+                Image(painter = painterResource(R.drawable.files),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(24.dp * scale)
+                    )
 
-                        )
-                    }
-                }
             }
             else {
                 TextButton(
                     onClick = {
                         onAction(NoteDetailAction.SaveAction)
-
                     }
                 ) {
                     Text(

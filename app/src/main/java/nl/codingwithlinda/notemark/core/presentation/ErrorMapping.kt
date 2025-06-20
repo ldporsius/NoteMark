@@ -34,7 +34,7 @@ fun LocalError.toUiText(): UiText{
     return when(this){
         LocalError.DISK_FULL -> UiText.DynamicText("Disk full")
         LocalError.NOT_FOUND -> UiText.DynamicText("Not found")
-        LocalError.UnknownError -> UiText.DynamicText("Unknown error")
+        LocalError.UnknownError -> UiText.DynamicText("Something went wrong while accessing the database")
 
     }
 }

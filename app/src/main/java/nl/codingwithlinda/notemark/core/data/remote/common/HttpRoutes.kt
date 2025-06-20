@@ -7,6 +7,7 @@ object HttpRoutes {
     const val REFRESH_URL = "$BASE_URL/api/auth/refresh"
     const val CREATE_NOTE_URL = "$BASE_URL/api/notes"
     const val FETCH_NOTES_URL = "$BASE_URL/api/notes"
+    const val DELETE_NOTE_URL = "$BASE_URL/api/notes"
 
     //helper for postman
     //https://notemark.pl-coding.com/api/auth/register
