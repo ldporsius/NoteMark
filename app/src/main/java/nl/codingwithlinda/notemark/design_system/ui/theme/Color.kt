@@ -30,7 +30,7 @@ val fabGradient = Brush.verticalGradient(
 )
 
 val backgroundGradientGrey = Brush.verticalGradient(
-    colors = listOf(surfaceLowest, surface),
+    colors = listOf(surface.copy(.5f), surface),
     startY = 0f,
     endY = 1000f
 )

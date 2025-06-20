@@ -1,8 +1,18 @@
 package nl.codingwithlinda.notemark.feature_auth.core.presentation.error_mapping
 
 import nl.codingwithlinda.notemark.core.domain.error.AuthError
+import nl.codingwithlinda.notemark.core.domain.error.ConnectivityError
+import nl.codingwithlinda.notemark.core.domain.error.LoginError
+import nl.codingwithlinda.notemark.core.presentation.toUiText
 import nl.codingwithlinda.notemark.core.util.UiText
 
+
+fun LoginError.toUiText() : UiText {
+    return when (this) {
+        is LoginError.AuthLoginError -> this.error.toUiText()
+        is LoginError.ConnectivityLoginError -> this.error.toUiText()
+    }
+}
 fun AuthError.toUiText() : UiText{
     return when(this){
         AuthError.InvalidCredentialsError -> UiText.DynamicText("Invalid credentials")
@@ -16,3 +26,4 @@ fun AuthError.toUiText() : UiText{
         AuthError.ToManyRequestsError -> UiText.DynamicText("Too many requests")
     }
 }
+

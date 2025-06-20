@@ -53,6 +53,7 @@ fun NoteDetailScreen(
         ,
         topBar = {
             NoteDetailTopBar(
+                isSaving = uiState.isSaving,
                 onAction = onAction,
                 modifier = Modifier.fillMaxWidth()
             )

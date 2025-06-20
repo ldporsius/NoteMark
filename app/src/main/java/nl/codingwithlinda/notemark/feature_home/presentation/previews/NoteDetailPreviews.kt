@@ -19,7 +19,8 @@ private fun NoteDetailScreenPreview() {
     NoteMarkTheme {
         NoteDetailScreen(
             uiState = NoteDetailUiState(
-                editNoteDto = editNoteDto
+                editNoteDto = editNoteDto,
+                isSaving = true
             ),
             onAction = {}
         )

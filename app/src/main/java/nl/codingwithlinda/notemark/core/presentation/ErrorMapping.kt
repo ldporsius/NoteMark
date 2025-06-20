@@ -1,5 +1,6 @@
 package nl.codingwithlinda.notemark.core.presentation
 
+import nl.codingwithlinda.notemark.core.domain.error.ConnectivityError
 import nl.codingwithlinda.notemark.core.domain.error.DataError
 import nl.codingwithlinda.notemark.core.domain.error.LocalError
 import nl.codingwithlinda.notemark.core.domain.error.RemoteError
@@ -54,5 +55,13 @@ fun RemoteError.toUiText(): UiText {
         RemoteError.MethodNotAllowedError -> DynamicText("Method not allowed")
         RemoteError.ToManyRequestsError -> DynamicText("Too many requests")
         RemoteError.UnknownError -> DynamicText("Unknown error")
+    }
+}
+
+fun ConnectivityError.toUiText(): UiText {
+    return when(this){
+        ConnectivityError.NoConnectivityError -> DynamicText("Check your internet connection")
+        ConnectivityError.UnknownError -> DynamicText("Unknown error")
+
     }
 }

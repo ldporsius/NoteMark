@@ -1,6 +1,5 @@
 package nl.codingwithlinda.notemark.feature_home.presentation.list.components
 
-import android.service.autofill.Validators.or
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -86,12 +85,6 @@ fun NoteListItem(
                 Text(
                     note.limitContent(charLimit).content,
                     style = MaterialTheme.typography.bodySmall,
-                    onTextLayout = {
-
-                        val lineAtIndex = it.getLineForOffset(150)
-                        println("lineAtIndex: $lineAtIndex")
-                        //if (lineAtIndex < 5) charLimit = 250 else charLimit = 150
-                    }
                 )
             }
         }

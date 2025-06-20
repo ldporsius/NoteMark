@@ -2,6 +2,7 @@ package nl.codingwithlinda.notemark.feature_home.presentation.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -74,7 +75,12 @@ class NoteDetailViewModel(
             }
             NoteDetailAction.SaveAction -> {
                 //save note
-                viewModelScope.launch {
+                _uiState.update {
+                    it.copy(
+                        isSaving = true
+                    )
+                }
+                viewModelScope.launch(Dispatchers.IO) {
                     uiState.value.editNoteDto?.let { editnote ->
                         val note = NoteCreator.editNoteDtoToNote(editnote)
                         val update = NoteCreator.updateNote(note)
@@ -88,6 +94,11 @@ class NoteDetailViewModel(
                             is Result.Error -> {
                                 sendError(result.error)
                             }
+                        }
+                        _uiState.update {
+                            it.copy(
+                                isSaving = false
+                            )
                         }
                     }
                 }

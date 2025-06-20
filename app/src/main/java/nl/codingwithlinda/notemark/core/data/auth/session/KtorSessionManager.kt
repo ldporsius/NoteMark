@@ -3,10 +3,14 @@ package nl.codingwithlinda.notemark.core.data.auth.session
 import android.app.Application
 import android.util.Log.e
 import io.ktor.client.call.body
+import io.ktor.client.engine.cio.FailToConnectException
+import io.ktor.client.plugins.ResponseException
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
+import io.ktor.util.network.UnresolvedAddressException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.ensureActive
@@ -25,7 +29,9 @@ import nl.codingwithlinda.notemark.core.data.remote.common.HttpRoutes
 import nl.codingwithlinda.notemark.core.domain.auth.SessionManager
 import nl.codingwithlinda.notemark.core.domain.auth.SessionStorage
 import nl.codingwithlinda.notemark.core.domain.error.AuthError
+import nl.codingwithlinda.notemark.core.domain.error.LoginError
 import nl.codingwithlinda.notemark.core.util.Result
+import java.lang.System
 import kotlin.coroutines.coroutineContext
 
 class KtorSessionManager(
@@ -40,7 +46,7 @@ class KtorSessionManager(
     override val loginState: Flow<LoginSession>
         get() = loginSessionDataStore.data
 
-    override suspend fun login(request: LoginRequestDto): Result<LoginResponseDto, AuthError> {
+    override suspend fun login(request: LoginRequestDto): Result<LoginResponseDto, LoginError> {
         try {
             val loginRes = loginService.login(request.email, request.password)
             when(loginRes){
@@ -58,7 +64,7 @@ class KtorSessionManager(
             println("KTOR SESSION MANAGER ERROR MESSAGE: ${e.message}")
         }
 
-        return Result.Error(AuthError.UnknownError)
+        return Result.Error(LoginError.AuthLoginError(AuthError.UnknownError))
     }
 
 
@@ -100,12 +106,23 @@ class KtorSessionManager(
                 )
             }
             return true
-        }catch (e: Exception){
+        }catch (e: FailToConnectException){
             e.printStackTrace()
-            CoroutineScope(NonCancellable).launch {
-                deleteSession()
-            }
-            coroutineContext.ensureActive()
+            return true
+        }
+        catch (e: UnresolvedAddressException){
+            e.printStackTrace()
+            return true
+        }
+        catch (e: ResponseException){
+            e.printStackTrace()
+            val code = e.response.status
+            val bodyTxt = e.response.bodyAsText()
+            println("KTOR SESSION MANAGER RESPONSE ERROR MESSAGE: ${code}, ${bodyTxt}")
+            return false
+        }
+        catch (e: Exception){
+            e.printStackTrace()
             return false
 
         }
@@ -126,7 +143,8 @@ class KtorSessionManager(
         loginSessionDataStore.updateData {
             it.copy(
                 accessToken = "",
-                refreshToken = ""
+                refreshToken = "",
+                dateCreated = System.currentTimeMillis()
             )
         }
     }

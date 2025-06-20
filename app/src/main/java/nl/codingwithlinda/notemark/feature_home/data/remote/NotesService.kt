@@ -67,13 +67,7 @@ class NotesService(
         try {
             val response = client.put(HttpRoutes.CREATE_NOTE_URL) {
                 contentType(ContentType.Application.Json)
-                setBody(CreateNoteRequestDto(
-                    id = note.id,
-                    title = note.title,
-                    content = note.content,
-                    createdAt = note.dateCreated,
-                    lastEditedAt = note.dateLastUpdated
-                ))
+                setBody(NoteCreator.createRemoteDto(note))
             }
             val dto = response.body<NoteResponseDto>()
             return Result.Success(dto)

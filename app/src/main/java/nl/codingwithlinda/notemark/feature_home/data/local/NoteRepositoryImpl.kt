@@ -2,8 +2,10 @@ package nl.codingwithlinda.notemark.feature_home.data.local
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.launch
 import nl.codingwithlinda.core.domain.model.Note
 import nl.codingwithlinda.notemark.core.domain.error.DataError
 import nl.codingwithlinda.notemark.core.domain.error.LocalError
@@ -11,6 +13,7 @@ import nl.codingwithlinda.notemark.core.util.Result
 import nl.codingwithlinda.notemark.feature_home.data.remote.NotesService
 import nl.codingwithlinda.notemark.feature_home.domain.NoteRepository
 import nl.codingwithlinda.persistence_room.public_access.LocalNoteAccess
+import kotlin.coroutines.coroutineContext
 
 
 class NoteRepositoryImpl(
@@ -50,6 +53,7 @@ class NoteRepositoryImpl(
         try {
             noteAccess.create(note)
         }catch (e: Exception){
+            coroutineContext.ensureActive()
             return Result.Error(DataError.LocalDataError(LocalError.DISK_FULL))
         }
 
