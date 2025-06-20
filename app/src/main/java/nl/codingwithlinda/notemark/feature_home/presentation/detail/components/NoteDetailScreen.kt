@@ -1,10 +1,12 @@
 package nl.codingwithlinda.notemark.feature_home.presentation.detail.components
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.rememberScrollState
@@ -26,6 +28,7 @@ import nl.codingwithlinda.notemark.design_system.components.ConfirmDialog
 import nl.codingwithlinda.notemark.design_system.ui.theme.customOutlinedTextFieldColors
 import nl.codingwithlinda.notemark.design_system.ui.theme.customTextFieldColors
 import nl.codingwithlinda.notemark.design_system.ui.theme.customTextFieldShape
+import nl.codingwithlinda.notemark.design_system.ui.theme.surface
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.state.NoteDetailAction
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.state.NoteDetailUiState
 
@@ -47,8 +50,10 @@ fun NoteDetailScreen(
     }
     uiState.editNoteDto ?: return
     Scaffold(
+        containerColor = surface,
         modifier = Modifier
             .fillMaxSize()
+            .background(color = surface)
             .safeContentPadding()
         ,
         topBar = {
@@ -60,36 +65,18 @@ fun NoteDetailScreen(
         }
     ) {
         padding ->
-        Column(
+
+        NoteDetailForm(
+            uiState = uiState,
+            onAction = onAction,
             modifier = Modifier
-                .fillMaxSize()
                 .padding(padding)
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            TextField(
-                modifier = Modifier.fillMaxWidth(),
-                value =uiState.editNoteDto.title,
-                onValueChange = {
-                    onAction(NoteDetailAction.TitleChanged(it))
-                },
-                colors = customTextFieldColors(),
-                textStyle = LocalTextStyle.current.merge(
-                    MaterialTheme.typography.titleMedium
-                ),
-                shape = customTextFieldShape()
-            )
-            TextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = uiState.editNoteDto.content,
-                onValueChange = {
-                    onAction(NoteDetailAction.ContentChanged(it))
-                },
-                colors = customTextFieldColors(),
-                shape = customTextFieldShape()
-            )
-        }
+                .imePadding()
+                .fillMaxSize()
+                .background(color = surface)
+
+                .verticalScroll(rememberScrollState())
+        )
         
         if (uiState.showConfirmCancelDialog) {
             ConfirmDialog(
