@@ -57,6 +57,7 @@ class NoteDetailViewModel(
             }
         }
         //save note if not exists
+        //not sure why this is needed
         viewModelScope.launch(Dispatchers.IO) {
             val existsRes = noteRepository.getNote(noteDto.id)
             if (existsRes is Result.Error){
@@ -71,19 +72,20 @@ class NoteDetailViewModel(
         }
     }
 
-    suspend fun deleteEmptyNote(){
-        uiState.value.editNoteDto?.run {
-            if (this.content.isBlank())
-                noteRepository.deleteNote(this.id)
-        }
-    }
 
-    fun deleteAndNavBack(){
-        viewModelScope.launch(NonCancellable){
-            deleteEmptyNote()
+    fun deleteNewNoteOnCancel() {
+        if (isNewNote) {
+            viewModelScope.launch(NonCancellable) {
+                val result = noteRepository.deleteNote(noteDto.id)
+                if (result is Result.Error) {
+                    sendError(result.error)
+                }
+            }
         }
         navBack()
     }
+
+
     fun onAction(action: NoteDetailAction) {
         when(action) {
             NoteDetailAction.ConfirmCancelDialog -> {
@@ -100,8 +102,7 @@ class NoteDetailViewModel(
                         )
                     }
                 }else{
-                    if (isNewNote) deleteAndNavBack()
-                    else navBack()
+                   deleteNewNoteOnCancel()
                 }
             }
             NoteDetailAction.DismissCancelDialog -> {
@@ -112,8 +113,8 @@ class NoteDetailViewModel(
                 }
             }
             NoteDetailAction.CancelAction -> {
-                if (isNewNote) deleteAndNavBack()
-                else navBack()
+                println("NOTE DETAIL VIEW MODEL CANCEL ACTION IS CALLED. IS NEW NOTE: $isNewNote")
+                deleteNewNoteOnCancel()
             }
             NoteDetailAction.SaveAction -> {
                 //save note
@@ -144,7 +145,6 @@ class NoteDetailViewModel(
                                 sendError(result.error)
                             }
                         }
-
                     }
                 }
             }
