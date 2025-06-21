@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
@@ -26,6 +27,7 @@ import nl.codingwithlinda.notemark.core.di.AndroidAppModule
 import nl.codingwithlinda.notemark.core.navigation.AuthRootDestination
 import nl.codingwithlinda.notemark.core.navigation.HomeDestination
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
+import nl.codingwithlinda.notemark.design_system.ui.theme.surface
 import nl.codingwithlinda.notemark.feature_auth.core.presentation.AuthRoot
 import nl.codingwithlinda.notemark.feature_home.presentation.HomeRoot
 import nl.codingwithlinda.notemark.navigation.NavigationRoot
@@ -56,8 +58,6 @@ class MainActivity : ComponentActivity() {
         val application = this.application as Application
 
         setContent {
-
-
             NoteMarkTheme {
                 val sessionManager = remember {
                     KtorSessionManager(application)
@@ -66,11 +66,12 @@ class MainActivity : ComponentActivity() {
                 val noteRepository = remember {
                     NoteMarkApplication.appModule.noteRepository
                 }
-
-                 NavigationRoot(
-                     sessionManager = sessionManager,
-                     noteRepository = noteRepository
-                 )
+                Box(modifier = Modifier.fillMaxSize().background(surface)) {
+                    NavigationRoot(
+                        sessionManager = sessionManager,
+                        noteRepository = noteRepository
+                    )
+                }
             }
         }
     }
