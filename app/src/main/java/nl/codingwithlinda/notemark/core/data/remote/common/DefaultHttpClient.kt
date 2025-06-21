@@ -10,6 +10,7 @@ import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.plugins.resources.Resources
 import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -39,7 +40,7 @@ class DefaultHttpClient(
                 header("X-User-Email", BuildConfig.AUTH_API_EMAIL)
             }
         }
-        //install(Resources)
+        install(Resources)
         install(ContentNegotiation){
             json(Json {
                 ignoreUnknownKeys = true
