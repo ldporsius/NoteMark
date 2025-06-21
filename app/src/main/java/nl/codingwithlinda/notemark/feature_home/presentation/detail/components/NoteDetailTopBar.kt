@@ -41,48 +41,19 @@ fun NoteDetailTopBar(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconButton(
+        NoteDetailCancelComponent(
             onClick = {
                 onAction(NoteDetailAction.ConfirmCancelDialog)
             }
-        ) {
-            Icon(imageVector = Icons.Default.Close, contentDescription = null)
-        }
-
-        val infiniteTransition = rememberInfiniteTransition()
-        val scale by infiniteTransition.animateFloat(
-            initialValue = 1f,
-            targetValue = .5f,
-            animationSpec =
-                infiniteRepeatable(
-                    animation = tween(1000),
-                    repeatMode = RepeatMode.Reverse,
-                    initialStartOffset = StartOffset(50)
-                )
         )
-        AnimatedContent(isSaving) {isSaving ->
-            if (isSaving) {
-                //an animation with an image that get larger and smaller continuously
-                Image(painter = painterResource(R.drawable.files),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(24.dp * scale)
-                    )
 
+        NoteDetailSaveComponent(
+            isSaving = isSaving,
+            onClick = {
+                onAction(NoteDetailAction.SaveAction)
             }
-            else {
-                TextButton(
-                    onClick = {
-                        onAction(NoteDetailAction.SaveAction)
-                    }
-                ) {
-                    Text(
-                        text = "Save note".uppercase(),
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
-            }
-        }
+        )
+
 
     }
 }

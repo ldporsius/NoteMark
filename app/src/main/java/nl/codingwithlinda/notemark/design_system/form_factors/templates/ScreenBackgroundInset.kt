@@ -1,4 +1,4 @@
-package nl.codingwithlinda.notemark.design_system.form_factors
+package nl.codingwithlinda.notemark.design_system.form_factors.templates
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -23,6 +24,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import nl.codingwithlinda.notemark.design_system.form_factors.ScreenSizeHelper
+import nl.codingwithlinda.notemark.design_system.form_factors.ScreenType
 import nl.codingwithlinda.notemark.design_system.ui.theme.background_landing
 import nl.codingwithlinda.notemark.design_system.ui.theme.onSurface
 
@@ -96,6 +99,7 @@ fun ScreenBackgroundInset(
 
             if (shouldDisplayVertical) {
                 Column(
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     createImage(

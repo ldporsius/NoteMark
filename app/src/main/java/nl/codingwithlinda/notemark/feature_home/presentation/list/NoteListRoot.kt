@@ -98,7 +98,6 @@ fun NoteListRoot(
             contentAlignment = Alignment.TopCenter){
             AnimatedContent(targetState = uiState.notes.isEmpty()) {
                 if (it){
-                    println("**************empty note list ************************")
                     NoteListEmptyScreen(
                         modifier = Modifier
                             .fillMaxSize()

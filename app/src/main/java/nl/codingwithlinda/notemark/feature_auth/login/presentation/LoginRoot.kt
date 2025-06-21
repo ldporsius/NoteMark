@@ -13,10 +13,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import nl.codingwithlinda.notemark.app.NoteMarkApplication
-import nl.codingwithlinda.notemark.core.data.auth.login.LoginService
 import nl.codingwithlinda.notemark.core.domain.auth.SessionManager
-import nl.codingwithlinda.notemark.design_system.form_factors.ScreenTwoComposablesConstraint
+import nl.codingwithlinda.notemark.design_system.form_factors.templates.ScreenTwoComposablesConstraint
 import nl.codingwithlinda.notemark.design_system.ui.theme.surfaceLowest
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.components.LoginForm
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.components.LoginHeader

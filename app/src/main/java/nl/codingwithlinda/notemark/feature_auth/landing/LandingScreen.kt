@@ -10,8 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import nl.codingwithlinda.notemark.R
-import nl.codingwithlinda.notemark.design_system.form_factors.LimitedHeightLayout
-import nl.codingwithlinda.notemark.design_system.form_factors.ScreenBackgroundInset
+import nl.codingwithlinda.notemark.design_system.form_factors.templates.LimitedHeightLayout
+import nl.codingwithlinda.notemark.design_system.form_factors.templates.ScreenBackgroundInset
 import nl.codingwithlinda.notemark.design_system.form_factors.ScreenSizeHelper
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
 import nl.codingwithlinda.notemark.design_system.ui.theme.background_landing

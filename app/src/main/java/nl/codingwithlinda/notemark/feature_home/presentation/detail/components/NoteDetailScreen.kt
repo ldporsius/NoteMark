@@ -3,6 +3,7 @@ package nl.codingwithlinda.notemark.feature_home.presentation.detail.components
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,6 +26,8 @@ import kotlinx.coroutines.launch
 import nl.codingwithlinda.notemark.core.util.ObserveAsEvents
 import nl.codingwithlinda.notemark.core.util.SnackBarController
 import nl.codingwithlinda.notemark.design_system.components.ConfirmDialog
+import nl.codingwithlinda.notemark.design_system.form_factors.ScreenSizeHelper
+import nl.codingwithlinda.notemark.design_system.form_factors.templates.ThreeColumnsLayout
 import nl.codingwithlinda.notemark.design_system.ui.theme.customOutlinedTextFieldColors
 import nl.codingwithlinda.notemark.design_system.ui.theme.customTextFieldColors
 import nl.codingwithlinda.notemark.design_system.ui.theme.customTextFieldShape
@@ -49,6 +52,66 @@ fun NoteDetailScreen(
         }
     }
     uiState.editNoteDto ?: return
+
+    val isLimitedHeight = ScreenSizeHelper.isLimitedVertical(
+        ScreenSizeHelper.collectScreenInfo()
+    )
+
+    @Composable
+    fun topBar() {
+        if (isLimitedHeight) {
+            Unit
+        }
+        else{
+            NoteDetailTopBar(
+                isSaving = uiState.isSaving,
+                onAction = onAction,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+    }
+
+    @Composable
+    fun form(){
+        NoteDetailForm(
+            uiState = uiState,
+            onAction = onAction,
+            modifier = Modifier
+                .imePadding()
+                .background(color = surface)
+                .verticalScroll(rememberScrollState())
+        )
+    }
+
+    @Composable
+    fun content() {
+        if (isLimitedHeight) {
+            ThreeColumnsLayout(
+                comp1 = {
+                    NoteDetailCancelComponent(
+                        onClick = {
+                            onAction(NoteDetailAction.ConfirmCancelDialog)
+                        },
+                        modifier = Modifier
+                    )
+                },
+                comp2 = {
+                    form()
+                },
+                comp3 = {
+                    NoteDetailSaveComponent(
+                        isSaving = uiState.isSaving,
+                        onClick = {
+                            onAction(NoteDetailAction.SaveAction)
+                        }
+                    )
+                }
+            )
+        }
+        else{
+            form()
+        }
+    }
     Scaffold(
         containerColor = surface,
         modifier = Modifier
@@ -56,27 +119,14 @@ fun NoteDetailScreen(
             .background(color = surface)
             .safeContentPadding()
         ,
-        topBar = {
-            NoteDetailTopBar(
-                isSaving = uiState.isSaving,
-                onAction = onAction,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
+        topBar = { topBar() }
     ) {
         padding ->
 
-        NoteDetailForm(
-            uiState = uiState,
-            onAction = onAction,
-            modifier = Modifier
-                .padding(padding)
-                .imePadding()
-                .fillMaxSize()
-                .background(color = surface)
+        Box(modifier = Modifier.padding(padding)){
+           content()
+        }
 
-                .verticalScroll(rememberScrollState())
-        )
         
         if (uiState.showConfirmCancelDialog) {
             ConfirmDialog(
