@@ -21,6 +21,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
+import kotlinx.coroutines.flow.firstOrNull
 import nl.codingwithlinda.notemark.app.NoteMarkApplication
 import nl.codingwithlinda.notemark.core.data.auth.session.KtorSessionManager
 import nl.codingwithlinda.notemark.core.di.AndroidAppModule

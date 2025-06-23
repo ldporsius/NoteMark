@@ -30,14 +30,20 @@ fun NavigationRoot(
     val backstack = rememberNavBackStack(
         HomeDestination
     )
-
+    val navController = rememberNavController()
     ObserveAsEvents(sessionManager.loginState) { session ->
         if (session.accessToken.isBlank()){
             backstack.add(AuthRootDestination)
+            navController.navigate(AuthRootDestination){
+                popUpTo(HomeDestination){
+                    inclusive = true
+                }
+
+            }
         }
     }
 
-    val navController = rememberNavController()
+
     NavHost(navController = navController, startDestination = HomeDestination) {
 
         composable<HomeDestination> {

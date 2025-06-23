@@ -41,7 +41,6 @@ class KtorSessionManager(
     private val sessionStorage = SessionStorageImpl(loginSessionDataStore)
     private val defaultHttpClient = DefaultHttpClient(sessionStorage)
     private val loginService = KtorLoginService(defaultHttpClient.httpClient)
-    private val SESSION_EXPIRATION_TIME = 15 * 60 * 1000 //15 MIN.
 
     override val loginState: Flow<LoginSession>
         get() = loginSessionDataStore.data
