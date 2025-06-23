@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import nl.codingwithlinda.core.domain.model.Note
 import nl.codingwithlinda.notemark.core.domain.error.DataError
 import nl.codingwithlinda.notemark.core.domain.error.LocalError
@@ -20,16 +21,19 @@ import nl.codingwithlinda.notemark.core.util.SnackBarController
 import nl.codingwithlinda.notemark.core.util.SnackbarEvent
 import nl.codingwithlinda.notemark.core.util.UiText
 import nl.codingwithlinda.notemark.feature_home.data.local.NoteCreator
+import nl.codingwithlinda.notemark.feature_home.data.local.NoteCreator.newNote
 import nl.codingwithlinda.notemark.feature_home.domain.NoteRepository
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.state.NoteDetailAction
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.state.NoteDetailUiState
+import nl.codingwithlinda.notemark.feature_home.presentation.model.toEditNoteUi
 
 class NoteDetailViewModel(
     private val noteRepository: NoteRepository,
-    private val noteDto: EditNoteDto,
+    private val noteId: String,
     private val navBack: () -> Unit
 ): ViewModel() {
 
+    private var oldNote: Note? = null
     private var isNewNote = false
     private val _uiState = MutableStateFlow(NoteDetailUiState())
     val uiState = _uiState.asStateFlow()
@@ -49,26 +53,38 @@ class NoteDetailViewModel(
         )
     }
     init {
-        viewModelScope.launch {
-            _uiState.update {
-                it.copy(
-                 editNoteDto = noteDto
-                )
-            }
-        }
+
         //save note if not exists
         //not sure why this is needed
         viewModelScope.launch(Dispatchers.IO) {
-            val existsRes = noteRepository.getNote(noteDto.id)
+            val existsRes = noteRepository.getNote(noteId)
+            if (existsRes is Result.Success){
+                oldNote = existsRes.data
+            }
             if (existsRes is Result.Error){
                 //note is not found
                 isNewNote = true
 
-                val result = noteRepository.createNote(NoteCreator.editNoteDtoToNote(noteDto))
+                val newNote = NoteCreator.newNote(title = "New note", content = "")
+                val result = noteRepository.createNote(newNote)
                 if (result is Result.Error){
                     sendError(result.error)
                 }
+
+                if (result is Result.Success){
+                    oldNote = result.data
+                }
+
             }
+
+            oldNote?.let {note ->
+                _uiState.update {
+                    it.copy(
+                        editNoteDto = note.toEditNoteUi()
+                    )
+                }
+            }
+
         }
     }
 
@@ -76,7 +92,7 @@ class NoteDetailViewModel(
     fun deleteNewNoteOnCancel() {
         if (isNewNote) {
             viewModelScope.launch(NonCancellable) {
-                val result = noteRepository.deleteNote(noteDto.id)
+                val result = noteRepository.deleteNote(noteId)
                 if (result is Result.Error) {
                     sendError(result.error)
                 }
@@ -92,8 +108,8 @@ class NoteDetailViewModel(
                 //if content is edited show dialog to save or dismiss
                 //else navigate back
                 if (uiState.value.editNoteDto == null) navBack()
-                val isTitleChanged = noteDto.title != uiState.value.editNoteDto?.title
-                val isContentChanged = noteDto.content != uiState.value.editNoteDto?.content
+                val isTitleChanged = oldNote?.title != uiState.value.editNoteDto?.title
+                val isContentChanged = oldNote?.content != uiState.value.editNoteDto?.content
                 if (isTitleChanged || isContentChanged) {
                     //show dialog
                     _uiState.update {
@@ -139,7 +155,9 @@ class NoteDetailViewModel(
                         when(result) {
                             is Result.Success -> {
                                 sendMessage("Note saved successfully")
-                                navBack()
+                                withContext(viewModelScope.coroutineContext) {
+                                    navBack()
+                                }
                             }
                             is Result.Error -> {
                                 sendError(result.error)
@@ -169,5 +187,10 @@ class NoteDetailViewModel(
             }
         }
 
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        println("NOTE DETAIL VIEW MODEL CLEARED")
     }
 }

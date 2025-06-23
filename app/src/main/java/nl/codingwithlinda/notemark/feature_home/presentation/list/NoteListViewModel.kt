@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nl.codingwithlinda.core.domain.model.Note
+import nl.codingwithlinda.notemark.core.navigation.dto.EditNoteDto
 import nl.codingwithlinda.notemark.core.presentation.toUiText
 import nl.codingwithlinda.notemark.core.util.Error
 import nl.codingwithlinda.notemark.core.util.Result
@@ -17,7 +18,6 @@ import nl.codingwithlinda.notemark.feature_home.data.local.NoteCreator
 import nl.codingwithlinda.notemark.feature_home.domain.NoteRepository
 import nl.codingwithlinda.notemark.feature_home.presentation.list.state.NoteListAction
 import nl.codingwithlinda.notemark.feature_home.presentation.list.state.NoteListUiState
-import nl.codingwithlinda.notemark.core.navigation.dto.EditNoteDto
 import nl.codingwithlinda.notemark.feature_home.presentation.model.NoteUi
 import nl.codingwithlinda.notemark.feature_home.presentation.model.toEditNoteUi
 import nl.codingwithlinda.notemark.feature_home.presentation.model.toUi
@@ -25,7 +25,6 @@ import nl.codingwithlinda.notemark.feature_home.presentation.model.toUi
 
 class NoteListViewModel(
     private val noteRepository: NoteRepository,
-    private val onEditNote: (EditNoteDto) -> Unit,
 ): ViewModel() {
 
     private val NEW_NOTE_TITLE = "New note"
@@ -64,16 +63,13 @@ class NoteListViewModel(
             )
         )
     }
+
+    fun createNewNote(): Note {
+        return NoteCreator.newNote(title = NEW_NOTE_TITLE, content = "")
+    }
     fun onAction(action: NoteListAction){
         when(action){
-            NoteListAction.CreateNoteAction -> {
-                viewModelScope.launch {
-                    val note = NoteCreator.newNote(title = NEW_NOTE_TITLE, content = "")
-                    val editNoteUi = note.toEditNoteUi()
-                    println("NOTE LIST VIEWMODEL CALLS ON EDIT NOTE WITH EDIT NOTE UI $editNoteUi")
-                    onEditNote(editNoteUi)
-                }
-            }
+
             is NoteListAction.ShowDeleteConfirmationDialog -> {
                 _uiState.update {
                     it.copy(showDeleteConfirmationDialog = true,
@@ -99,33 +95,31 @@ class NoteListViewModel(
                                 }
                                 is Result.Success -> Unit
                             }
-                            _uiState.update {
-                                it.copy(
+
+                        }catch (e: Exception){
+                            e.printStackTrace()
+                        }
+                        finally {
+                            _uiState.update {state->
+                                state.copy(
                                     showDeleteConfirmationDialog = false,
                                     toDeleteNoteId = null
                                 )
                             }
-                        }catch (e: Exception){
-                            e.printStackTrace()
                         }
                     }
                 }
             }
 
-            is NoteListAction.EditNoteAction -> {
-                viewModelScope.launch {
-                    val note = noteRepository.getNote(action.noteId)
-                    when(note){
-                        is Result.Error -> {
-                            sendError(note.error)
-                        }
-                        is Result.Success-> {
-                            val editNoteUi = note.data.toEditNoteUi()
-                            onEditNote(editNoteUi)
-                        }
-                    }
-                }
+            is NoteListAction.OffsetAction -> {
+
             }
+
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        println("NOTE LIST VIEWMODEL CLEARED")
     }
 }

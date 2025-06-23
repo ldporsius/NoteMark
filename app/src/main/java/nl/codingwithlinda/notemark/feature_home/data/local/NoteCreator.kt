@@ -14,9 +14,11 @@ import kotlin.uuid.Uuid
 object NoteCreator {
 
     fun hexUuidToUuid(hexUuid: String): String{
+        if (hexUuid.isEmpty()) return ""
         return Uuid.parseHex(hexUuid).toString()
     }
     fun iso8601ToInstant(iso8601: String): org.threeten.bp.Instant {
+        if (iso8601.isEmpty()) return org.threeten.bp.Instant.now()
         return org.threeten.bp.Instant.parse(iso8601)
     }
     fun iso8601FromMillis(now: Long): String {

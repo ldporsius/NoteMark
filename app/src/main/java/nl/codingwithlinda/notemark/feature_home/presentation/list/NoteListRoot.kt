@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -40,28 +41,20 @@ import nl.codingwithlinda.notemark.feature_home.presentation.util.userNameAvatar
 
 @Composable
 fun NoteListRoot(
+    viewModel: NoteListViewModel,
     sessionManager: SessionManager,
     noteRepository: NoteRepository,
-    onEditNote: (EditNoteDto) -> Unit
+    onEditNote: (String) -> Unit,
 ) {
     var userAvatar by remember {
         mutableStateOf("")
     }
-    ObserveAsEvents(sessionManager.loginState) {
+    /*ObserveAsEvents(sessionManager.loginState) {
         userAvatar = userNameAvatar(it.userId)
-    }
+    }*/
 
-    val notesViewModel = viewModel<NoteListViewModel>(
-        factory = viewModelFactory {
-            initializer {
-                NoteListViewModel(
-                    onEditNote = onEditNote,
-                    noteRepository = noteRepository)
-            }
-        }
-    )
 
-    val uiState by notesViewModel.uiState.collectAsStateWithLifecycle()
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -78,7 +71,9 @@ fun NoteListRoot(
         floatingActionButton = {
             CustomFAB(
                 onClick = {
-                    notesViewModel.onAction(NoteListAction.CreateNoteAction)
+                    viewModel.createNewNote().also {
+                        onEditNote(it.id)
+                    }
                 }
             ) {
                 Icon(
@@ -96,6 +91,9 @@ fun NoteListRoot(
             .padding(innerPadding)
             ,
             contentAlignment = Alignment.TopCenter){
+
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
             AnimatedContent(targetState = uiState.notes.isEmpty()) {
                 if (it){
                     NoteListEmptyScreen(
@@ -106,8 +104,9 @@ fun NoteListRoot(
                 }
                 else{
                     NoteListScreen(
-                        uiState = uiState,
-                        onAction = notesViewModel::onAction
+                        uiState = viewModel.uiState.collectAsStateWithLifecycle().value,
+                        onEditNote = onEditNote,
+                        onAction = viewModel::onAction
                     )
                 }
             }

@@ -11,10 +11,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nl.codingwithlinda.notemark.design_system.form_factors.Orientation
@@ -31,8 +37,12 @@ import nl.codingwithlinda.notemark.feature_home.presentation.model.limitContent
 fun NoteListItem(
     note: NoteUi,
     onNoteClick: (action: NoteListAction) -> Unit,
+    onNoteEdit: (String) -> Unit,
     modifier: Modifier = Modifier) {
 
+    var offsetInParent by remember {
+        mutableStateOf(Offset.Zero)
+    }
     val hasRoomHorizontal = ScreenSizeHelper.collectScreenInfo().let {
                 (it.width_height.width == ScreenType.MEDIUM && it.orientation == Orientation.PORTRAIT)
                 ||
@@ -43,17 +53,23 @@ fun NoteListItem(
     var charLimit by remember {
         mutableIntStateOf(150)
     }
+
     BoxWithConstraints(
         modifier = modifier
             .pointerInput(true){
                 this.detectTapGestures(
                     onTap = {
-                        onNoteClick(NoteListAction.EditNoteAction(noteId = note.id))
+                        val relativeOffset = offsetInParent + it
+                        onNoteClick(NoteListAction.OffsetAction(relativeOffset))
+                        onNoteEdit(note.id)
                     },
                     onLongPress = {
                         onNoteClick(NoteListAction.ShowDeleteConfirmationDialog(noteId = note.id))
                     }
                 )
+            }
+            .onGloballyPositioned{
+                offsetInParent = it.localToRoot(Offset.Zero)
             }
         ,
     ) {
@@ -102,7 +118,8 @@ private fun NoteListItemPreview() {
                 title = "My first note",
                 content = "This is my first note"
             ),
-            onNoteClick = {}
+            onNoteClick = {},
+            onNoteEdit = {}
         )
     }
 

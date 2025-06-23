@@ -62,17 +62,20 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.kotlinx.serialization.core)
+
     implementation(libs.kotlinx.serialization.json)
 
+    //navigation2
+    implementation("androidx.navigation:navigation-compose:2.9.0")
+    implementation("androidx.navigation:navigation-ui-ktx:2.9.0")
+    //implementation("androidx.navigation:navigation-common:2.9.0")
+
     // Core runtime for Jetpack Navigation 3 library — provides navigation components and APIs
-    implementation("androidx.navigation3:navigation3-runtime:1.0.0-alpha02")
-
+    implementation("androidx.navigation3:navigation3-runtime:1.0.0-alpha04")
     // UI components for Navigation 3 — includes NavDisplay etc.
-    implementation("androidx.navigation3:navigation3-ui:1.0.0-alpha02")
-
+    implementation("androidx.navigation3:navigation3-ui:1.0.0-alpha04")
     // ViewModel integration with Navigation 3 — provides lifecycle-aware ViewModels scoped to navigation destinations
-    implementation("androidx.lifecycle:lifecycle-viewmodel-navigation3:1.0.0-alpha01")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-navigation3:1.0.0-alpha02")
 
     //ui
     implementation(libs.androidx.adaptive.android)

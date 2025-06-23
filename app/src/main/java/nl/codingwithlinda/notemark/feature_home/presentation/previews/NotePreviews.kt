@@ -15,7 +15,8 @@ private fun NoteListScreenPreview() {
             uiState = NoteListUiState(
                 notes = dummyUiNotes
             ),
-            onAction = {}
+            onAction = {},
+            onEditNote = {}
         )
     }
 }

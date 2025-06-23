@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
@@ -21,7 +22,8 @@ import nl.codingwithlinda.notemark.feature_home.presentation.list.state.NoteList
 @Composable
 fun NoteListScreen(
     uiState: NoteListUiState,
-    onAction: (NoteListAction) -> Unit
+    onAction: (NoteListAction) -> Unit,
+    onEditNote: (String) -> Unit
     ) {
 
     val isVertical =
@@ -43,14 +45,18 @@ fun NoteListScreen(
             columns = StaggeredGridCells.Fixed(columnCount),
             horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(16.dp),
             verticalItemSpacing = 16.dp,
-            contentPadding = PaddingValues(bottom = 48.dp)
+            contentPadding = PaddingValues(bottom = 48.dp),
+            modifier = Modifier.fillMaxWidth().padding(8.dp)
         ) {
             items(uiState.notes) { noteUi ->
                 NoteListItem(
                     note = noteUi,
-                onNoteClick = {
-                    onAction(it)
-                },
+                    onNoteClick = {
+                        onAction(it)
+                    },
+                    onNoteEdit = {
+                        onEditNote(it)
+                    },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
