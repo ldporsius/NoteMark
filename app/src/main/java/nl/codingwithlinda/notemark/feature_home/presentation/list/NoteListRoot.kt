@@ -43,17 +43,14 @@ import nl.codingwithlinda.notemark.feature_home.presentation.util.userNameAvatar
 fun NoteListRoot(
     viewModel: NoteListViewModel,
     sessionManager: SessionManager,
-    noteRepository: NoteRepository,
     onEditNote: (String) -> Unit,
 ) {
     var userAvatar by remember {
         mutableStateOf("")
     }
-    /*ObserveAsEvents(sessionManager.loginState) {
+    ObserveAsEvents(sessionManager.loginState) {
         userAvatar = userNameAvatar(it.userId)
-    }*/
-
-
+    }
 
     Scaffold(
         modifier = Modifier

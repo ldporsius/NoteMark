@@ -1,5 +1,6 @@
 package nl.codingwithlinda.notemark.feature_home.presentation.detail.components
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,6 +29,9 @@ fun NoteDetailScreen(
 
     uiState.editNoteDto ?: return
 
+    BackHandler {
+        onAction(NoteDetailAction.ConfirmCancelDialog)
+    }
     val isLimitedHeight = ScreenSizeHelper.isLimitedVertical(
         ScreenSizeHelper.collectScreenInfo()
     )

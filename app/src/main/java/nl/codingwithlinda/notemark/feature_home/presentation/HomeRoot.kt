@@ -1,5 +1,6 @@
 package nl.codingwithlinda.notemark.feature_home.presentation
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,8 +37,6 @@ fun HomeRoot(
     sessionManager: SessionManager
 ) {
     val scope = rememberCoroutineScope()
-    val lifecycleOwner = LocalLifecycleOwner.current
-    val lifecycleState = lifecycleOwner.lifecycle.currentStateAsState()
 
     val navController = rememberNavController()
     val navigator = remember{
@@ -68,13 +67,11 @@ fun HomeRoot(
             NoteListRoot(
                 viewModel = viewmodel,
                 sessionManager = sessionManager,
-                noteRepository = noteRepository,
                 onEditNote = {noteId ->
                     println("HOME ROOT NAVIGATES TO NOTE DETAIL WITH NOTE DTO $noteId")
                     scope.launch {
                         navigator.send(noteId)
                     }
-
                 },
             )
         }
@@ -86,6 +83,7 @@ fun HomeRoot(
         ){
             val args = it.toRoute<NoteDestination.NoteDetailDestination>().noteId
             println("HOME ROOT NAVIGATED TO NOTE DETAIL. NOTE ID RECEIVED: $args")
+
             NoteDetailRoot(
                 noteRepository = noteRepository,
                 noteId = args,
