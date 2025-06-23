@@ -1,18 +1,12 @@
 package nl.codingwithlinda.notemark.feature_home.presentation
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.compose.currentStateAsState
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import androidx.lifecycle.withStateAtLeast
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -46,51 +40,59 @@ fun HomeRoot(
         println("NAVIGATOR RECEIVED NOTE ID: $it")
         navController.navigate(NoteDestination.NoteDetailDestination(it))
     }
-    NavHost(navController = navController, startDestination = NoteDestination.NoteListDestination){
 
-        composable<NoteDestination.NoteListDestination>{ backstackEntry ->
+    SharedTransitionLayout {
+        NavHost(
+            navController = navController,
+            startDestination = NoteDestination.NoteListDestination
+        ) {
 
-            val factory = remember() {
-                viewModelFactory {
-                    initializer {
-                        NoteListViewModel(
-                            noteRepository = noteRepository,
-                        )
+            composable<NoteDestination.NoteListDestination> { backstackEntry ->
+
+                val factory = remember() {
+                    viewModelFactory {
+                        initializer {
+                            NoteListViewModel(
+                                noteRepository = noteRepository,
+                            )
+                        }
                     }
                 }
+
+                val viewmodel = backstackEntry.createViewModel<NoteListViewModel>(
+                    navController = navController,
+                    factory = factory
+                )
+                NoteListRoot(
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedContentScope = this@composable,
+                    viewModel = viewmodel,
+                    sessionManager = sessionManager,
+                    onEditNote = { noteId ->
+                        println("HOME ROOT NAVIGATES TO NOTE DETAIL WITH NOTE DTO $noteId")
+                        scope.launch {
+                            navigator.send(noteId)
+                        }
+                    },
+                )
             }
 
-            val viewmodel = backstackEntry.createViewModel<NoteListViewModel>(
-                navController = navController,
-                factory = factory
-            )
-            NoteListRoot(
-                viewModel = viewmodel,
-                sessionManager = sessionManager,
-                onEditNote = {noteId ->
-                    println("HOME ROOT NAVIGATES TO NOTE DETAIL WITH NOTE DTO $noteId")
-                    scope.launch {
-                        navigator.send(noteId)
+            composable<NoteDestination.NoteDetailDestination>(
+
+            ) {
+                val args = it.toRoute<NoteDestination.NoteDetailDestination>().noteId
+                println("HOME ROOT NAVIGATED TO NOTE DETAIL. NOTE ID RECEIVED: $args")
+
+                NoteDetailRoot(
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedContentScope = this@composable,
+                    noteRepository = noteRepository,
+                    noteId = args,
+                    navBack = {
+                        navController.navigateUp()
                     }
-                },
-            )
-        }
-
-        composable<NoteDestination.NoteDetailDestination>(
-//            typeMap = mapOf(
-//                typeOf<EditNoteDto>() to EditNoteDtoType
-//            )
-        ){
-            val args = it.toRoute<NoteDestination.NoteDetailDestination>().noteId
-            println("HOME ROOT NAVIGATED TO NOTE DETAIL. NOTE ID RECEIVED: $args")
-
-            NoteDetailRoot(
-                noteRepository = noteRepository,
-                noteId = args,
-                navBack = {
-                   navController.navigateUp()
-                }
-            )
+                )
+            }
         }
     }
   /*  NavDisplay(

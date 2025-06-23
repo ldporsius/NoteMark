@@ -24,6 +24,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -40,12 +42,18 @@ fun NoteDetailForm(
     uiState.editNoteDto ?: return
 
     val focusRequester = remember { FocusRequester() }
+    val keyboard = LocalSoftwareKeyboardController.current
+
+    var maxSizeModifier = remember {
+        Modifier.fillMaxSize()
+    }
+
 
     var textFieldValue by remember {
         mutableStateOf(
             TextFieldValue(
                 text = uiState.editNoteDto.title,
-                selection = TextRange(uiState.editNoteDto.title.length)
+                selection = TextRange(uiState.editNoteDto.title.length),
             )
         )
     }
@@ -65,7 +73,14 @@ fun NoteDetailForm(
                 textFieldValue = it
             },
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
+                .onFocusChanged(){
+                    println("ON TITLE FOCUS CHANGED: $it")
+                    maxSizeModifier = Modifier.fillMaxSize()
+                }
+                .then(
+                    maxSizeModifier
+                )
                 .focusRequester(focusRequester)
             ,
             textStyle = LocalTextStyle.current.merge(
@@ -77,7 +92,9 @@ fun NoteDetailForm(
         )
 
         TextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxSize()
+            ,
             value = uiState.editNoteDto.content,
             onValueChange = {
                 onAction(NoteDetailAction.ContentChanged(it))

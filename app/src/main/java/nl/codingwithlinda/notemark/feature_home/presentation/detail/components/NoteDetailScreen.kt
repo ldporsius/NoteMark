@@ -3,16 +3,25 @@ package nl.codingwithlinda.notemark.feature_home.presentation.detail.components
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import nl.codingwithlinda.notemark.design_system.components.ConfirmDialog
 import nl.codingwithlinda.notemark.design_system.form_factors.ScreenSizeHelper
 import nl.codingwithlinda.notemark.design_system.form_factors.templates.ThreeColumnsLayout
@@ -20,10 +29,12 @@ import nl.codingwithlinda.notemark.design_system.ui.theme.surface
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.state.NoteDetailAction
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.state.NoteDetailUiState
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun NoteDetailScreen(
     uiState: NoteDetailUiState,
     onAction: (NoteDetailAction) -> Unit,
+    modifier: Modifier = Modifier
 ) {
 
 
@@ -35,6 +46,8 @@ fun NoteDetailScreen(
     val isLimitedHeight = ScreenSizeHelper.isLimitedVertical(
         ScreenSizeHelper.collectScreenInfo()
     )
+
+
 
     @Composable
     fun topBar() {
@@ -74,7 +87,11 @@ fun NoteDetailScreen(
                     )
                 },
                 comp2 = {
-                    form()
+                    NoteDetailFormCompactHeight(
+                        uiState = uiState,
+                        onAction = onAction,
+                        modifier = Modifier
+                    )
                 },
                 comp3 = {
                     NoteDetailSaveComponent(
@@ -90,20 +107,23 @@ fun NoteDetailScreen(
             form()
         }
     }
+
     Scaffold(
         containerColor = surface,
         modifier = Modifier
             .fillMaxSize()
-            .background(color = surface)
-            .safeContentPadding()
+            .imePadding()
+            .systemBarsPadding()
+            .windowInsetsPadding(WindowInsets.displayCutout)
         ,
         topBar = { topBar() }
     ) {
         padding ->
 
         Box(modifier = Modifier
-            .imePadding()
-            .padding(padding)){
+            .padding(padding)
+            .then(modifier)
+        ){
            content()
         }
 

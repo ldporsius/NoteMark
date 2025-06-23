@@ -1,5 +1,8 @@
 package nl.codingwithlinda.notemark.feature_home.presentation.list.components
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,8 +22,11 @@ import nl.codingwithlinda.notemark.design_system.ui.theme.backgroundGradientGrey
 import nl.codingwithlinda.notemark.feature_home.presentation.list.state.NoteListAction
 import nl.codingwithlinda.notemark.feature_home.presentation.list.state.NoteListUiState
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun NoteListScreen(
+    sharedTransitionScope: SharedTransitionScope,
+    animatedContentScope: AnimatedContentScope,
     uiState: NoteListUiState,
     onAction: (NoteListAction) -> Unit,
     onEditNote: (String) -> Unit
@@ -49,16 +55,21 @@ fun NoteListScreen(
             modifier = Modifier.fillMaxWidth().padding(8.dp)
         ) {
             items(uiState.notes) { noteUi ->
-                NoteListItem(
-                    note = noteUi,
-                    onNoteClick = {
-                        onAction(it)
-                    },
-                    onNoteEdit = {
-                        onEditNote(it)
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                )
+                with(sharedTransitionScope) {
+                    NoteListItem(
+                        note = noteUi,
+                        onNoteClick = {
+                            onAction(it)
+                        },
+                        onNoteEdit = {
+                            onEditNote(it)
+                        },
+                        modifier = Modifier.sharedElement(
+                            sharedTransitionScope.rememberSharedContentState(key = noteUi.id),
+                            animatedVisibilityScope = animatedContentScope
+                        )
+                    )
+                }
             }
         }
     }

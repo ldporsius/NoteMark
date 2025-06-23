@@ -1,6 +1,9 @@
 package nl.codingwithlinda.notemark.feature_home.presentation.list
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -39,8 +42,11 @@ import nl.codingwithlinda.notemark.feature_home.presentation.list.state.NoteList
 import nl.codingwithlinda.notemark.core.navigation.dto.EditNoteDto
 import nl.codingwithlinda.notemark.feature_home.presentation.util.userNameAvatar
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun NoteListRoot(
+    sharedTransitionScope: SharedTransitionScope,
+    animatedContentScope: AnimatedContentScope,
     viewModel: NoteListViewModel,
     sessionManager: SessionManager,
     onEditNote: (String) -> Unit,
@@ -101,6 +107,8 @@ fun NoteListRoot(
                 }
                 else{
                     NoteListScreen(
+                        sharedTransitionScope = sharedTransitionScope,
+                        animatedContentScope = animatedContentScope,
                         uiState = viewModel.uiState.collectAsStateWithLifecycle().value,
                         onEditNote = onEditNote,
                         onAction = viewModel::onAction
