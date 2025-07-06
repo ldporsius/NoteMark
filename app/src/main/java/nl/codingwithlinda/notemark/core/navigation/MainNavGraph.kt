@@ -1,28 +1,19 @@
-package nl.codingwithlinda.notemark.navigation
+package nl.codingwithlinda.notemark.core.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.rememberNavBackStack
-import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
-import androidx.navigation3.ui.NavDisplay
-import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import nl.codingwithlinda.notemark.core.domain.auth.SessionManager
-import nl.codingwithlinda.notemark.core.navigation.AuthRootDestination
-import nl.codingwithlinda.notemark.core.navigation.HomeDestination
-import nl.codingwithlinda.notemark.core.navigation.NoteDestination
 import nl.codingwithlinda.notemark.core.util.ObserveAsEvents
 import nl.codingwithlinda.notemark.feature_auth.core.presentation.AuthRoot
 import nl.codingwithlinda.notemark.feature_home.domain.NoteRepository
 import nl.codingwithlinda.notemark.feature_home.presentation.HomeRoot
 
 @Composable
-fun NavigationRoot(
+fun MainNavGraph(
     sessionManager: SessionManager,
     noteRepository: NoteRepository
 ) {

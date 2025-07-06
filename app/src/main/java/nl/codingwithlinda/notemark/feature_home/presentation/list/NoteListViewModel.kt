@@ -110,11 +110,6 @@ class NoteListViewModel(
                     }
                 }
             }
-
-            is NoteListAction.OffsetAction -> {
-
-            }
-
         }
     }
 

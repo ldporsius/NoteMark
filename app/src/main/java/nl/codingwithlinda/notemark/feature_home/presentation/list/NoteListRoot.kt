@@ -68,7 +68,10 @@ fun NoteListRoot(
         contentColor = onPrimary,
         topBar = {
             NoteListTopBar(
-                userAvatar = userAvatar
+                userAvatar = userAvatar,
+                onAction = {
+
+                }
             )
         },
         floatingActionButton = {
