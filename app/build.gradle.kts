@@ -66,8 +66,8 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     //navigation2
-    implementation("androidx.navigation:navigation-compose:2.9.0")
-    implementation("androidx.navigation:navigation-ui-ktx:2.9.0")
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.navigation.ui.ktx)
     //implementation("androidx.navigation:navigation-common:2.9.0")
 
     // Core runtime for Jetpack Navigation 3 library — provides navigation components and APIs

@@ -2,6 +2,7 @@ package nl.codingwithlinda.notemark
 
 import android.app.Application
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -19,6 +20,8 @@ import nl.codingwithlinda.notemark.core.data.auth.session.KtorSessionManager
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
 import nl.codingwithlinda.notemark.design_system.ui.theme.surface
 import nl.codingwithlinda.notemark.core.navigation.MainNavGraph
+import nl.codingwithlinda.notemark.core.util.ObserveAsEvents
+import nl.codingwithlinda.notemark.core.util.SnackBarController
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +47,7 @@ class MainActivity : ComponentActivity() {
 
 
         val application = this.application as Application
+        val appModule = NoteMarkApplication.appModule
 
         setContent {
             NoteMarkTheme {
@@ -54,11 +58,18 @@ class MainActivity : ComponentActivity() {
                 val noteRepository = remember {
                     NoteMarkApplication.appModule.noteRepository
                 }
-                Box(modifier = Modifier.fillMaxSize().background(surface)) {
+                Box(modifier = Modifier
+                    .fillMaxSize()
+                    .background(surface)) {
                     MainNavGraph(
+                        navigationIntentHandler = appModule.navIntentHandler,
                         sessionManager = sessionManager,
                         noteRepository = noteRepository
                     )
+                }
+
+                ObserveAsEvents(SnackBarController.events) {
+                    Toast.makeText(this@MainActivity, it.message.asString(this@MainActivity), Toast.LENGTH_SHORT).show()
                 }
             }
         }

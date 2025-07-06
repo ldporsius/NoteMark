@@ -8,6 +8,7 @@ import nl.codingwithlinda.notemark.app.dataStoreLoginSession
 import nl.codingwithlinda.notemark.core.data.auth.register.KtorRegisterService
 import nl.codingwithlinda.notemark.core.data.auth.session.SessionStorageImpl
 import nl.codingwithlinda.notemark.core.data.remote.common.DefaultHttpClient
+import nl.codingwithlinda.notemark.core.navigation.nav_intent_handler.NavigationIntentHandler
 import nl.codingwithlinda.notemark.feature_home.data.local.NoteRepositoryImpl
 import nl.codingwithlinda.notemark.feature_home.data.remote.NotesService
 import nl.codingwithlinda.notemark.feature_home.domain.NoteRepository
@@ -37,4 +38,7 @@ class AndroidAppModule(
         )
 
     override val registerService = KtorRegisterService(defaultHttpClient.httpClient)
+
+    override val navIntentHandler: NavigationIntentHandler
+        get() = NavigationIntentHandler(applicationScope)
 }

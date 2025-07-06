@@ -7,13 +7,15 @@ import nl.codingwithlinda.notemark.core.navigation.dto.EditNoteDto
 @Serializable
 data object HomeDestination: NavKey
 
-sealed interface NoteDestination{
+sealed interface NoteDestination: NavKey{
     @Serializable
     data object NoteListDestination : NoteDestination
     @Serializable
     data class NoteDetailDestination(val noteId: String) : NoteDestination
-    //data class NoteDetailDestination(val noteDto: EditNoteDto) : NoteDestination
 }
+
+@Serializable
+data object SettingsDestination: NavKey
 
 @Serializable
 data object AuthRootDestination: NavKey

@@ -50,6 +50,7 @@ fun NoteListRoot(
     viewModel: NoteListViewModel,
     sessionManager: SessionManager,
     onEditNote: (String) -> Unit,
+    goToSettings: () -> Unit
 ) {
     var userAvatar by remember {
         mutableStateOf("")
@@ -70,7 +71,7 @@ fun NoteListRoot(
             NoteListTopBar(
                 userAvatar = userAvatar,
                 onAction = {
-
+                    goToSettings()
                 }
             )
         },

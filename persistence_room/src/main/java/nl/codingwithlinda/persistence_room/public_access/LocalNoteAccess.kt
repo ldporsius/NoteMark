@@ -32,6 +32,9 @@ class LocalNoteAccess(
     override suspend fun delete(id: String) {
         noteAccess.delete(id)
     }
+    override suspend fun deleteAll() {
+        noteAccess.deleteAll()
+    }
 
     override val readAllFlow: Flow<List<Note>>
         get() = noteAccess.readAllFlow.map {

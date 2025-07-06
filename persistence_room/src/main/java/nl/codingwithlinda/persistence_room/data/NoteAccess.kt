@@ -28,4 +28,8 @@ class NoteAccess(
     override val readAllFlow: Flow<List<NoteEntity>>
         get() = noteDao.getAllNotes()
 
+    override suspend fun deleteAll() {
+        noteDao.deleteAllNotes()
+    }
+
 }

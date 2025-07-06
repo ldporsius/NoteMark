@@ -18,5 +18,6 @@ interface NoteRepository {
 
     suspend fun deleteNote(noteId: String): Result1<Unit, DataError>
 
+    suspend fun deleteAllNotes(): Result1<Unit, DataError>
 
 }

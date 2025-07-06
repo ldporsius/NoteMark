@@ -7,5 +7,6 @@ interface LocalAccess<E, KEY> {
     suspend fun readByKey(filter: KEY): E?
     suspend fun update(entity: E)
     suspend fun delete(id: KEY)
+    suspend fun deleteAll()
     val readAllFlow: Flow<List<E>>
 }

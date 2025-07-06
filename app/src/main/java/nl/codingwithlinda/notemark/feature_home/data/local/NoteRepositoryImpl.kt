@@ -104,4 +104,13 @@ class NoteRepositoryImpl(
         return Result.Success(Unit)
     }
 
+    override suspend fun deleteAllNotes(): Result<Unit, DataError> {
+        try {
+            noteAccess.deleteAll()
+            return Result.Success(Unit)
+        }catch (e: Exception){
+            return Result.Error(DataError.LocalDataError(LocalError.UnknownError))
+        }
+    }
+
 }

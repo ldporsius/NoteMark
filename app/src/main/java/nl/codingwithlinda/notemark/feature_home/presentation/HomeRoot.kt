@@ -16,6 +16,9 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import nl.codingwithlinda.notemark.core.domain.auth.SessionManager
 import nl.codingwithlinda.notemark.core.navigation.NoteDestination
+import nl.codingwithlinda.notemark.core.navigation.SettingsDestination
+import nl.codingwithlinda.notemark.core.navigation.nav_intent_handler.NavigationAction
+import nl.codingwithlinda.notemark.core.navigation.nav_intent_handler.NavigationIntentHandler
 import nl.codingwithlinda.notemark.core.navigation.util.createViewModel
 import nl.codingwithlinda.notemark.core.util.ObserveAsEvents
 import nl.codingwithlinda.notemark.feature_home.domain.NoteRepository
@@ -27,18 +30,31 @@ import nl.codingwithlinda.notemark.feature_home.presentation.list.NoteListViewMo
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun HomeRoot(
+    navigationIntentHandler: NavigationIntentHandler,
     noteRepository: NoteRepository,
     sessionManager: SessionManager
 ) {
     val scope = rememberCoroutineScope()
 
     val navController = rememberNavController()
-    val navigator = remember{
-        Channel<String>()
-    }
-    ObserveAsEvents(navigator.receiveAsFlow()) {
-        println("NAVIGATOR RECEIVED NOTE ID: $it")
-        navController.navigate(NoteDestination.NoteDetailDestination(it))
+
+    ObserveAsEvents(navigationIntentHandler.handler.receiveAsFlow()) {navAction ->
+
+        when(navAction){
+            is NavigationAction.Navigate -> {
+                navController.navigate(navAction.destination){
+                    navAction.navOptions
+                }
+            }
+            NavigationAction.NavigateUp -> {
+                navController.navigateUp()
+            }
+            NavigationAction.PopBackStack -> {
+                navController.popBackStack()
+            }
+            is NavigationAction.PopupTo -> {}
+        }
+        println("NAVIGATOR RECEIVED action: $navAction")
     }
 
     SharedTransitionLayout {
@@ -71,9 +87,20 @@ fun HomeRoot(
                     onEditNote = { noteId ->
                         println("HOME ROOT NAVIGATES TO NOTE DETAIL WITH NOTE DTO $noteId")
                         scope.launch {
-                            navigator.send(noteId)
+                            val intent = NavigationAction.Navigate(
+                                NoteDestination.NoteDetailDestination(noteId)
+                            ){
+
+                            }
+                            navigationIntentHandler.sendIntent(intent)
                         }
                     },
+                    goToSettings = {
+                        val intent = NavigationAction.Navigate(
+                            SettingsDestination
+                        )
+                        navigationIntentHandler.sendIntent(intent)
+                    }
                 )
             }
 

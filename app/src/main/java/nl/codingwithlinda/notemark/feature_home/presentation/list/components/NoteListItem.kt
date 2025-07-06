@@ -59,8 +59,6 @@ fun NoteListItem(
             .pointerInput(true){
                 this.detectTapGestures(
                     onTap = {
-                        val relativeOffset = offsetInParent + it
-                        onNoteClick(NoteListAction.OffsetAction(relativeOffset))
                         onNoteEdit(note.id)
                     },
                     onLongPress = {

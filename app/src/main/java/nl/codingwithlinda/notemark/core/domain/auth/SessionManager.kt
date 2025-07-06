@@ -6,11 +6,12 @@ import nl.codingwithlinda.notemark.core.data.auth.login.LoginResponseDto
 import nl.codingwithlinda.notemark.core.data.local_cache.auth.LoginSession
 import nl.codingwithlinda.notemark.core.domain.error.AuthError
 import nl.codingwithlinda.notemark.core.domain.error.LoginError
+import nl.codingwithlinda.notemark.core.domain.error.RemoteError
 import nl.codingwithlinda.notemark.core.util.Result
 
 interface SessionManager {
     suspend fun login(request: LoginRequestDto): Result<LoginResponseDto, LoginError>
-    suspend fun logout(): Boolean
+    suspend fun logout(): Result<Unit, RemoteError>
     suspend fun isSessionValid(): Boolean
     val loginState : Flow<LoginSession>
 }

@@ -39,4 +39,9 @@ class FakeNoteRepository: NoteRepository {
         notesState.value = notesState.value.filter { it.id != noteId }
         return Result.Success(Unit)
     }
+
+    override suspend fun deleteAllNotes(): Result<Unit, DataError> {
+        notesState.value = emptyList()
+        return Result.Success(Unit)
+    }
 }

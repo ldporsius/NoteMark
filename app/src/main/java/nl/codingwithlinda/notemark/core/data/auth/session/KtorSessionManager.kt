@@ -22,6 +22,7 @@ import nl.codingwithlinda.notemark.core.data.auth.login.KtorLoginService
 import nl.codingwithlinda.notemark.core.data.auth.login.LoginRequestDto
 import nl.codingwithlinda.notemark.core.data.auth.login.LoginResponseDto
 import nl.codingwithlinda.notemark.core.data.auth.login.LoginService
+import nl.codingwithlinda.notemark.core.data.auth.logout.KtorLogoutService
 import nl.codingwithlinda.notemark.core.data.auth.refresh.RefreshTokenDto
 import nl.codingwithlinda.notemark.core.data.local_cache.auth.LoginSession
 import nl.codingwithlinda.notemark.core.data.remote.common.DefaultHttpClient
@@ -30,6 +31,7 @@ import nl.codingwithlinda.notemark.core.domain.auth.SessionManager
 import nl.codingwithlinda.notemark.core.domain.auth.SessionStorage
 import nl.codingwithlinda.notemark.core.domain.error.AuthError
 import nl.codingwithlinda.notemark.core.domain.error.LoginError
+import nl.codingwithlinda.notemark.core.domain.error.RemoteError
 import nl.codingwithlinda.notemark.core.util.Result
 import java.lang.System
 import kotlin.coroutines.coroutineContext
@@ -41,6 +43,7 @@ class KtorSessionManager(
     private val sessionStorage = SessionStorageImpl(loginSessionDataStore)
     private val defaultHttpClient = DefaultHttpClient(sessionStorage)
     private val loginService = KtorLoginService(defaultHttpClient.httpClient)
+    private val logoutService = KtorLogoutService(defaultHttpClient.httpClient, sessionStorage)
 
     override val loginState: Flow<LoginSession>
         get() = loginSessionDataStore.data
@@ -67,15 +70,24 @@ class KtorSessionManager(
     }
 
 
-    override suspend fun logout(): Boolean {
+    override suspend fun logout(): Result<Unit, RemoteError> {
         try {
-            deleteSession()
-            return true
+            val logoutRes = logoutService.logout()
+            when(logoutRes){
+                is Result.Error -> {
+                    return Result.Error(logoutRes.error)
+                }
+                is Result.Success -> {
+                    deleteSession()
+                    return Result.Success(Unit)
+                }
+            }
+
         }catch (e: Exception){
             println("We are in the catch block")
             coroutineContext.ensureActive()
             println("KTOR SESSION MANAGER ERROR MESSAGE: ${e.message}")
-            return false
+            return Result.Error(RemoteError.UnknownError)
         }
     }
 

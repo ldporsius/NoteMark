@@ -48,7 +48,8 @@ fun NoteListTopBar(
         ) {
             Icon(painter = painterResource(id = R.drawable.settings),
                 contentDescription = "settings",
-                Modifier.size(48.dp)
+                Modifier.size(48.dp),
+                tint = MaterialTheme.colorScheme.onSurface
             )
         }
         UserAvatar(userAvatar = userAvatar)
