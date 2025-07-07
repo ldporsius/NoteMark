@@ -1,6 +1,9 @@
 package nl.codingwithlinda.notemark.feature_settings.presentation
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -12,8 +15,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import nl.codingwithlinda.notemark.R
 import nl.codingwithlinda.notemark.feature_settings.presentation.state.SettingsAction
 
@@ -42,12 +47,16 @@ fun SettingsScreen(
     ) {padding ->
         Column(
             modifier = modifier.padding(padding)
+                .padding(16.dp)
         ) {
             CompositionLocalProvider (LocalContentColor.provides(nl.codingwithlinda.notemark.design_system.ui.theme.error)) {
-                Button(
-                    onClick = {
+                Row(
+                   modifier = Modifier
+                       .clickable{
                         onAction(SettingsAction.Logout)
-                    }
+                    },
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(painter = painterResource(R.drawable.log), contentDescription = "logout")
                     Text("Logout")
