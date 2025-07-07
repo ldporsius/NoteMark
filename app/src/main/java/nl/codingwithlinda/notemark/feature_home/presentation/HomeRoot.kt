@@ -38,8 +38,7 @@ fun HomeRoot(
 
     val navController = rememberNavController()
 
-    ObserveAsEvents(navigationIntentHandler.handler.receiveAsFlow()) {navAction ->
-
+   /* ObserveAsEvents(navigationIntentHandler.handler.receiveAsFlow()) {navAction ->
         when(navAction){
             is NavigationAction.Navigate -> {
                 navController.navigate(navAction.destination){
@@ -55,7 +54,7 @@ fun HomeRoot(
             is NavigationAction.PopupTo -> {}
         }
         println("NAVIGATOR RECEIVED action: $navAction")
-    }
+    }*/
 
     SharedTransitionLayout {
         NavHost(
@@ -86,14 +85,7 @@ fun HomeRoot(
                     sessionManager = sessionManager,
                     onEditNote = { noteId ->
                         println("HOME ROOT NAVIGATES TO NOTE DETAIL WITH NOTE DTO $noteId")
-                        scope.launch {
-                            val intent = NavigationAction.Navigate(
-                                NoteDestination.NoteDetailDestination(noteId)
-                            ){
-
-                            }
-                            navigationIntentHandler.sendIntent(intent)
-                        }
+                        navController.navigate(NoteDestination.NoteDetailDestination(noteId))
                     },
                     goToSettings = {
                         val intent = NavigationAction.Navigate(

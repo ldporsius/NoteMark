@@ -2,6 +2,7 @@ package nl.codingwithlinda.notemark.feature_home.data.local
 
 import nl.codingwithlinda.core.domain.model.Note
 import nl.codingwithlinda.notemark.core.navigation.dto.EditNoteDto
+import nl.codingwithlinda.notemark.feature_home.data.local.NoteCreator.hexUuidToUuid
 import nl.codingwithlinda.notemark.feature_home.data.remote.dto.CreateNoteRequestDto
 import nl.codingwithlinda.notemark.feature_home.data.remote.dto.NoteResponseDto
 import nl.codingwithlinda.notemark.feature_home.data.remote.dto.UpdateNoteRequestDto
@@ -15,6 +16,8 @@ object NoteCreator {
 
     fun hexUuidToUuid(hexUuid: String): String{
         if (hexUuid.isEmpty()) return ""
+       if (hexUuid.length == 36 ) return hexUuid
+
         return Uuid.parseHex(hexUuid).toString()
     }
     fun iso8601ToInstant(iso8601: String): org.threeten.bp.Instant {

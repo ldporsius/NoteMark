@@ -11,6 +11,8 @@ import nl.codingwithlinda.notemark.core.domain.error.DataError
 import nl.codingwithlinda.notemark.core.domain.error.LocalError
 import nl.codingwithlinda.notemark.core.util.Result
 import nl.codingwithlinda.notemark.feature_home.data.remote.NotesService
+import nl.codingwithlinda.notemark.feature_home.data.remote.dto.FetchNotesRequestDto
+import nl.codingwithlinda.notemark.feature_home.data.remote.dto.mapping.toDomain
 import nl.codingwithlinda.notemark.feature_home.domain.NoteRepository
 import nl.codingwithlinda.persistence_room.public_access.LocalNoteAccess
 import kotlin.coroutines.coroutineContext
@@ -26,9 +28,24 @@ class NoteRepositoryImpl(
 
     override suspend fun getNotes(page: Int, size: Int): Result<List<Note>, DataError> {
 
-        val notes = noteAccess.readAllFlow.firstOrNull()?.map {
-            it
+        //get remote notes first
+        val requestDto = FetchNotesRequestDto(page, size)
+        val remoteResult = remoteNoteAccess.getNotes(requestDto)
+        when(remoteResult){
+            is Result.Error -> return Result.Error(DataError.RemoteDataError(remoteResult.error))
+            is Result.Success -> {
+                //save to db
+                remoteResult.data.toDomain().onEach {
+                    noteAccess.create(
+                        it.copy(
+                            id = NoteCreator.hexUuidToUuid(it.id)
+                        )
+                    )
+                }
+            }
         }
+
+        val notes = noteAccess.readAllFlow.firstOrNull()
         return if (notes == null) {
             Result.Success(emptyList())
         }
@@ -87,13 +104,14 @@ class NoteRepositoryImpl(
 
     override suspend fun deleteNote(noteId: String): Result<Unit, DataError> {
         //delete from db and remote storage
+        val remoteId = NoteCreator.hexUuidToUuid(noteId)
         try {
             noteAccess.delete(noteId)
+            noteAccess.delete(remoteId)
         }catch (e: Exception){
             return Result.Error(DataError.LocalDataError(LocalError.UnknownError))
         }
 
-        val remoteId = NoteCreator.hexUuidToUuid(noteId)
         val remoteDtoResult = applicationScope.async{
             val remoteResult = remoteNoteAccess.deleteNote(remoteId)
             return@async remoteResult

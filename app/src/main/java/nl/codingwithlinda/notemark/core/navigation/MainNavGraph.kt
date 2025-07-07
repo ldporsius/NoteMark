@@ -45,7 +45,6 @@ fun MainNavGraph(
     }
 
     ObserveAsEvents(navigationIntentHandler.handler.receiveAsFlow()) {navAction ->
-
         when(navAction){
             is NavigationAction.Navigate -> {
                 navController.navigate(navAction.destination){

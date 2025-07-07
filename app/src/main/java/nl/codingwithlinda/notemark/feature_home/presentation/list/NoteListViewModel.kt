@@ -45,7 +45,11 @@ class NoteListViewModel(
                     }
                 }
                 is Result.Error-> {
-                    //handle error
+                    SnackBarController.sendEvent(
+                        SnackbarEvent(
+                            message = notesRes.error.toUiText()
+                        )
+                    )
                 }
             }
         }
@@ -87,6 +91,7 @@ class NoteListViewModel(
             is NoteListAction.DeleteNoteAction -> {
                 viewModelScope.launch {
                     uiState.value.toDeleteNoteId?.let {
+                        println("NOTELIST VIEWMODEL DELETES NOTE WITH ID: $it")
                         try {
                             val res =  noteRepository.deleteNote(it)
                             when(res){
