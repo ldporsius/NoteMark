@@ -113,6 +113,7 @@ private fun NoteListItemPreview() {
             note = NoteUi(
                 id = "1",
                 date = "14 jul",
+                lastEdited = "Just now",
                 title = "My first note",
                 content = "This is my first note"
             ),

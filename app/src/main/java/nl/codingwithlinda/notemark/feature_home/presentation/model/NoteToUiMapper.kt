@@ -25,6 +25,7 @@ fun Note.toUi(
     return NoteUi(
         id = id,
         date = dateFormatted(),
+        lastEdited = "TODO",
         title = title,
         content = content
     )

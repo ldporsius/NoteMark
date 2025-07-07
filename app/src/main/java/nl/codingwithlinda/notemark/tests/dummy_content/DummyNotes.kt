@@ -19,6 +19,7 @@ val dummyUiNotes = List(10){
     NoteUi(
         id = it.toString(),
         date = "14 jul",
+        lastEdited = "Just now",
         title = "My first note",
         content = longDummyText
     )

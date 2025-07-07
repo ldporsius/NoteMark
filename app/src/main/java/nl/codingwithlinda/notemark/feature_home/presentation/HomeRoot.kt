@@ -85,7 +85,10 @@ fun HomeRoot(
                     sessionManager = sessionManager,
                     onEditNote = { noteId ->
                         println("HOME ROOT NAVIGATES TO NOTE DETAIL WITH NOTE DTO $noteId")
-                        navController.navigate(NoteDestination.NoteDetailDestination(noteId))
+                        navController.navigate(NoteDestination.NoteDetailDestination(noteId)){
+
+                            launchSingleTop = true
+                        }
                     },
                     goToSettings = {
                         val intent = NavigationAction.Navigate(

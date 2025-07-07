@@ -1,4 +1,4 @@
-package nl.codingwithlinda.notemark.feature_home.presentation.detail.components
+package nl.codingwithlinda.notemark.feature_home.presentation.detail.components.common
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close

@@ -1,4 +1,4 @@
-package nl.codingwithlinda.notemark.feature_home.presentation.detail.components
+package nl.codingwithlinda.notemark.feature_home.presentation.detail.components.edit
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row

@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import nl.codingwithlinda.notemark.core.navigation.dto.EditNoteDto
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
-import nl.codingwithlinda.notemark.feature_home.presentation.detail.components.NoteDetailScreen
+import nl.codingwithlinda.notemark.feature_home.presentation.detail.components.edit.NoteDetailScreen
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.state.NoteDetailUiState
 
 @Preview

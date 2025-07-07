@@ -7,7 +7,6 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -18,7 +17,7 @@ import kotlinx.coroutines.launch
 import nl.codingwithlinda.notemark.core.util.ObserveAsEvents
 import nl.codingwithlinda.notemark.core.util.SnackBarController
 import nl.codingwithlinda.notemark.feature_home.domain.NoteRepository
-import nl.codingwithlinda.notemark.feature_home.presentation.detail.components.NoteDetailScreen
+import nl.codingwithlinda.notemark.feature_home.presentation.detail.components.edit.NoteDetailScreen
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable

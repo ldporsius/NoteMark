@@ -1,6 +1,5 @@
-package nl.codingwithlinda.notemark.feature_home.presentation.detail.components
+package nl.codingwithlinda.notemark.feature_home.presentation.detail.components.edit
 
-import android.R.attr.text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
