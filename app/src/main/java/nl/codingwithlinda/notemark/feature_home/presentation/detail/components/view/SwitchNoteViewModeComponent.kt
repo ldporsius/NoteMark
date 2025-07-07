@@ -59,14 +59,14 @@ fun SwitchNoteViewModeComponent(
             modifier = Modifier
                 .size(48.dp)
                 .clickable {
-                    onSwitch(NoteDetailViewMode.DETAILED)
+                    onSwitch(NoteDetailViewMode.EDIT)
                 }
                 .background(
-                    color = bgColor(mode == NoteDetailViewMode.DETAILED),
+                    color = bgColor(mode == NoteDetailViewMode.EDIT),
                     shape = MaterialTheme.shapes.medium
                 )
             ,
-            tint = contentColor(mode == NoteDetailViewMode.DETAILED)
+            tint = contentColor(mode == NoteDetailViewMode.EDIT)
 
         )
         Icon(painter = painterResource(R.drawable.book),
@@ -93,7 +93,7 @@ fun SwitchNoteViewModeComponent(
 @Composable
 fun SwitchNoteViewModeComponentPreview() {
     var mode by remember {
-        mutableStateOf(NoteDetailViewMode.DETAILED)
+        mutableStateOf(NoteDetailViewMode.VIEW)
     }
     SwitchNoteViewModeComponent(
         mode = mode,
