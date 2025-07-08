@@ -19,9 +19,8 @@ fun TwoColumnLayout(
 
     if (layoutHorizontal){
         Row(modifier = modifier){
-            Box(modifier = Modifier.weight(1f)){
-                comp1()
-            }
+            comp1()
+
             Box(modifier = Modifier.weight(1f)){
                 comp2()
             }

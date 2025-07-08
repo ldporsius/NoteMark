@@ -67,6 +67,12 @@ object ScreenSizeHelper {
         val orientation = getOrientation(deviceOrientation)
         return ScreenInfo(orientation, widthHeight)
     }
+
+    @Composable
+    fun canDisplayVertical(): Boolean {
+        val si = collectScreenInfo()
+        return canDisplayVertical(si)
+    }
     fun canDisplayVertical(screenInfo: ScreenInfo): Boolean {
         return screenInfo.orientation == Orientation.PORTRAIT
     }
@@ -76,6 +82,8 @@ object ScreenSizeHelper {
     fun isLimitedVertical(screenInfo: ScreenInfo): Boolean {
         return screenInfo.width_height.height == ScreenType.COMPACT
     }
+
+
 
 
 }

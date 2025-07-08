@@ -21,6 +21,7 @@ import nl.codingwithlinda.notemark.feature_home.domain.NoteRepository
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.state.NoteDetailAction
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.state.NoteDetailUiState
 import nl.codingwithlinda.notemark.feature_home.presentation.model.toEditNoteUi
+import nl.codingwithlinda.notemark.feature_home.presentation.model.toUi
 
 class NoteDetailViewModel(
     private val noteRepository: NoteRepository,
@@ -78,6 +79,7 @@ class NoteDetailViewModel(
             oldNote?.let {note ->
                 _uiState.update {
                     it.copy(
+                        note = note.toUi(),
                         editNoteDto = note.toEditNoteUi()
                     )
                 }

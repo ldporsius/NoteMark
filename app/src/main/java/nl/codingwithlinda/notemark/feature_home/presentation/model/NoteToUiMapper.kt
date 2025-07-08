@@ -5,7 +5,7 @@ import nl.codingwithlinda.notemark.core.navigation.dto.EditNoteDto
 import nl.codingwithlinda.notemark.feature_home.data.local.NoteCreator
 
 fun Note.toUi(
-    now: org.threeten.bp.ZonedDateTime
+    now: org.threeten.bp.ZonedDateTime = org.threeten.bp.ZonedDateTime.now()
 ): NoteUi {
     val dateInstant = NoteCreator.iso8601ToInstant(dateCreated)
 

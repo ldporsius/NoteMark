@@ -18,6 +18,8 @@ import nl.codingwithlinda.notemark.core.util.ObserveAsEvents
 import nl.codingwithlinda.notemark.core.util.SnackBarController
 import nl.codingwithlinda.notemark.feature_home.domain.NoteRepository
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.components.edit.NoteDetailScreen
+import nl.codingwithlinda.notemark.feature_home.presentation.detail.components.view.NoteViewScreen
+import nl.codingwithlinda.notemark.feature_home.presentation.detail.state.NoteDetailAction
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -55,14 +57,27 @@ fun NoteDetailRoot(
 
 
     with(sharedTransitionScope) {
-        NoteDetailScreen(
+        /*NoteDetailScreen(
             uiState = viewModel.uiState.collectAsStateWithLifecycle().value,
             onAction = viewModel::onAction,
             modifier = Modifier.sharedElement(
                 sharedTransitionScope.rememberSharedContentState(key = noteId),
                 animatedVisibilityScope = animatedContentScope
             )
+        )*/
+        NoteViewScreen(
+            noteDetailUiState = viewModel.uiState.collectAsStateWithLifecycle().value,
+            onEdit = {
 
+            },
+            onBack = {
+                navBack()
+            },
+            modifier = Modifier.sharedElement(
+                sharedTransitionScope.rememberSharedContentState(key = noteId),
+                animatedVisibilityScope = animatedContentScope
         )
+        )
+
     }
 }
