@@ -38,9 +38,7 @@ import nl.codingwithlinda.notemark.feature_home.presentation.model.NoteUi
 @Composable
 fun NoteViewScreen(
     mode: NoteDetailViewMode,
-    //setMode: (NoteDetailViewMode) -> Unit,
     visibilityState: Boolean,
-    setVisibilityState: (Boolean) -> Unit,
     onAction: (NoteViewStateAction) -> Unit,
     noteDetailUiState: NoteDetailUiState,
     onBack: () -> Unit,
@@ -73,24 +71,7 @@ fun NoteViewScreen(
 
 
 
-    LaunchedEffect(mode, visibilityState) {
-        var count = 0
-        val visibilityTimer = flow<Int> {
-            while (count < 5) {
-                delay(1000)
-                emit(1)
-            }
-        }
-            visibilityTimer.collect {
-                count++
 
-                if (count == 5) {
-                    println("VISIBILITY ON TIMER CALLED. mode = $mode")
-                    visibilityOnTimeout()
-                    count = 0
-                }
-            }
-    }
 
     val requestOrientation= remember(mode) {
         when (mode) {
@@ -186,7 +167,6 @@ fun NoteViewScreenPreview() {
         mode = NoteDetailViewMode.VIEW,
         onAction = {},
         visibilityState = true,
-        setVisibilityState = {},
         noteDetailUiState = NoteDetailUiState(
             note = note),
         onBack = {},

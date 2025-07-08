@@ -90,7 +90,7 @@ class NoteDetailViewModel(
     }
 
 
-    fun deleteNewNoteOnCancel() {
+    private fun deleteNewNoteOnCancel() {
         if (isNewNote) {
             viewModelScope.launch(NonCancellable) {
                 val result = noteRepository.deleteNote(noteId)

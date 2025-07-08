@@ -6,8 +6,10 @@ import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -17,6 +19,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import nl.codingwithlinda.notemark.core.util.ObserveAsEvents
@@ -42,6 +45,15 @@ fun NoteDetailRoot(
 
     var visibilityState by rememberSaveable {
         mutableStateOf(true)
+    }
+
+    val autohideTimer = remember(visibilityState) {
+        flow {
+            while (true) {
+                kotlinx.coroutines.delay(1000)
+                emit(Unit)
+            }
+        }
     }
 
     fun visibilityOnAction(viewMode: NoteDetailViewMode) {
@@ -98,7 +110,18 @@ fun NoteDetailRoot(
             }
         }
     }
-
+    LaunchedEffect(visibilityState, mode){
+        var count = 0
+        if (visibilityState){
+            autohideTimer.collect{
+                count ++
+                if (count > 5) {
+                    visibilityOnAction(NoteDetailViewMode.READ)
+                    count = 0
+                }
+            }
+        }
+    }
 
     with(sharedTransitionScope) {
         AnimatedContent(mode) {
@@ -116,9 +139,6 @@ fun NoteDetailRoot(
                 NoteViewScreen(
                     mode = mode,
                     visibilityState = visibilityState,
-                    setVisibilityState = { vis ->
-                        visibilityState = vis
-                    },
                     onAction = {action ->
                         when(action){
                             is NoteViewStateAction.ChangeMode -> {
