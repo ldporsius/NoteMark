@@ -24,7 +24,7 @@ import nl.codingwithlinda.notemark.core.util.SnackBarController
 import nl.codingwithlinda.notemark.feature_home.domain.NoteRepository
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.components.edit.NoteDetailScreen
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.components.view.NoteViewScreen
-import nl.codingwithlinda.notemark.feature_home.presentation.detail.state.NoteDetailAction
+import nl.codingwithlinda.notemark.feature_home.presentation.detail.components.view.state.NoteViewStateAction
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.state.NoteDetailViewMode
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -38,6 +38,41 @@ fun NoteDetailRoot(
 ) {
     var mode by rememberSaveable {
         mutableStateOf(NoteDetailViewMode.VIEW)
+    }
+
+    var visibilityState by rememberSaveable {
+        mutableStateOf(true)
+    }
+
+    fun visibilityOnAction(viewMode: NoteDetailViewMode) {
+        println("VISIBILITY ON TAP CALLED. current mode = $mode. changing to: $viewMode")
+        val visibility = when(viewMode){
+            NoteDetailViewMode.VIEW -> true
+            NoteDetailViewMode.EDIT -> false
+            NoteDetailViewMode.READ -> false
+        }
+        visibilityState = visibility
+    }
+
+    fun visibilityOnTap() {
+        println("VISIBILITY ON TAP CALLED. mode = $mode, current visibility = $visibilityState")
+        val visibility = when(mode){
+            NoteDetailViewMode.VIEW -> true
+            NoteDetailViewMode.EDIT -> false
+            NoteDetailViewMode.READ -> !visibilityState
+        }
+        println("VISIBILITY ON TAP CALLED. setting visibility to: $visibility")
+        visibilityState = visibility
+    }
+
+    fun visibilityOnScroll(){
+        println("VISIBILITY ON SCROLL CALLED. mode = $mode")
+        val visibility = when(mode){
+            NoteDetailViewMode.VIEW -> true
+            NoteDetailViewMode.EDIT -> true
+            NoteDetailViewMode.READ -> false
+        }
+        visibilityState = visibility
     }
     val viewModel = viewModel<NoteDetailViewModel>(
         factory = viewModelFactory {
@@ -66,7 +101,6 @@ fun NoteDetailRoot(
 
 
     with(sharedTransitionScope) {
-        /**/
         AnimatedContent(mode) {
             if (it == NoteDetailViewMode.EDIT) {
                 NoteDetailScreen(
@@ -81,13 +115,26 @@ fun NoteDetailRoot(
             else{
                 NoteViewScreen(
                     mode = mode,
-                    setMode = {
-                        mode = it
+                    visibilityState = visibilityState,
+                    setVisibilityState = { vis ->
+                        visibilityState = vis
                     },
-                    noteDetailUiState = viewModel.uiState.collectAsStateWithLifecycle().value,
-                    onEdit = {
+                    onAction = {action ->
+                        when(action){
+                            is NoteViewStateAction.ChangeMode -> {
+                                mode = action.mode
+                                visibilityOnAction(action.mode)
+                            }
+                            NoteViewStateAction.Scroll -> {
+                                visibilityOnScroll()
+                            }
+                            NoteViewStateAction.TapAnywhere -> {
+                                visibilityOnTap()
+                            }
+                        }
 
                     },
+                    noteDetailUiState = viewModel.uiState.collectAsStateWithLifecycle().value,
                     onBack = {
                         navBack()
                     },

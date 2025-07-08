@@ -18,11 +18,7 @@ import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
@@ -34,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import nl.codingwithlinda.notemark.design_system.form_factors.templates.TwoColumnLayout
+import nl.codingwithlinda.notemark.feature_home.presentation.detail.components.view.state.NoteViewStateAction
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.state.NoteDetailUiState
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.state.NoteDetailViewMode
 import nl.codingwithlinda.notemark.feature_home.presentation.model.NoteUi
@@ -41,54 +38,58 @@ import nl.codingwithlinda.notemark.feature_home.presentation.model.NoteUi
 @Composable
 fun NoteViewScreen(
     mode: NoteDetailViewMode,
-    setMode: (NoteDetailViewMode) -> Unit,
+    //setMode: (NoteDetailViewMode) -> Unit,
+    visibilityState: Boolean,
+    setVisibilityState: (Boolean) -> Unit,
+    onAction: (NoteViewStateAction) -> Unit,
     noteDetailUiState: NoteDetailUiState,
     onBack: () -> Unit,
-    onEdit: () -> Unit,
     modifier: Modifier = Modifier) {
 
 
-
-    var visibilityState by rememberSaveable {
-        mutableStateOf(true)
+    fun visibilityOnAction(action: NoteDetailViewMode) {
+        println("VISIBILITY ON TAP CALLED. mode = $mode")
+       onAction(NoteViewStateAction.ChangeMode(action))
     }
-
     fun visibilityOnTap() {
-        visibilityState = when(mode){
-            NoteDetailViewMode.VIEW -> true
-            NoteDetailViewMode.EDIT -> true
-            NoteDetailViewMode.READ -> !visibilityState
-        }
+        println("VISIBILITY ON TAP CALLED. mode = $mode, current visibility = $visibilityState")
+        onAction(NoteViewStateAction.TapAnywhere)
     }
 
     fun visibilityOnScroll(){
-        visibilityState = when(mode){
+        println("VISIBILITY ON SCROLL CALLED. mode = $mode")
+        onAction(NoteViewStateAction.Scroll)
+    }
+
+    fun visibilityOnTimeout(){
+        println("VISIBILITY ON TIMEOUT CALLED. mode = $mode")
+        val visibility = when(mode){
             NoteDetailViewMode.VIEW -> true
             NoteDetailViewMode.EDIT -> true
             NoteDetailViewMode.READ -> false
         }
+        //setVisibilityState(visibility)
     }
 
-    val visibilityTimer = flow<Int> {
-        while (true) {
-            delay(1000)
-            emit(1)
-        }
-    }
+
 
     LaunchedEffect(mode, visibilityState) {
         var count = 0
-        if (mode == NoteDetailViewMode.READ) {
-
+        val visibilityTimer = flow<Int> {
+            while (count < 5) {
+                delay(1000)
+                emit(1)
+            }
+        }
             visibilityTimer.collect {
                 count++
 
-                if (count > 5) {
-                    visibilityState = false
-
+                if (count == 5) {
+                    println("VISIBILITY ON TIMER CALLED. mode = $mode")
+                    visibilityOnTimeout()
+                    count = 0
                 }
             }
-        }
     }
 
     val requestOrientation= remember(mode) {
@@ -124,8 +125,7 @@ fun NoteViewScreen(
                 SwitchNoteViewModeComponent(
                     mode = mode,
                     onSwitch = {
-                        setMode(it)
-                        visibilityOnTap()
+                        visibilityOnAction(it)
                     }
                 )
             }
@@ -184,10 +184,11 @@ fun NoteViewScreenPreview() {
     )
     NoteViewScreen(
         mode = NoteDetailViewMode.VIEW,
-        setMode = {},
+        onAction = {},
+        visibilityState = true,
+        setVisibilityState = {},
         noteDetailUiState = NoteDetailUiState(
             note = note),
-        onEdit = {},
         onBack = {},
     )
 }
