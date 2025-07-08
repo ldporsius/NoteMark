@@ -10,12 +10,14 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import nl.codingwithlinda.notemark.app.NoteMarkApplication
+import nl.codingwithlinda.notemark.app.dataStoreLoginSession
 import nl.codingwithlinda.notemark.core.data.auth.session.KtorSessionManager
 import nl.codingwithlinda.notemark.design_system.ui.theme.NoteMarkTheme
 import nl.codingwithlinda.notemark.design_system.ui.theme.surface
@@ -49,12 +51,21 @@ class MainActivity : ComponentActivity() {
         val application = this.application as Application
         val appModule = NoteMarkApplication.appModule
 
+
         setContent {
             NoteMarkTheme {
                 val sessionManager = remember {
                     KtorSessionManager(application)
                 }
-
+                //for demo purposes only: clear tokens to force login
+                LaunchedEffect (Unit){
+                    application.dataStoreLoginSession.updateData {
+                        it.copy(
+                            accessToken = "",
+                            refreshToken = ""
+                        )
+                    }
+                }
                 val noteRepository = remember {
                     NoteMarkApplication.appModule.noteRepository
                 }

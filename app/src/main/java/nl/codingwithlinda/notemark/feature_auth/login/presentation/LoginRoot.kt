@@ -14,6 +14,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import nl.codingwithlinda.notemark.core.domain.auth.SessionManager
+import nl.codingwithlinda.notemark.design_system.form_factors.templates.ScreenTwoComposablesConstraint
 import nl.codingwithlinda.notemark.design_system.form_factors.templates.TwoColumnLayout
 import nl.codingwithlinda.notemark.design_system.ui.theme.surfaceLowest
 import nl.codingwithlinda.notemark.feature_auth.login.presentation.components.LoginForm
@@ -37,7 +38,7 @@ fun LoginRoot(
             }
         }
     )
-    TwoColumnLayout(
+   /* TwoColumnLayout(
         comp1 = {
             LoginHeader()
         },
@@ -53,9 +54,9 @@ fun LoginRoot(
             .fillMaxSize()
             .background(color = surfaceLowest)
             .padding(16.dp)
-    )
+    )*/
 
-    /*ScreenTwoComposablesConstraint(
+    ScreenTwoComposablesConstraint(
         comp1 = {
             LoginHeader()
         },
@@ -64,6 +65,7 @@ fun LoginRoot(
                 uiState = loginViewModel.uiState.collectAsStateWithLifecycle().value,
                 onAction = loginViewModel::handleAction,
                 modifier = Modifier
+                    .imePadding()
                     .verticalScroll(rememberScrollState())
                 ,
             )
@@ -73,5 +75,5 @@ fun LoginRoot(
             .background(color = surfaceLowest)
             .padding(16.dp)
 
-    )*/
+    )
 }
