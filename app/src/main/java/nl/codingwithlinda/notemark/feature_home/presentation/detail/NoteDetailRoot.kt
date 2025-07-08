@@ -56,8 +56,21 @@ fun NoteDetailRoot(
         }
     }
 
+    fun modeOnAction(viewMode: NoteDetailViewMode) {
+        println("MODE ON ACTION CALLED. current mode = $mode. changing to: $viewMode")
+        val newMode = when(viewMode){
+            NoteDetailViewMode.VIEW -> NoteDetailViewMode.VIEW
+            NoteDetailViewMode.EDIT -> NoteDetailViewMode.EDIT
+            NoteDetailViewMode.READ -> {
+                if (mode != NoteDetailViewMode.READ) NoteDetailViewMode.READ
+                else NoteDetailViewMode.VIEW
+            }
+        }
+       mode = newMode
+    }
+
     fun visibilityOnAction(viewMode: NoteDetailViewMode) {
-        println("VISIBILITY ON TAP CALLED. current mode = $mode. changing to: $viewMode")
+        println("VISIBILITY ON ACTION CALLED. current mode = $mode. changing to: $viewMode")
         val visibility = when(viewMode){
             NoteDetailViewMode.VIEW -> true
             NoteDetailViewMode.EDIT -> false
@@ -142,7 +155,7 @@ fun NoteDetailRoot(
                     onAction = {action ->
                         when(action){
                             is NoteViewStateAction.ChangeMode -> {
-                                mode = action.mode
+                                modeOnAction(action.mode)
                                 visibilityOnAction(action.mode)
                             }
                             NoteViewStateAction.Scroll -> {

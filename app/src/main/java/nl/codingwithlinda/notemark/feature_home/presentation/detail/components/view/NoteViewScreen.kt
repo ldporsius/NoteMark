@@ -59,20 +59,6 @@ fun NoteViewScreen(
         onAction(NoteViewStateAction.Scroll)
     }
 
-    fun visibilityOnTimeout(){
-        println("VISIBILITY ON TIMEOUT CALLED. mode = $mode")
-        val visibility = when(mode){
-            NoteDetailViewMode.VIEW -> true
-            NoteDetailViewMode.EDIT -> true
-            NoteDetailViewMode.READ -> false
-        }
-        //setVisibilityState(visibility)
-    }
-
-
-
-
-
     val requestOrientation= remember(mode) {
         when (mode) {
             NoteDetailViewMode.VIEW -> ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
