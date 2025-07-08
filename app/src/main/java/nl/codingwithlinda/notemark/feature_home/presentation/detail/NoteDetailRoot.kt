@@ -1,11 +1,16 @@
 package nl.codingwithlinda.notemark.feature_home.presentation.detail
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -20,6 +25,7 @@ import nl.codingwithlinda.notemark.feature_home.domain.NoteRepository
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.components.edit.NoteDetailScreen
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.components.view.NoteViewScreen
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.state.NoteDetailAction
+import nl.codingwithlinda.notemark.feature_home.presentation.detail.state.NoteDetailViewMode
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -30,6 +36,9 @@ fun NoteDetailRoot(
     noteRepository: NoteRepository,
     navBack: () -> Unit,
 ) {
+    var mode by rememberSaveable {
+        mutableStateOf(NoteDetailViewMode.VIEW)
+    }
     val viewModel = viewModel<NoteDetailViewModel>(
         factory = viewModelFactory {
             initializer {
@@ -41,7 +50,7 @@ fun NoteDetailRoot(
         }
     )
     ObserveAsEvents(viewModel.navBackChannel.receiveAsFlow()) {
-        navBack()
+        mode = NoteDetailViewMode.VIEW
     }
 
     val scope = rememberCoroutineScope()
@@ -57,27 +66,39 @@ fun NoteDetailRoot(
 
 
     with(sharedTransitionScope) {
-        /*NoteDetailScreen(
-            uiState = viewModel.uiState.collectAsStateWithLifecycle().value,
-            onAction = viewModel::onAction,
-            modifier = Modifier.sharedElement(
-                sharedTransitionScope.rememberSharedContentState(key = noteId),
-                animatedVisibilityScope = animatedContentScope
-            )
-        )*/
-        NoteViewScreen(
-            noteDetailUiState = viewModel.uiState.collectAsStateWithLifecycle().value,
-            onEdit = {
+        /**/
+        AnimatedContent(mode) {
+            if (it == NoteDetailViewMode.EDIT) {
+                NoteDetailScreen(
+                    uiState = viewModel.uiState.collectAsStateWithLifecycle().value,
+                    onAction = viewModel::onAction,
+                    modifier = Modifier.sharedElement(
+                        sharedTransitionScope.rememberSharedContentState(key = noteId),
+                        animatedVisibilityScope = animatedContentScope
+                    )
+                )
+            }
+            else{
+                NoteViewScreen(
+                    mode = mode,
+                    setMode = {
+                        mode = it
+                    },
+                    noteDetailUiState = viewModel.uiState.collectAsStateWithLifecycle().value,
+                    onEdit = {
 
-            },
-            onBack = {
-                navBack()
-            },
-            modifier = Modifier.sharedElement(
-                sharedTransitionScope.rememberSharedContentState(key = noteId),
-                animatedVisibilityScope = animatedContentScope
-        )
-        )
+                    },
+                    onBack = {
+                        navBack()
+                    },
+                    modifier = Modifier.sharedElement(
+                        sharedTransitionScope.rememberSharedContentState(key = noteId),
+                        animatedVisibilityScope = animatedContentScope
+                    )
+                )
+
+            }
+        }
 
     }
 }

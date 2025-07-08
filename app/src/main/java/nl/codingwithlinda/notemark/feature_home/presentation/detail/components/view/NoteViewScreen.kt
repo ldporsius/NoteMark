@@ -8,8 +8,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.gestures.detectTransformGestures
-import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -35,7 +33,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
-import nl.codingwithlinda.notemark.design_system.form_factors.ScreenSizeHelper
 import nl.codingwithlinda.notemark.design_system.form_factors.templates.TwoColumnLayout
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.state.NoteDetailUiState
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.state.NoteDetailViewMode
@@ -43,24 +40,32 @@ import nl.codingwithlinda.notemark.feature_home.presentation.model.NoteUi
 
 @Composable
 fun NoteViewScreen(
+    mode: NoteDetailViewMode,
+    setMode: (NoteDetailViewMode) -> Unit,
     noteDetailUiState: NoteDetailUiState,
     onBack: () -> Unit,
     onEdit: () -> Unit,
     modifier: Modifier = Modifier) {
 
-    var mode by rememberSaveable {
-        mutableStateOf(NoteDetailViewMode.VIEW)
-    }
+
 
     var visibilityState by rememberSaveable {
         mutableStateOf(true)
     }
 
-    fun visibilityFiniteState() {
+    fun visibilityOnTap() {
         visibilityState = when(mode){
             NoteDetailViewMode.VIEW -> true
             NoteDetailViewMode.EDIT -> true
             NoteDetailViewMode.READ -> !visibilityState
+        }
+    }
+
+    fun visibilityOnScroll(){
+        visibilityState = when(mode){
+            NoteDetailViewMode.VIEW -> true
+            NoteDetailViewMode.EDIT -> true
+            NoteDetailViewMode.READ -> false
         }
     }
 
@@ -88,8 +93,8 @@ fun NoteViewScreen(
 
     val requestOrientation= remember(mode) {
         when (mode) {
-            NoteDetailViewMode.VIEW -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-            NoteDetailViewMode.EDIT -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            NoteDetailViewMode.VIEW -> ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+            NoteDetailViewMode.EDIT -> ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
             NoteDetailViewMode.READ -> ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }
     }
@@ -99,7 +104,7 @@ fun NoteViewScreen(
     val nestedScroll = remember {
         object : NestedScrollConnection{
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                visibilityState = false
+                visibilityOnScroll()
                 return super.onPreScroll(available, source)
             }
         }
@@ -119,8 +124,8 @@ fun NoteViewScreen(
                 SwitchNoteViewModeComponent(
                     mode = mode,
                     onSwitch = {
-                        mode = it
-                        visibilityFiniteState()
+                        setMode(it)
+                        visibilityOnTap()
                     }
                 )
             }
@@ -132,7 +137,7 @@ fun NoteViewScreen(
                 .safeContentPadding()
                 .pointerInput(true) {
                     this.detectTapGestures {
-                        visibilityFiniteState()
+                        visibilityOnTap()
                     }
                 }
         ) {
@@ -178,6 +183,8 @@ fun NoteViewScreenPreview() {
         content = "This is the content of the sample note."
     )
     NoteViewScreen(
+        mode = NoteDetailViewMode.VIEW,
+        setMode = {},
         noteDetailUiState = NoteDetailUiState(
             note = note),
         onEdit = {},
