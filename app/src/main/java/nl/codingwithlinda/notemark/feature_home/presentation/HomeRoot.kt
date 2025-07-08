@@ -5,6 +5,9 @@ import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.compose.NavHost
@@ -23,6 +26,9 @@ import nl.codingwithlinda.notemark.core.navigation.util.createViewModel
 import nl.codingwithlinda.notemark.core.util.ObserveAsEvents
 import nl.codingwithlinda.notemark.feature_home.domain.NoteRepository
 import nl.codingwithlinda.notemark.feature_home.presentation.detail.NoteDetailRoot
+import nl.codingwithlinda.notemark.feature_home.presentation.detail.NoteDetailViewModel
+import nl.codingwithlinda.notemark.feature_home.presentation.detail.components.edit.NoteDetailScreen
+import nl.codingwithlinda.notemark.feature_home.presentation.detail.state.NoteDetailViewMode
 import nl.codingwithlinda.notemark.feature_home.presentation.list.NoteListRoot
 import nl.codingwithlinda.notemark.feature_home.presentation.list.NoteListViewModel
 
@@ -34,7 +40,6 @@ fun HomeRoot(
     noteRepository: NoteRepository,
     sessionManager: SessionManager
 ) {
-    val scope = rememberCoroutineScope()
 
     val navController = rememberNavController()
 
@@ -86,8 +91,12 @@ fun HomeRoot(
                     onEditNote = { noteId ->
                         println("HOME ROOT NAVIGATES TO NOTE DETAIL WITH NOTE DTO $noteId")
                         navController.navigate(NoteDestination.NoteDetailDestination(noteId)){
-
                             launchSingleTop = true
+                        }
+                    },
+                    onNewNote = {
+                        navController.navigate(NoteDestination.NoteNewDestination(it)){
+
                         }
                     },
                     goToSettings = {
@@ -96,6 +105,29 @@ fun HomeRoot(
                         )
                         navigationIntentHandler.sendIntent(intent)
                     }
+                )
+            }
+
+            composable<NoteDestination.NoteNewDestination> {
+                val args = it.toRoute<NoteDestination.NoteNewDestination>().noteId
+                val viewModel = viewModel<NoteDetailViewModel>(
+                    factory = viewModelFactory {
+                        initializer {
+                            NoteDetailViewModel(
+                                noteRepository = noteRepository,
+                                noteId = args,
+                            )
+                        }
+                    }
+                )
+                ObserveAsEvents(viewModel.navBackChannel.receiveAsFlow()) {
+                   navController.navigateUp()
+                }
+                NoteDetailScreen(
+                    uiState = viewModel.uiState.collectAsStateWithLifecycle().value,
+                    onAction = viewModel::onAction,
+                    modifier = Modifier
+
                 )
             }
 

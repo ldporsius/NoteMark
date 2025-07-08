@@ -10,6 +10,10 @@ data object HomeDestination: NavKey
 sealed interface NoteDestination: NavKey{
     @Serializable
     data object NoteListDestination : NoteDestination
+
+    @Serializable
+    data class NoteNewDestination(val noteId: String) : NoteDestination
+
     @Serializable
     data class NoteDetailDestination(val noteId: String) : NoteDestination
 }

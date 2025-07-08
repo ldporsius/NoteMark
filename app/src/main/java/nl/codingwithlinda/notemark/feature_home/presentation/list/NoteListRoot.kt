@@ -49,6 +49,7 @@ fun NoteListRoot(
     animatedContentScope: AnimatedContentScope,
     viewModel: NoteListViewModel,
     sessionManager: SessionManager,
+    onNewNote: (String) -> Unit,
     onEditNote: (String) -> Unit,
     goToSettings: () -> Unit
 ) {
@@ -79,7 +80,7 @@ fun NoteListRoot(
             CustomFAB(
                 onClick = {
                     viewModel.createNewNote().also {
-                        onEditNote(it.id)
+                        onNewNote(it.id)
                     }
                 }
             ) {
